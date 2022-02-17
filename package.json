@@ -1,0 +1,22 @@
+{
+  "name": "V2RayP",
+  "version": "0.0.1",
+  "description": "V2rRay - Personal",
+  "author": "LOLO",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lolo1208/V2rayP.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lolo1208/V2rayP/issues"
+  },
+  "homepage": "https://github.com/lolo1208/V2rayP",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^17.0.0"
+  }
+}

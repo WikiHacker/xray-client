@@ -1,2 +1,2 @@
-# v2ray-p
-v2ray - personal
+# V2rayP
+V2Ray - Personal

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>V2rRay - Personal</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';"/>
+    <link rel="stylesheet" href="./assets/mdl/material.css">
+    <link rel="stylesheet" href="./assets/css/index.css">
+    <script src="./assets/mdl/material.js"></script>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-line">
+        <img id="favicon" src="assets/icons/favicon.svg"/>
+        <span class="mdl-tooltip" for="favicon">
+            V2Ray - Personal<br>version: 1.2.3.4
+        </span>
+    </div>
+
+    <div class="nav-btn header-line">
+        <p>Profiles</p>
+    </div>
+    <div class="nav-btn nav-btn-selected header-line">
+        <p>General</p>
+    </div>
+    <div class="nav-btn header-line">
+        <p>Profiles</p>
+    </div>
+    <div class="nav-btn header-line">
+        <p>Rules</p>
+    </div>
+    <div class="nav-btn header-line">
+        <p>Logs</p>
+    </div>
+
+    <div class="header-line">
+        <img class="close-btn" src="assets/icons/close.svg"/>
+    </div>
+</div>
+
+<div class="content-layout">
+    <div class="content">
+
+        <div id="profiles">
+        </div>
+
+        <div id="general">
+            <p class="mdl-card__title-text">Connect to a Server</p>
+            <p class="intro-text small-text">&nbsp;VMess + WebSocket + TLS</p>
+
+            <form class="general-cts-form" action="#">
+                <div class="general-cts-address mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="opt_address">
+                    <label class="mdl-textfield__label" for="opt_address">address</label>
+                </div>
+                <div class="general-cts-port mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="opt_port">
+                    <label class="mdl-textfield__label" for="opt_port">port</label>
+                    <span class="mdl-textfield__error">Input is not a number!</span>
+                </div>
+
+                <div class="general-cts-id mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="opt_id">
+                    <label class="mdl-textfield__label" for="opt_id">id</label>
+                </div>
+                <button class="general-cts-rndId mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
+                    <img class="material-icons" src="assets/icons/random.svg"/>
+                </button>
+
+                <div class="general-cts-alterId mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="opt_alterId">
+                    <label class="mdl-textfield__label" for="opt_alterId">alterId</label>
+                    <span class="mdl-textfield__error">Input is not a number!</span>
+                </div>
+                <div class="general-cts-level mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="opt_level">
+                    <label class="mdl-textfield__label" for="opt_level">level</label>
+                    <span class="mdl-textfield__error">Input is not a number!</span>
+                </div>
+
+                <p class="general-cts-security-title">security</p>
+                <div class="general-cts-security-opts">
+                    <label class="general-cts-security-auto mdl-radio mdl-js-radio mdl-js-ripple-effect"
+                           for="opt_security_auto">
+                        <input type="radio" id="opt_security_auto" class="mdl-radio__button" name="opt_security"
+                               value="auto" checked>
+                        <span class="mdl-radio__label">auto</span>
+                    </label>
+                    <label class="general-cts-security-none mdl-radio mdl-js-radio mdl-js-ripple-effect"
+                           for="opt_security_none">
+                        <input type="radio" id="opt_security_none" class="mdl-radio__button" name="opt_security"
+                               value="none">
+                        <span class="mdl-radio__label">none</span>
+                    </label>
+                </div>
+
+                <div class="general-cts-ws-path mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="opt_ws_path">
+                    <label class="mdl-textfield__label" for="opt_ws_path">ws /path</label>
+                </div>
+            </form>
+
+            <br><br>
+            adasd<br>
+            adasd<br>
+            adasd<br>
+            adasd<br>
+            adasd<br>
+            <h1>adasd</h1><br>
+            adasd<br>
+            adasd<br>
+            adasd<br>
+            adasd<br>
+            adasd<br>
+            adasd<br>
+            adasd<br>
+            adasd<br>
+            adasd<br>
+
+
+            <div class="demo-card-square mdl-card mdl-shadow--2dp">
+                <div class="mdl-card__title mdl-card--expand">
+                    <h2 class="mdl-card__title-text">Update</h2>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Aenan convallis.
+
+
+                </div>
+
+                <div class="mdl-card__actions mdl-card--border">
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                        View Updates
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="rules">
+        </div>
+
+        <div id="proxies">
+        </div>
+
+        <div id="logs">
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <div></div>
+    <div class="footer-speed">
+        <img id="speed-icon" src="assets/icons/speed.svg">
+        <span class="mdl-tooltip mdl-tooltip--right" for="speed-icon">
+            per second: UL speed / DL speed.
+        </span>
+        <p class="small-text">0 KB / 0 KB</p>
+    </div>
+    <div class="footer-status">
+        <div>
+            <p>connected</p>
+            <img src="assets/icons/connected.svg">
+        </div>
+        <div class="element-hidden">
+            <p>disconnect</p>
+            <img src="assets/icons/disconnect.svg">
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
