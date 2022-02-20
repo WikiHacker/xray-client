@@ -26,7 +26,7 @@ if (!app.requestSingleInstanceLock()) {
 // 入口
 function main() {
     Menu.setApplicationMenu(null);
-    app.dock.hide();
+    // app.dock.hide();
 
     app.on('before-quit', () => {
         console.log('!!!');
@@ -81,10 +81,10 @@ function createWindow() {
     mainWnd.loadFile(path.join(__dirname, '../renderer/index.html'));
 
     // 启动时，先隐藏窗口，随后再显示。不然有可能窗口无法响应鼠标事件
-    mainWnd.hide();
-    mainWnd.on('ready-to-show', () => {
-        mainWnd.show();
-    });
+    // mainWnd.hide();
+    // mainWnd.on('ready-to-show', () => {
+    //     mainWnd.show();
+    // });
 }
 
 
