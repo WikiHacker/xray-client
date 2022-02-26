@@ -1,3 +1,4 @@
+@charset "utf-8";
 /**
  * Created by LOLO on 2022/02/14.
  */
@@ -7,7 +8,43 @@ body {
     height: 100%;
     cursor: default;
     background-color: #fff;
-    /*font-family: -apple-system, "Noto Sans", "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans SC", "Source Han Sans CN", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;*/
+}
+
+
+/*
+ * drag area
+ */
+.drag-area {
+    width: 100%;
+    height: 30px;
+    display: grid;
+    background-color: #f6f6f6;
+    grid-template-columns: 30px 1fr 30px;
+    grid-template-rows: 1fr;
+    grid-column-gap: 0;
+    grid-row-gap: 0;
+    -webkit-app-region: drag;
+}
+
+#appFavicon {
+    width: 16px;
+    height: 16px;
+    margin-top: 9px;
+    margin-left: 9px;
+}
+
+#hideAppBtn {
+    width: 18px;
+    height: 18px;
+    margin-top: 8px;
+    margin-left: 3px;
+    padding: 1px;
+    border-radius: 5px;
+    -webkit-app-region: no-drag;
+}
+
+#hideAppBtn:hover {
+    background-color: #DBDBDB;
 }
 
 
@@ -15,7 +52,7 @@ body {
  * header
  */
 .header {
-    height: 70px;
+    height: 40px;
     display: grid;
     background-color: #f6f6f6;
     grid-template-columns: 30px repeat(5, 1fr) 30px;
@@ -25,20 +62,13 @@ body {
     -webkit-app-region: drag;
 }
 
-#favicon {
-    width: 16px;
-    height: 16px;
-    margin-top: 9px;
-    margin-left: 9px;
-}
-
 .header-line {
     box-sizing: border-box;
     border-bottom: #dadce0 1px solid;
 }
 
 .nav-btn {
-    height: 70px;
+    height: 40px;
     text-align: center;
     color: #757575;
     -webkit-app-region: no-drag;
@@ -49,7 +79,6 @@ body {
 }
 
 .nav-btn > p {
-    margin-top: 30px;
 }
 
 .nav-btn-selected {
@@ -57,98 +86,20 @@ body {
     border-bottom: #696aad 2px solid;
 }
 
-.close-btn {
-    width: 18px;
-    height: 18px;
-    margin-top: 8px;
-    margin-left: 3px;
-    padding: 1px;
-    border-radius: 5px;
-    -webkit-app-region: no-drag;
-}
-
-.close-btn:hover {
-    background-color: #DBDBDB;
-}
-
 
 /*
  * content
  */
-.content-layout {
-    height: calc(100% - 70px - 50px - 20px);
-}
-
 .content {
     margin: 20px 30px;
-    height: calc(100% - 20px);
+    height: calc(100% - 70px - 50px - 40px);
     overflow: hidden;
 }
 
 .content:hover {
-    overflow: auto;
+    overflow: overlay;
 }
 
-
-/**
- * general
- */
-.general-cts-form {
-    margin: 0 15px;
-    width: calc(100% - 30px);
-}
-
-.general-cts-address {
-    width: 70%;
-}
-
-.general-cts-port {
-    width: calc(30% - 15px);
-    margin-left: 10px;
-}
-
-.general-cts-id {
-    width: calc(100% - 80px);
-}
-
-.general-cts-rndId {
-    margin-top: -15px;
-    margin-left: 15px;
-}
-
-.general-cts-alterId {
-    width: calc(50% - 7px);
-}
-
-.general-cts-level {
-    width: calc(50% - 7px);
-    margin-left: 10px;
-}
-
-.general-cts-security-title {
-    display: inline-block;
-    margin-bottom: 0;
-    width: 80px;
-    font-size: 18px;
-    color: #757575;
-    font-weight: 300;
-}
-
-.general-cts-security-opts {
-    display: inline-block;
-}
-
-.general-cts-security-auto {
-    width: 70px;
-}
-
-.general-cts-security-none, .general-cts-security-auto {
-    margin: 7px 0;
-}
-
-.general-cts-ws-path {
-    width: 100%;
-}
 
 /*
  * footer
@@ -190,48 +141,59 @@ body {
     text-align: right;
 }
 
+.footer-speed-text {
+    font-size: 12px;
+}
+
 
 /*
  * other
  */
-
 .element-hidden {
     display: none !important;
 }
 
-.small-text {
-    font-size: 12px !important;
+.input-7-3-left {
+    width: 70%;
 }
 
-.intro-text {
-    font-weight: 300;
-    color: #606367;
+.input-7-3-right {
+    width: calc(30% - 14px);
+    margin-left: 10px;
+}
+
+.input-5-5-left {
+    width: calc(50% - 7px);
+}
+
+.input-5-5-right {
+    width: calc(50% - 7px);
+    margin-left: 10px;
 }
 
 
 /**
- * scrollbar
+ * override MDL
  */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+.mdl-dialog__title {
+    font-size: 2rem;
+    padding: 10px 5px 0;
 }
 
-::-webkit-scrollbar-track {
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.1);
+.mdl-button > img {
+    width: 20px;
+    height: 20px;
+    margin-top: -3px;
+    margin-right: 2px;
 }
 
-::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.2);
+.mdl-button--icon > img {
+    margin-top: -3px;
+    margin-right: 0;
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.4);
-}
-
-::-webkit-scrollbar-thumb:active {
-    background: rgba(0, 0, 0, .6);
+.mdl-button--fab > img {
+    margin-top: -1px;
+    margin-right: 0;
 }
 

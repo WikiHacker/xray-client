@@ -1,0 +1,143 @@
+@charset "utf-8";
+/**
+ * Created by LOLO on 2022/02/25.
+ */
+
+
+.rules-list {
+    margin: 10px 15px;
+}
+
+
+.rule-item {
+    font-size: 12px;
+    font-weight: 300;
+    padding: 7px 5px;
+
+    display: grid;
+    grid-template-columns: 40px 45px 1fr 40px 25px;
+    grid-template-rows: 1fr;
+    grid-column-gap: 5px;
+    grid-row-gap: 0;
+}
+
+.rule-item:nth-child(odd) {
+    background-color: #f6f6f6;
+    border-radius: 5px;
+}
+
+.rule-item > span {
+    padding: 4px 0 3px;
+}
+
+
+.rule-item-out {
+    text-align: center;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.r-i-t-direct {
+    background-color: #67ad5b;
+}
+
+.r-i-t-proxy {
+    background-color: #4a94ec;
+}
+
+.r-i-t-reject {
+    background-color: #e15241;
+}
+
+
+.rule-item-prefix {
+    text-align: right;
+}
+
+.rule-item-value {
+    font-size: 14px;
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.rule-item-remove {
+    width: 18px;
+    height: 18px;
+    padding: 2px;
+    margin: 3px 0;
+    border-radius: 5px;
+}
+
+.rule-item-remove:hover {
+    background-color: #e0e0e0;
+}
+
+
+#addRuleBtn {
+    float: right;
+    margin-right: 15px;
+}
+
+
+/**/
+
+
+#addRuleDialog {
+    width: 350px;
+}
+
+.mdl-dialog__content > *:nth-child(1n + 2) {
+    margin-top: 15px;
+}
+
+.a-r-opts-title {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.add-rule-radio-group > label {
+    margin-left: 15px;
+    width: 75px;
+    font-size: 14px;
+}
+
+.add-rule-radio-group > label .rule-item-out {
+    padding: 3px 5px;
+}
+
+.a-r-prefix {
+    padding: 5px;
+    font-size: 12px;
+    border-radius: 5px;
+    margin-left: 3px;
+}
+
+.a-r-prefix:nth-of-type(2) {
+    margin-left: 15px;
+}
+
+.a-r-prefix:hover {
+    background-color: #eee;
+}
+
+.a-r-prefix-selected {
+    color: #fff;
+    background-color: #4350af !important;
+}
+
+.a-r-prefix-disabled {
+    text-decoration: line-through;
+    background: none !important;
+}
+
+
+.a-r-content-layout {
+    max-width: 260px;
+}
+
+#ruleHelpBtn {
+    display: inline-block;
+}

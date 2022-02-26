@@ -1,0 +1,63 @@
+@charset "utf-8";
+/**
+ * Created by LOLO on 2022/02/22.
+ */
+
+
+.profiles-list {
+    margin: 5px 15px 0;
+}
+
+.profiles-item {
+    padding: 10px 5px 10px 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    align-items: center;
+    background-color: #f6f6f6;
+
+    display: grid;
+    grid-template-columns: 1fr repeat(3, 35px) 15px 30px;
+    grid-template-rows: 1fr;
+    grid-column-gap: 0;
+    grid-row-gap: 0;
+}
+
+
+.profile-intro > span {
+    display: block;
+}
+
+.profile-intro > span:first-child {
+    max-width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 15px;
+}
+
+.profile-intro > span:last-child {
+    font-size: 12px;
+    font-weight: 300;
+    color: #757575;
+}
+
+
+.profiles-item > button {
+    margin: 0 auto;
+}
+
+
+.profiles-new-buttons {
+    margin: 10px 15px;
+}
+
+.profiles-new-buttons > button:last-child {
+    float: right;
+}
+
+.profiles-new-buttons > button > img {
+    /*width: 20px;*/
+    /*height: 20px;*/
+    /*margin-top: -2px;*/
+    /*margin-right: 3px;*/
+}

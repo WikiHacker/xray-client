@@ -1,0 +1,71 @@
+@charset "utf-8";
+/**
+ * Created by LOLO on 2022/02/22.
+ */
+
+
+.general-intro-text {
+    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: 300;
+    color: #606367;
+}
+
+.general-cts-layout {
+    margin: 0 15px;
+    width: calc(100% - 30px);
+}
+
+.general-cts-id {
+    width: calc(100% - 60px);
+}
+
+.general-cts-rndId {
+    margin-top: -15px;
+    margin-left: 10px;
+}
+
+.general-cts-security-title {
+    display: inline-block;
+    width: 215px;
+    line-height: normal;
+    vertical-align: middle;
+    font-size: 18px;
+    color: #757575;
+    font-weight: 300;
+}
+
+.general-cts-security-auto {
+    width: 80px;
+}
+
+.general-cts-security-auto, .general-cts-security-none {
+    margin: 5px 0;
+}
+
+.general-cts-ws-path {
+    width: 100%;
+}
+
+
+.general-local-proxy-title {
+    margin-top: 25px;
+}
+
+.general-local-proxy-ports {
+    margin: 5px 15px 0;
+}
+
+
+.general-submit-layout {
+    margin: 0 15px 10px;
+}
+
+.general-submit-buttons {
+    margin-top: 20px;
+}
+
+.general-submit-buttons > button:last-child {
+    float: right;
+}
+

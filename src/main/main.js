@@ -1,12 +1,11 @@
+'use strict';
 /**
  * Created by LOLO on 2022/02/12.
  */
 
-const {app, dialog, BrowserWindow, Tray, Menu} = require('electron');
-const path = require('path');
-
-
-let tray, mainWnd;
+const {app, BrowserWindow, Tray, Menu} = require('electron');
+const common = require('./common');
+const consts = require('./consts');
 
 
 // 单例
@@ -14,9 +13,10 @@ if (!app.requestSingleInstanceLock()) {
     app.quit();
 } else {
     app.on('second-instance', () => {
-        if (mainWnd) {
-            if (mainWnd.isMinimized()) mainWnd.restore();
-            mainWnd.focus();
+        if (common.mainWnd) {
+            if (common.mainWnd.isMinimized())
+                common.mainWnd.restore();
+            common.mainWnd.focus();
         }
     });
     main();
@@ -25,76 +25,56 @@ if (!app.requestSingleInstanceLock()) {
 
 // 入口
 function main() {
-    Menu.setApplicationMenu(null);
-    // app.dock.hide();
+    if (consts.IS_PC) {
+        Menu.setApplicationMenu(null);
+    } else {
+        Menu.setApplicationMenu(Menu.buildFromTemplate(common.appMenu));
+        app.dock.hide();
+    }
 
     app.on('before-quit', () => {
         console.log('!!!');
-        // showAbout();
     });
 
     app.whenReady().then(() => {
         createWindow();
+        app.on('activate', function () {
+            if (BrowserWindow.getAllWindows().length === 0)
+                createWindow();
+        })
     });
 }
 
 
 // 创建主窗口
 function createWindow() {
-    tray = new Tray(path.join(__dirname, '../icons/tray.png'));
-    tray.setContextMenu(Menu.buildFromTemplate([
-        {
-            label: 'Application', click: () => {
-                mainWnd.show();
-            }
-        },
-
-        {type: 'separator'},
-        {
-            label: 'Developer Tools', click: () => {
-                mainWnd.openDevTools({mode: 'detach'});
-            }
-        },
-        {
-            label: 'About V2RayP', click: () => {
-                showAbout();
-            }
-        },
-
-        {type: 'separator'},
-        {
-            label: 'Quit', click: () => {
-                app.quit();
-            }
-        },
-    ]));
-    tray.setToolTip('V2Ray - Personal');
-
-
-    mainWnd = new BrowserWindow({
+    let wnd = common.mainWnd = new BrowserWindow({
         width: 460,
         height: 600,
         resizable: false,
         frame: false,
-        // webPreferences: {nodeIntegration: true}
+        skipTaskbar: true,
+        webPreferences: {
+            preload: common.formatPath('preload.js')
+        }
     });
-    mainWnd.loadFile(path.join(__dirname, '../renderer/index.html'));
+    wnd.loadFile(common.formatPath('../renderer/index.html'));
 
-    // 启动时，先隐藏窗口，随后再显示。不然有可能窗口无法响应鼠标事件
-    // mainWnd.hide();
-    // mainWnd.on('ready-to-show', () => {
-    //     mainWnd.show();
-    // });
+    // MacOS 启动时，先隐藏窗口，随后再显示。不然有可能窗口无法响应鼠标事件
+    if (consts.IS_MAC) {
+        wnd.hide();
+        wnd.on('ready-to-show', () => {
+            wnd.show();
+        });
+    }
+
+
+    let trayIcon = `../icons/tray.${consts.IS_PC ? 'ico' : 'png'}`;
+    let tray = common.tray = new Tray(common.formatPath(trayIcon));
+    tray.setContextMenu(Menu.buildFromTemplate(common.trayMenu));
+    tray.setToolTip('V2Ray - Personal');
+    tray.on('double-click', () => {
+        wnd.show();
+    });
 }
 
-
-// 显示 About 界面
-function showAbout() {
-    dialog.showMessageBox({
-        type: 'info',
-        title: 'About',
-        message: 'ABOUT!!!',
-        detail: 'The community platform for the future.',
-        icon: path.join(__dirname, '../icons/icon.png')
-    });
-}

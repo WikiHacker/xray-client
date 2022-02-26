@@ -4,157 +4,456 @@
     <meta charset="UTF-8">
     <title>V2rRay - Personal</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';"/>
+
     <link rel="stylesheet" href="./assets/mdl/material.css">
     <link rel="stylesheet" href="./assets/css/index.css">
+    <link rel="stylesheet" href="./assets/css/general.css">
+    <link rel="stylesheet" href="./assets/css/profiles.css">
+    <link rel="stylesheet" href="./assets/css/proxies.css">
+    <link rel="stylesheet" href="./assets/css/logs.css">
+    <link rel="stylesheet" href="./assets/css/rules.css">
+    <link rel="stylesheet" href="./assets/css/typeface-roboto.css">
+
     <script src="./assets/mdl/material.js"></script>
+    <script src="./assets/js/pc-scrollbar.js"></script>
 </head>
 <body>
 
+
+<div class="drag-area">
+    <img id="appFavicon" src="assets/icons/favicon.svg"/>
+    <span class="mdl-tooltip" for="appFavicon">
+        V2Ray - Personal<br>version: 1.2.3.4
+    </span>
+    <span></span>
+    <img id="hideAppBtn" src="assets/icons/close.svg"/>
+</div>
+
+
 <div class="header">
     <div class="header-line">
-        <img id="favicon" src="assets/icons/favicon.svg"/>
-        <span class="mdl-tooltip" for="favicon">
-            V2Ray - Personal<br>version: 1.2.3.4
-        </span>
     </div>
 
-    <div class="nav-btn header-line">
+    <div id="profilesBtn" class="nav-btn header-line">
         <p>Profiles</p>
     </div>
-    <div class="nav-btn nav-btn-selected header-line">
+    <div id="generalBtn" class="nav-btn header-line">
         <p>General</p>
     </div>
-    <div class="nav-btn header-line">
-        <p>Profiles</p>
-    </div>
-    <div class="nav-btn header-line">
+    <div id="rulesBtn" class="nav-btn header-line">
         <p>Rules</p>
     </div>
-    <div class="nav-btn header-line">
+    <div id="proxiesBtn" class="nav-btn header-line">
+        <p>Proxies</p>
+    </div>
+    <div id="logsBtn" class="nav-btn header-line">
         <p>Logs</p>
     </div>
 
     <div class="header-line">
-        <img class="close-btn" src="assets/icons/close.svg"/>
     </div>
 </div>
 
-<div class="content-layout">
-    <div class="content">
 
-        <div id="profiles">
+<div class="content">
+
+    <div id="profilesPage" class="element-hidden">
+        <p class="mdl-card__title-text">Profiles</p>
+        <div class="profiles-list">
+
+            <div class="profiles-item">
+                <div class="profile-intro">
+                    <span>Profile Name</span>
+                    <span>Last used: 3 months ago</span>
+                </div>
+                <button id="pingBtn" class="mdl-button mdl-js-button mdl-button--icon">
+                    <img src="assets/icons/ping-alive.svg"/>
+                </button>
+                <div class="mdl-tooltip" for="pingBtn">
+                    ping 123ms
+                </div>
+
+                <button class="mdl-button mdl-js-button mdl-button--icon">
+                    <img src="assets/icons/save.svg"/>
+                </button>
+                <button class="mdl-button mdl-js-button mdl-button--icon">
+                    <img src="assets/icons/remove.svg"/>
+                </button>
+                <p></p>
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
+                    <input type="radio" id="option-1" class="mdl-radio__button" name="options" value="1" checked>
+                </label>
+            </div>
+
+            <div class="profiles-item">
+                <div class="profile-intro">
+                    <span>vps.serveasdasdasdasdawdawdwr.com:12345</span>
+                    <span>Last used: 3 months ago</span>
+                </div>
+                <button id="ping2Btn" class="mdl-button mdl-js-button mdl-button--icon">
+                    <img src="assets/icons/ping-dead.svg"/>
+                </button>
+                <div class="mdl-tooltip" for="ping2Btn">
+                    ping 123ms
+                </div>
+                <button class="mdl-button mdl-js-button mdl-button--icon">
+                    <img src="assets/icons/save.svg"/>
+                </button>
+                <button class="mdl-button mdl-js-button mdl-button--icon">
+                    <img src="assets/icons/remove.svg"/>
+                </button>
+                <p></p>
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
+                    <input type="radio" id="option-2" class="mdl-radio__button" name="options" value="1" checked>
+                </label>
+            </div>
+
+            <div class="profiles-item">
+                <div class="profile-intro">
+                    <span>Profile Name</span>
+                    <span>Last used: 3 months ago</span>
+                </div>
+                <button id="ping3Btn" class="mdl-button mdl-js-button mdl-button--icon">
+                    <img src="assets/icons/ping-alive.svg"/>
+                </button>
+                <div class="mdl-tooltip" for="ping3Btn">
+                    ping 123ms
+                </div>
+                <button class="mdl-button mdl-js-button mdl-button--icon">
+                    <img src="assets/icons/save.svg"/>
+                </button>
+                <button class="mdl-button mdl-js-button mdl-button--icon">
+                    <img src="assets/icons/remove.svg"/>
+                </button>
+                <p></p>
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-3">
+                    <input type="radio" id="option-3" class="mdl-radio__button" name="options" value="1" checked>
+                </label>
+            </div>
+
         </div>
 
-        <div id="general">
-            <p class="mdl-card__title-text">Connect to a Server</p>
-            <p class="intro-text small-text">&nbsp;VMess + WebSocket + TLS</p>
+        <div class="profiles-new-buttons">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                <img src="assets/icons/add-for-file.svg"/>
+                <span>form file</span>
+            </button>
 
-            <form class="general-cts-form" action="#">
-                <div class="general-cts-address mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="opt_address">
-                    <label class="mdl-textfield__label" for="opt_address">address</label>
-                </div>
-                <div class="general-cts-port mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="opt_port">
-                    <label class="mdl-textfield__label" for="opt_port">port</label>
-                    <span class="mdl-textfield__error">Input is not a number!</span>
-                </div>
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect">
+                <img src="assets/icons/add-new.svg"/>
+                <span>create new</span>
+            </button>
+        </div>
+    </div>
 
-                <div class="general-cts-id mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="opt_id">
-                    <label class="mdl-textfield__label" for="opt_id">id</label>
-                </div>
-                <button class="general-cts-rndId mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
-                    <img class="material-icons" src="assets/icons/random.svg"/>
-                </button>
+    <div id="generalPage" class="element-hidden">
+        <p class="mdl-card__title-text">Connect to a Server</p>
+        <p class="general-intro-text">&nbsp;VMess + WebSocket + TLS</p>
 
-                <div class="general-cts-alterId mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="opt_alterId">
-                    <label class="mdl-textfield__label" for="opt_alterId">alterId</label>
-                    <span class="mdl-textfield__error">Input is not a number!</span>
-                </div>
-                <div class="general-cts-level mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="opt_level">
-                    <label class="mdl-textfield__label" for="opt_level">level</label>
-                    <span class="mdl-textfield__error">Input is not a number!</span>
-                </div>
+        <div class="general-cts-layout">
+            <div class="input-7-3-left mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="opt_address">
+                <label class="mdl-textfield__label" for="opt_address">address</label>
+            </div>
+            <div class="input-7-3-right mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="opt_port">
+                <label class="mdl-textfield__label" for="opt_port">port</label>
+                <span class="mdl-textfield__error">not a number!</span>
+            </div>
 
-                <p class="general-cts-security-title">security</p>
-                <div class="general-cts-security-opts">
-                    <label class="general-cts-security-auto mdl-radio mdl-js-radio mdl-js-ripple-effect"
-                           for="opt_security_auto">
-                        <input type="radio" id="opt_security_auto" class="mdl-radio__button" name="opt_security"
-                               value="auto" checked>
-                        <span class="mdl-radio__label">auto</span>
-                    </label>
-                    <label class="general-cts-security-none mdl-radio mdl-js-radio mdl-js-ripple-effect"
-                           for="opt_security_none">
-                        <input type="radio" id="opt_security_none" class="mdl-radio__button" name="opt_security"
-                               value="none">
-                        <span class="mdl-radio__label">none</span>
-                    </label>
-                </div>
+            <div class="general-cts-id mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="opt_id">
+                <label class="mdl-textfield__label" for="opt_id">id</label>
+            </div>
+            <button class="general-cts-rndId mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
+                <img src="assets/icons/random.svg"/>
+            </button>
 
-                <div class="general-cts-ws-path mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="opt_ws_path">
-                    <label class="mdl-textfield__label" for="opt_ws_path">ws /path</label>
-                </div>
-            </form>
+            <div class="input-5-5-left mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="opt_alterId">
+                <label class="mdl-textfield__label" for="opt_alterId">alterId</label>
+                <span class="mdl-textfield__error">Input is not a number!</span>
+            </div>
+            <div class="input-5-5-right mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="opt_level">
+                <label class="mdl-textfield__label" for="opt_level">level</label>
+                <span class="mdl-textfield__error">Input is not a number!</span>
+            </div>
 
-            <br><br>
-            adasd<br>
-            adasd<br>
-            adasd<br>
-            adasd<br>
-            adasd<br>
-            <h1>adasd</h1><br>
-            adasd<br>
-            adasd<br>
-            adasd<br>
-            adasd<br>
-            adasd<br>
-            adasd<br>
-            adasd<br>
-            adasd<br>
-            adasd<br>
+            <div>
+                <span class="general-cts-security-title">security</span>
+                <label class="general-cts-security-auto mdl-radio mdl-js-radio mdl-js-ripple-effect"
+                       for="opt_security_auto">
+                    <input type="radio" id="opt_security_auto" class="mdl-radio__button" name="opt_security"
+                           value="auto" checked>
+                    <span class="mdl-radio__label">auto</span>
+                </label>
+                <label class="general-cts-security-none mdl-radio mdl-js-radio mdl-js-ripple-effect"
+                       for="opt_security_none">
+                    <input type="radio" id="opt_security_none" class="mdl-radio__button" name="opt_security"
+                           value="none">
+                    <span class="mdl-radio__label">none</span>
+                </label>
+            </div>
 
-
-            <div class="demo-card-square mdl-card mdl-shadow--2dp">
-                <div class="mdl-card__title mdl-card--expand">
-                    <h2 class="mdl-card__title-text">Update</h2>
-                </div>
-                <div class="mdl-card__supporting-text">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Aenan convallis.
-                </div>
-
-                <div class="mdl-card__actions mdl-card--border">
-                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                        View Updates
-                    </a>
-                </div>
+            <div class="general-cts-ws-path mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="opt_ws_path">
+                <label class="mdl-textfield__label" for="opt_ws_path">ws /path</label>
             </div>
         </div>
 
-        <div id="rules">
+        <p class="general-local-proxy-title mdl-card__title-text">Local Proxy</p>
+        <div class="general-local-proxy-ports">
+            <div class="input-5-5-left mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="opt_sockets_port">
+                <label class="mdl-textfield__label" for="opt_sockets_port">socket5 port</label>
+                <span class="mdl-textfield__error">Input is not a number!</span>
+            </div>
+            <div class="input-5-5-right mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="opt_http_port">
+                <label class="mdl-textfield__label" for="opt_http_port">http port</label>
+                <span class="mdl-textfield__error">Input is not a number!</span>
+            </div>
         </div>
 
-        <div id="proxies">
-        </div>
+        <div class="general-submit-layout">
+            <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect"
+                   for="opt_global_proxy_enabled">
+                <input type="checkbox" id="opt_global_proxy_enabled" class="mdl-switch__input" checked>
+                <span class="mdl-switch__label">Enable global proxy</span>
+            </label>
 
-        <div id="logs">
+            <div class="general-submit-buttons">
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                    Apply
+                </button>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    Disconnect
+                </button>
+            </div>
         </div>
     </div>
+
+    <div id="rulesPage" class="element-hidden">
+        <p class="mdl-card__title-text">Rules</p>
+        <div class="rules-list">
+            <div class="rule-item">
+                <span class="rule-item-out r-i-t-direct">direct</span>
+                <span class="rule-item-prefix">domain:</span>
+                <span class="rule-item-value">apple-cloudkit.com</span>
+                <span class="rule-item-type">domain</span>
+                <img class="rule-item-remove" src="assets/icons/rule-remove.svg"/>
+            </div>
+            <div class="rule-item">
+                <span class="rule-item-out r-i-t-direct">direct</span>
+                <span class="rule-item-prefix">domain:</span>
+                <span class="rule-item-value">apple-cloudkit.com</span>
+                <span class="rule-item-type">domain</span>
+                <img class="rule-item-remove" src="assets/icons/rule-remove.svg"/>
+            </div>
+            <div class="rule-item">
+                <span class="rule-item-out r-i-t-direct">direct</span>
+                <span class="rule-item-prefix">domain:</span>
+                <span class="rule-item-value">apple-cloudkit.com</span>
+                <span class="rule-item-type">domain</span>
+                <img class="rule-item-remove" src="assets/icons/rule-remove.svg"/>
+            </div>
+            <div class="rule-item">
+                <span class="rule-item-out r-i-t-direct">direct</span>
+                <span class="rule-item-prefix">domain:</span>
+                <span class="rule-item-value">apple-cloudkit.com</span>
+                <span class="rule-item-type">domain</span>
+                <img class="rule-item-remove" src="assets/icons/rule-remove.svg"/>
+            </div>
+            <div class="rule-item">
+                <span class="rule-item-out r-i-t-direct">direct</span>
+                <span class="rule-item-prefix">domain:</span>
+                <span class="rule-item-value">apple-cloudkit.com</span>
+                <span class="rule-item-type">domain</span>
+                <img class="rule-item-remove" src="assets/icons/rule-remove.svg"/>
+            </div>
+        </div>
+
+        <button id="addRuleBtn" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+            <img src="assets/icons/rule-add.svg"/>
+            <span>add rule</span>
+        </button>
+    </div>
+
+    <div id="proxiesPage" class="element-hidden">
+        <p class="mdl-card__title-text">Global Proxy</p>
+        <div class="global-proxy-layout">
+            <div class="input-7-3-left mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="gp_http_server">
+                <label class="mdl-textfield__label" for="gp_http_server">http server</label>
+            </div>
+            <div class="input-7-3-right mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="gp_http_port">
+                <label class="mdl-textfield__label" for="gp_http_port">port</label>
+                <span class="mdl-textfield__error">not a number!</span>
+            </div>
+
+            <div class="input-7-3-left mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="gp_sockets_server">
+                <label class="mdl-textfield__label" for="gp_sockets_server">sockets server</label>
+            </div>
+            <div class="input-7-3-right mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="gp_sockets_port">
+                <label class="mdl-textfield__label" for="gp_sockets_port">port</label>
+                <span class="mdl-textfield__error">not a number!</span>
+            </div>
+            <label class="global-proxy-switch mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
+                <span class="mdl-switch__label">On</span>
+                <input type="checkbox" id="switch-1" class="mdl-switch__input" checked>
+            </label>
+        </div>
+
+        <p class="v2ray-core-title mdl-card__title-text">V2Ray Core</p>
+        <span class="v2ray-core-version">V2Ray 4.44.0 (V2Fly, a community-driven edition of V2Ray.) Custom (go1.17.3 darwin/arm64)
+A unified platform for anti-censorship.</span>
+        <div class="v2ray-core-update-layout">
+            <span class="v2ray-core-update-title">geoip.dat & geosite.dat</span>
+            <span class="v2ray-core-last-updated">Last Updated on July 9, 2019</span>
+
+            <div id="v2rayUpdateProgress" class="mdl-progress mdl-js-progress"></div>
+            <script>
+                document.querySelector('#v2rayUpdateProgress').addEventListener('mdl-componentupgraded', function () {
+                    this.MaterialProgress.setProgress(15);
+                });
+            </script>
+
+            <button style="float: right" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                Update
+            </button>
+        </div>
+
+
+    </div>
+
+    <div id="logsPage" class="element-hidden">
+        <div>
+            <p class="log-page-title mdl-card__title-text">Logs</p>
+            <div class="log-level-layout">
+                <img id="logLevel_none" src="assets/icons/log-none.svg"/>
+                <div class="mdl-tooltip" data-mdl-for="logLevel_none">log level: none</div>
+                <img id="logLevel_error" src="assets/icons/log-error.svg"/>
+                <div class="mdl-tooltip" data-mdl-for="logLevel_error">log level: error</div>
+                <img id="logLevel_warning" class="log-level-selected" src="assets/icons/log-warning.svg"/>
+                <div class="mdl-tooltip" data-mdl-for="logLevel_warning">log level: warning</div>
+                <img id="logLevel_info" src="assets/icons/log-info.svg"/>
+                <div class="mdl-tooltip" data-mdl-for="logLevel_info">log level: info</div>
+                <img id="logLevel_debug" src="assets/icons/log-debug.svg"/>
+                <div class="mdl-tooltip" data-mdl-for="logLevel_debug">log level: debug</div>
+            </div>
+        </div>
+
+        <div class="log-content-layout">
+            <div class="log-title">
+                access.log
+                <img src="assets/icons/refresh.svg"/>
+                <img src="assets/icons/copy.svg"/>
+                <img src="assets/icons/file.svg"/>
+            </div>
+            <div class="log-content">2022/02/24 14:50:23 tcp:127.0.0.1:58597 accepted tcp:alive.github.com:443 [tc-sv]
+                2022/02/24 14:50:24 127.0.0.1:58599 accepted //www.google.com:443 [tc-sv]
+                2022/02/24 14:50:24 127.0.0.1:58601 accepted //github.com:443 [tc-sv]
+                2022/02/24 14:50:26 tcp:127.0.0.1:58603 accepted tcp:alive.github.com:443 [tc-sv]
+                2022/02/24 14:50:46 127.0.0.1:58605 accepted //mtalk.google.com:443 [tc-sv]
+                2022/02/24 14:50:52 127.0.0.1:58607 accepted //gs-loc-cn.apple.com:443 [direct]
+                2022/02/24 14:51:01 127.0.0.1:58609 accepted //fonts.google.com:443 [tc-sv]
+                2022/02/24 14:51:01 127.0.0.1:58611 accepted //fonts.gstatic.com:443 [direct]
+                2022/02/24 14:51:01 127.0.0.1:58610 accepted //www.gstatic.com:443 [direct]
+                2022/02/24 14:51:03 127.0.0.1:58615 accepted //fonts.gstatic.com:443 [direct]
+                2022/02/24 14:51:03 127.0.0.1:58617 accepted //ssl.gstatic.com:443 [direct]
+                2022/02/24 14:51:03 127.0.0.1:58619 accepted //www.google-analytics.com:443 [tc-sv]
+                2022/02/24 14:51:03 127.0.0.1:58621 accepted //fonts.googleapis.com:443 [direct]
+                2022/02/24 14:51:10 127.0.0.1:58623 accepted //clients4.google.com:443 [tc-sv]
+                2022/02/24 14:51:33 127.0.0.1:58625 accepted //apis.google.com:443 [tc-sv]
+                2022/02/24 14:51:34 127.0.0.1:58627 accepted //scone-pa.clients6.google.com:443 [tc-sv]
+                2022/02/24 14:51:34 127.0.0.1:58629 accepted //www.google.com:443 [tc-sv]
+                2022/02/24 14:52:03 127.0.0.1:58631 accepted //github.githubassets.com:443 [tc-sv]
+                2022/02/24 14:52:04 127.0.0.1:58633 accepted //api.github.com:443 [tc-sv]
+                2022/02/24 14:52:04 127.0.0.1:58635 accepted //github.githubassets.com:443 [tc-sv]
+                2022/02/24 14:52:04 127.0.0.1:58636 accepted //avatars.githubusercontent.com:443 [tc-sv]
+                2022/02/24 14:52:04 127.0.0.1:58639 accepted //github.githubassets.com:443 [tc-sv]
+                2022/02/24 14:52:04 127.0.0.1:58641 accepted //github.githubassets.com:443 [tc-sv]
+                2022/02/24 14:52:04 127.0.0.1:58642 accepted //github.githubassets.com:443 [tc-sv]
+                2022/02/24 14:52:05 tcp:127.0.0.1:58645 accepted tcp:alive.github.com:443 [tc-sv]
+                2022/02/24 14:52:05 127.0.0.1:58647 accepted //collector.github.com:443 [tc-sv]
+                2022/02/24 14:52:34 127.0.0.1:58649 accepted //www.google.com:443 [tc-sv]
+                2022/02/24 14:53:34 127.0.0.1:58651 accepted //www.google.com:443 [tc-sv]
+                2022/02/24 14:54:34 127.0.0.1:58653 accepted //www.google.com:443 [tc-sv]
+                2022/02/24 14:55:34 127.0.0.1:58655 accepted //www.google.com:443 [tc-sv]
+                2022/02/24 14:56:26 127.0.0.1:58657 accepted //fonts.google.com:443 [tc-sv]
+            </div>
+        </div>
+
+        <div class="log-content-layout">
+            <div class="log-title">
+                error.log
+                <img src="assets/icons/refresh.svg"/>
+                <img src="assets/icons/copy.svg"/>
+                <img src="assets/icons/file.svg"/>
+            </div>
+            <div class="log-content">2022/02/24 16:36:28 [Debug] app/log: Logger started
+                2022/02/24 16:36:28 [Info] app/dns: DNS: created localhost client
+                2022/02/24 16:36:28 [Debug] app/proxyman/inbound: creating stream worker on 127.0.0.1:1081
+                2022/02/24 16:36:28 [Debug] app/proxyman/inbound: creating stream worker on 127.0.0.1:8001
+                2022/02/24 16:36:28 [Info] transport/internet/tcp: listening TCP on 127.0.0.1:1081
+                2022/02/24 16:36:28 [Info] transport/internet/tcp: listening TCP on 127.0.0.1:8001
+                2022/02/24 16:36:28 [Warning] V2Ray 4.44.0 started
+                2022/02/24 16:36:31 [Info] [1879947855] proxy/socks: TCP Connect request to tcp:alive.github.com:443
+                2022/02/24 16:36:31 [Info] [1879947855] app/dispatcher: taking detour [tc-sv] for
+                [tcp:alive.github.com:443]
+                2022/02/24 16:36:32 [Info] [840958155] proxy/http: request to Method [CONNECT] Host
+                [calendars.icloud.com:443] with URL [//calendars.icloud.com:443]
+                2022/02/24 16:36:32 [Info] [840958155] app/dispatcher: taking detour [direct] for
+                [tcp:calendars.icloud.com:443]
+                2022/02/24 16:36:32 [Info] [840958155] proxy/freedom: opening connection to tcp:calendars.icloud.com:443
+                2022/02/24 16:36:32 [Info] [840958155] transport/internet/tcp: dialing TCP to
+                tcp:calendars.icloud.com:443
+                2022/02/24 16:36:32 [Info] [1230138889] proxy/http: request to Method [CONNECT] Host
+                [p24-caldav.icloud.com.cn:443] with URL [//p24-caldav.icloud.com.cn:443]
+                2022/02/24 16:36:32 [Info] [1230138889] app/dispatcher: taking detour [direct] for
+                [tcp:p24-caldav.icloud.com.cn:443]
+                2022/02/24 16:36:32 [Info] [1230138889] proxy/freedom: opening connection to
+                tcp:p24-caldav.icloud.com.cn:443
+                2022/02/24 16:36:32 [Info] [1230138889] transport/internet/tcp: dialing TCP to
+                tcp:p24-caldav.icloud.com.cn:443
+                2022/02/24 16:36:34 [Info] [2103785664] proxy/http: request to Method [CONNECT] Host
+                [www.google.com:443] with URL [//www.google.com:443]
+                2022/02/24 16:36:34 [Info] [2312711927] proxy/http: request to Method [CONNECT] Host
+                [www.google.com:443] with URL [//www.google.com:443]
+                2022/02/24 16:36:34 [Info] [2103785664] app/dispatcher: taking detour [tc-sv] for
+                [tcp:www.google.com:443]
+                2022/02/24 16:36:34 [Info] [2312711927] app/dispatcher: taking detour [tc-sv] for
+                [tcp:www.google.com:443]
+                2022/02/24 16:36:44 [Info] [3422321788] proxy/http: request to Method [CONNECT] Host
+                [gs-loc-cn.apple.com:443] with URL [//gs-loc-cn.apple.com:443]
+                2022/02/24 16:36:44 [Info] [3422321788] app/dispatcher: taking detour [direct] for
+                [tcp:gs-loc-cn.apple.com:443]
+                2022/02/24 16:36:44 [Info] [3422321788] proxy/freedom: opening connection to tcp:gs-loc-cn.apple.com:443
+                2022/02/24 16:36:44 [Info] [3422321788] transport/internet/tcp: dialing TCP to
+                tcp:gs-loc-cn.apple.com:443
+                2022/02/24 16:36:46 [Info] [2103785664] app/proxyman/inbound: connection ends > proxy/http: connection
+                ends > context canceled
+                2022/02/24 16:36:46 [Info] [2103785664] app/proxyman/outbound: failed to process outbound traffic >
+                proxy/vmess/outbound: connection ends > context canceled
+            </div>
+        </div>
+
+    </div>
 </div>
+
 
 <div class="footer">
     <div></div>
     <div class="footer-speed">
-        <img id="speed-icon" src="assets/icons/speed.svg">
-        <span class="mdl-tooltip mdl-tooltip--right" for="speed-icon">
+        <img id="footer-speed-icon" src="assets/icons/speed.svg">
+        <span class="mdl-tooltip mdl-tooltip--right" for="footer-speed-icon">
             per second: UL speed / DL speed.
         </span>
-        <p class="small-text">0 KB / 0 KB</p>
+        <p class="footer-speed-text">0 KB / 0 KB</p>
     </div>
     <div class="footer-status">
         <div>
@@ -169,5 +468,88 @@
 </div>
 
 
+<dialog id="removeProfileDialog" class="mdl-dialog">
+    <h4 class="mdl-dialog__title">Confirmation</h4>
+    <div class="mdl-dialog__content">
+        <p>Are you sure you want to permanently <b>delete</b> this profile?</p>
+    </div>
+    <div class="mdl-dialog__actions">
+        <button type="button"
+                class="yes mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Yes
+        </button>
+        <button type="button" class="cancel mdl-button">Cancel</button>
+    </div>
+</dialog>
+
+
+<dialog id="addRuleDialog" class="mdl-dialog">
+    <h4 class="mdl-dialog__title">Adding Rule</h4>
+    <div class="mdl-dialog__content">
+        <div class="add-rule-radio-group">
+            <span class="a-r-opts-title">outbound:</span>
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a-r-outbound-direct">
+                <input type="radio" id="a-r-outbound-direct" class="mdl-radio__button" name="options" value="direct"
+                       checked>
+                <span class="rule-item-out r-i-t-direct mdl-radio__label">Direct</span>
+            </label>
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a-r-outbound-proxy">
+                <input type="radio" id="a-r-outbound-proxy" class="mdl-radio__button" name="options" value="proxy">
+                <span class="rule-item-out r-i-t-proxy mdl-radio__label">Proxy</span>
+            </label>
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a-r-outbound-reject">
+                <input type="radio" id="a-r-outbound-reject" class="mdl-radio__button" name="options" value="reject">
+                <span class="rule-item-out r-i-t-reject mdl-radio__label">Reject</span>
+            </label>
+        </div>
+
+        <div class="add-rule-radio-group">
+            <span class="a-r-opts-title">type:</span>
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a-r-type-domain">
+                <input type="radio" id="a-r-type-domain" class="mdl-radio__button" name="options" value="domain"
+                       checked>
+                <span class="mdl-radio__label">Domain</span>
+            </label>
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a-r-type-ip">
+                <input type="radio" id="a-r-type-ip" class="mdl-radio__button" name="options" value="ip">
+                <span class="mdl-radio__label">IP</span>
+            </label>
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a-r-type-port">
+                <input type="radio" id="a-r-type-port" class="mdl-radio__button" name="options" value="port">
+                <span class="mdl-radio__label">Port</span>
+            </label>
+        </div>
+
+        <div>
+            <span class="a-r-opts-title">prefix:</span>
+            <span class="a-r-prefix">none</span>
+            <span class="a-r-prefix">regexp</span>
+            <span class="a-r-prefix a-r-prefix-selected">domain</span>
+            <span class="a-r-prefix">full</span>
+            <span class="a-r-prefix a-r-prefix-disabled">geosite</span>
+            <span class="a-r-prefix">geoip</span>
+        </div>
+
+        <div>
+            <div class="a-r-content-layout mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="addRuleContent">
+                <label class="mdl-textfield__label" for="addRuleContent">content</label>
+            </div>
+            <button id="ruleHelpBtn" class="mdl-button mdl-js-button mdl-button--icon">
+                <img src="assets/icons/help.svg"/>
+            </button>
+        </div>
+
+
+    </div>
+    <div class="mdl-dialog__actions">
+        <button type="button"
+                class="ok mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">OK
+        </button>
+        <button type="button" class="cancel mdl-button">Cancel</button>
+    </div>
+</dialog>
+
+
+<script src="./assets/js/index.js"></script>
 </body>
 </html>
