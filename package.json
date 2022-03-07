@@ -1,17 +1,17 @@
 {
-  "name": "V2RayP",
+  "name": "XrayClient",
   "version": "0.0.1",
-  "description": "V2rRay - Personal",
+  "description": "Xray Client",
   "author": "LOLO",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lolo1208/V2rayP.git"
+    "url": "https://github.com/lolo1208/XrayClient.git"
   },
   "bugs": {
-    "url": "https://github.com/lolo1208/V2rayP/issues"
+    "url": "https://github.com/lolo1208/XrayClient/issues"
   },
-  "homepage": "https://github.com/lolo1208/V2rayP",
+  "homepage": "https://github.com/lolo1208/XrayClient",
   "main": "src/main/main.js",
   "scripts": {
     "start": "electron ."
@@ -20,6 +20,7 @@
     "electron": "^17.0.0"
   },
   "dependencies": {
+    "fs-extra": "^10.0.1",
     "ping": "^0.4.1"
   }
 }

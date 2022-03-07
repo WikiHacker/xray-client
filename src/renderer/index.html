@@ -16,6 +16,8 @@
 
     <script src="./assets/mdl/material.js"></script>
     <script src="./assets/js/pc-scrollbar.js"></script>
+    <script src="./assets/js/dayjs/dayjs.min.js"></script>
+    <script src="./assets/js/dayjs/plugin/relativeTime.min.js"></script>
 </head>
 <body>
 
@@ -23,7 +25,7 @@
 <div class="drag-area">
     <img id="appFavicon" src="assets/icons/favicon.svg"/>
     <span class="mdl-tooltip" for="appFavicon">
-        V2Ray - Personal<br>version: 1.2.3.4
+        XrayClient<br>version: 1.2.3.4
     </span>
     <span></span>
     <img id="hideAppBtn" src="assets/icons/close.svg"/>
@@ -59,87 +61,16 @@
 
     <div id="profilesPage" class="element-hidden">
         <p class="mdl-card__title-text">Profiles</p>
-        <div class="profiles-list">
-
-            <div class="profiles-item">
-                <div class="profile-intro">
-                    <span>Profile Name</span>
-                    <span>Last used: 3 months ago</span>
-                </div>
-                <button id="pingBtn" class="mdl-button mdl-js-button mdl-button--icon">
-                    <img src="assets/icons/ping-alive.svg"/>
-                </button>
-                <div class="mdl-tooltip" for="pingBtn">
-                    ping 123ms
-                </div>
-
-                <button class="mdl-button mdl-js-button mdl-button--icon">
-                    <img src="assets/icons/save.svg"/>
-                </button>
-                <button class="mdl-button mdl-js-button mdl-button--icon">
-                    <img src="assets/icons/remove.svg"/>
-                </button>
-                <p></p>
-                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
-                    <input type="radio" id="option-1" class="mdl-radio__button" name="options" value="1" checked>
-                </label>
-            </div>
-
-            <div class="profiles-item">
-                <div class="profile-intro">
-                    <span>vps.serveasdasdasdasdawdawdwr.com:12345</span>
-                    <span>Last used: 3 months ago</span>
-                </div>
-                <button id="ping2Btn" class="mdl-button mdl-js-button mdl-button--icon">
-                    <img src="assets/icons/ping-dead.svg"/>
-                </button>
-                <div class="mdl-tooltip" for="ping2Btn">
-                    ping 123ms
-                </div>
-                <button class="mdl-button mdl-js-button mdl-button--icon">
-                    <img src="assets/icons/save.svg"/>
-                </button>
-                <button class="mdl-button mdl-js-button mdl-button--icon">
-                    <img src="assets/icons/remove.svg"/>
-                </button>
-                <p></p>
-                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
-                    <input type="radio" id="option-2" class="mdl-radio__button" name="options" value="1" checked>
-                </label>
-            </div>
-
-            <div class="profiles-item">
-                <div class="profile-intro">
-                    <span>Profile Name</span>
-                    <span>Last used: 3 months ago</span>
-                </div>
-                <button id="ping3Btn" class="mdl-button mdl-js-button mdl-button--icon">
-                    <img src="assets/icons/ping-alive.svg"/>
-                </button>
-                <div class="mdl-tooltip" for="ping3Btn">
-                    ping 123ms
-                </div>
-                <button class="mdl-button mdl-js-button mdl-button--icon">
-                    <img src="assets/icons/save.svg"/>
-                </button>
-                <button class="mdl-button mdl-js-button mdl-button--icon">
-                    <img src="assets/icons/remove.svg"/>
-                </button>
-                <p></p>
-                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-3">
-                    <input type="radio" id="option-3" class="mdl-radio__button" name="options" value="1" checked>
-                </label>
-            </div>
-
+        <div id="profileList">
         </div>
 
         <div class="profiles-new-buttons">
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect" onclick="importProfile()">
                 <img src="assets/icons/add-for-file.svg"/>
                 <span>form file</span>
             </button>
 
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect" onclick="createNewProfile()">
                 <img src="assets/icons/add-new.svg"/>
                 <span>create new</span>
             </button>
@@ -148,78 +79,87 @@
 
     <div id="generalPage" class="element-hidden">
         <p class="mdl-card__title-text">Connect to a Server</p>
-        <p class="general-intro-text">&nbsp;VMess + WebSocket + TLS</p>
+        <p id="generalIntroText">Using VLESS</p>
 
         <div class="general-cts-layout">
             <div class="input-7-3-left mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="opt_address">
-                <label class="mdl-textfield__label" for="opt_address">address</label>
+                <input class="mdl-textfield__input" type="text" id="cts_address">
+                <label class="mdl-textfield__label" for="cts_address">address</label>
             </div>
             <div class="input-7-3-right mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="opt_port">
-                <label class="mdl-textfield__label" for="opt_port">port</label>
+                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="cts_port">
+                <label class="mdl-textfield__label" for="cts_port">port</label>
                 <span class="mdl-textfield__error">not a number!</span>
             </div>
 
             <div class="general-cts-id mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="opt_id">
-                <label class="mdl-textfield__label" for="opt_id">id</label>
+                <input class="mdl-textfield__input" type="text" id="cts_id">
+                <label class="mdl-textfield__label" for="cts_id">id</label>
             </div>
             <button class="general-cts-rndId mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
                 <img src="assets/icons/random.svg"/>
             </button>
 
             <div class="input-5-5-left mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="opt_alterId">
-                <label class="mdl-textfield__label" for="opt_alterId">alterId</label>
+                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="cts_level">
+                <label class="mdl-textfield__label" for="cts_level">user level</label>
                 <span class="mdl-textfield__error">Input is not a number!</span>
             </div>
             <div class="input-5-5-right mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="opt_level">
-                <label class="mdl-textfield__label" for="opt_level">level</label>
-                <span class="mdl-textfield__error">Input is not a number!</span>
+                <input class="mdl-textfield__input" type="text" id="cts_ws_path">
+                <label class="mdl-textfield__label" for="cts_ws_path">ws /path</label>
             </div>
 
-            <div>
-                <span class="general-cts-security-title">security</span>
-                <label class="general-cts-security-auto mdl-radio mdl-js-radio mdl-js-ripple-effect"
-                       for="opt_security_auto">
-                    <input type="radio" id="opt_security_auto" class="mdl-radio__button" name="opt_security"
-                           value="auto" checked>
-                    <span class="mdl-radio__label">auto</span>
+            <div class="general-cts-radios">
+                <span class="general-cts-radios-title">network</span>
+                <span></span>
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="cts_net_tcp">
+                    <input type="radio" id="cts_net_tcp" class="mdl-radio__button" name="cts_net" value="tcp">
+                    <span class="mdl-radio__label">tcp</span>
                 </label>
-                <label class="general-cts-security-none mdl-radio mdl-js-radio mdl-js-ripple-effect"
-                       for="opt_security_none">
-                    <input type="radio" id="opt_security_none" class="mdl-radio__button" name="opt_security"
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="cts_net_ws">
+                    <input type="radio" id="cts_net_ws" class="mdl-radio__button" name="cts_net" value="ws">
+                    <span class="mdl-radio__label">ws</span>
+                </label>
+            </div>
+
+            <div class="general-cts-radios">
+                <span class="general-cts-radios-title">security</span>
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="cts_security_none">
+                    <input type="radio" id="cts_security_none" class="mdl-radio__button" name="cts_security"
                            value="none">
                     <span class="mdl-radio__label">none</span>
                 </label>
-            </div>
-
-            <div class="general-cts-ws-path mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="opt_ws_path">
-                <label class="mdl-textfield__label" for="opt_ws_path">ws /path</label>
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="cts_security_tls">
+                    <input type="radio" id="cts_security_tls" class="mdl-radio__button" name="cts_security" value="tls">
+                    <span class="mdl-radio__label">tls</span>
+                </label>
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="cts_security_xtls">
+                    <input type="radio" id="cts_security_xtls" class="mdl-radio__button" name="cts_security"
+                           value="xtls">
+                    <span class="mdl-radio__label">xtls</span>
+                </label>
             </div>
         </div>
 
         <p class="general-local-proxy-title mdl-card__title-text">Local Proxy</p>
         <div class="general-local-proxy-ports">
             <div class="input-5-5-left mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="opt_sockets_port">
-                <label class="mdl-textfield__label" for="opt_sockets_port">socket5 port</label>
+                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="lp_socks_port">
+                <label class="mdl-textfield__label" for="lp_socks_port">socks5 port</label>
                 <span class="mdl-textfield__error">Input is not a number!</span>
             </div>
             <div class="input-5-5-right mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="opt_http_port">
-                <label class="mdl-textfield__label" for="opt_http_port">http port</label>
+                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="lp_http_port">
+                <label class="mdl-textfield__label" for="lp_http_port">http port</label>
                 <span class="mdl-textfield__error">Input is not a number!</span>
             </div>
         </div>
 
         <div class="general-submit-layout">
             <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect"
-                   for="opt_global_proxy_enabled">
-                <input type="checkbox" id="opt_global_proxy_enabled" class="mdl-switch__input" checked>
+                   for="lp_enabled">
+                <input type="checkbox" id="lp_enabled" class="mdl-switch__input" checked>
                 <span class="mdl-switch__label">Enable global proxy</span>
             </label>
 
@@ -294,12 +234,12 @@
             </div>
 
             <div class="input-7-3-left mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="gp_sockets_server">
-                <label class="mdl-textfield__label" for="gp_sockets_server">sockets server</label>
+                <input class="mdl-textfield__input" type="text" id="gp_socks_server">
+                <label class="mdl-textfield__label" for="gp_socks_server">socks5 server</label>
             </div>
             <div class="input-7-3-right mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="gp_sockets_port">
-                <label class="mdl-textfield__label" for="gp_sockets_port">port</label>
+                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="gp_socks_port">
+                <label class="mdl-textfield__label" for="gp_socks_port">port</label>
                 <span class="mdl-textfield__error">not a number!</span>
             </div>
             <label class="global-proxy-switch mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
@@ -308,16 +248,16 @@
             </label>
         </div>
 
-        <p class="v2ray-core-title mdl-card__title-text">V2Ray Core</p>
-        <span class="v2ray-core-version">V2Ray 4.44.0 (V2Fly, a community-driven edition of V2Ray.) Custom (go1.17.3 darwin/arm64)
+        <p class="xray-core-title mdl-card__title-text">Xray-core</p>
+        <span class="xray-core-version">Xray 1.5.3 (Xray, Penetrates Everything.) Custom (go1.17.6 darwin/arm64)
 A unified platform for anti-censorship.</span>
-        <div class="v2ray-core-update-layout">
-            <span class="v2ray-core-update-title">geoip.dat & geosite.dat</span>
-            <span class="v2ray-core-last-updated">Last Updated on July 9, 2019</span>
+        <div class="xray-core-update-layout">
+            <span class="xray-core-update-title">geoip.dat & geosite.dat</span>
+            <span class="xray-core-last-updated">Last Updated on July 9, 2019</span>
 
-            <div id="v2rayUpdateProgress" class="mdl-progress mdl-js-progress"></div>
+            <div id="xrayUpdateProgress" class="mdl-progress mdl-js-progress"></div>
             <script>
-                document.querySelector('#v2rayUpdateProgress').addEventListener('mdl-componentupgraded', function () {
+                document.querySelector('#xrayUpdateProgress').addEventListener('mdl-componentupgraded', function () {
                     this.MaterialProgress.setProgress(15);
                 });
             </script>
@@ -401,7 +341,7 @@ A unified platform for anti-censorship.</span>
                 2022/02/24 16:36:28 [Debug] app/proxyman/inbound: creating stream worker on 127.0.0.1:8001
                 2022/02/24 16:36:28 [Info] transport/internet/tcp: listening TCP on 127.0.0.1:1081
                 2022/02/24 16:36:28 [Info] transport/internet/tcp: listening TCP on 127.0.0.1:8001
-                2022/02/24 16:36:28 [Warning] V2Ray 4.44.0 started
+                2022/02/24 16:36:28 [Warning] Xray 4.44.0 started
                 2022/02/24 16:36:31 [Info] [1879947855] proxy/socks: TCP Connect request to tcp:alive.github.com:443
                 2022/02/24 16:36:31 [Info] [1879947855] app/dispatcher: taking detour [tc-sv] for
                 [tcp:alive.github.com:443]
@@ -550,6 +490,14 @@ A unified platform for anti-censorship.</span>
 </dialog>
 
 
-<script src="./assets/js/index.js"></script>
+<div id="tipsSnackbar" class="mdl-js-snackbar mdl-snackbar">
+    <div class="mdl-snackbar__text"></div>
+    <button class="mdl-snackbar__action" type="button"></button>
+</div>
+
+
+<script src="./scripts/index.js"></script>
+<script src="./scripts/profiles.js"></script>
+<script src="./scripts/general.js"></script>
 </body>
 </html>

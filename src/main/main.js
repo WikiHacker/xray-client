@@ -6,6 +6,7 @@
 const {app, BrowserWindow, Tray, Menu} = require('electron');
 const common = require('./common');
 const consts = require('./consts');
+const profile = require('./profile');
 
 
 // 单例
@@ -19,12 +20,13 @@ if (!app.requestSingleInstanceLock()) {
             common.mainWnd.focus();
         }
     });
-    main();
+
+    main().then(() => console.log('Startup Completed!'));
 }
 
 
 // 入口
-function main() {
+async function main() {
     if (consts.IS_PC) {
         Menu.setApplicationMenu(null);
     } else {
@@ -33,21 +35,24 @@ function main() {
     }
 
     app.on('before-quit', () => {
-        console.log('!!!');
+        console.log('before-quit');
     });
 
-    app.whenReady().then(() => {
-        createWindow();
-        app.on('activate', function () {
-            if (BrowserWindow.getAllWindows().length === 0)
-                createWindow();
-        })
-    });
+    await app.whenReady();
+    await createWindow();
+    await profile.init();
 }
 
 
-// 创建主窗口
-function createWindow() {
+async function createWindow() {
+    // tray
+    let trayIcon = `../icons/tray.${consts.IS_PC ? 'ico' : 'png'}`;
+    let tray = common.tray = new Tray(common.formatPath(trayIcon));
+    tray.setContextMenu(Menu.buildFromTemplate(common.trayMenu));
+    tray.setToolTip('XrayClient\nversion: ' + app.getVersion());
+    tray.on('double-click', () => wnd.show());
+
+    // main window
     let wnd = common.mainWnd = new BrowserWindow({
         width: 460,
         height: 600,
@@ -58,23 +63,11 @@ function createWindow() {
             preload: common.formatPath('preload.js')
         }
     });
-    wnd.loadFile(common.formatPath('../renderer/index.html'));
-
-    // MacOS 启动时，先隐藏窗口，随后再显示。不然有可能窗口无法响应鼠标事件
+    // MacOS 启动时，先隐藏窗口，随后再显示。否则有可能窗口无法响应鼠标事件
     if (consts.IS_MAC) {
         wnd.hide();
-        wnd.on('ready-to-show', () => {
-            wnd.show();
-        });
+        wnd.on('ready-to-show', () => wnd.show());
     }
-
-
-    let trayIcon = `../icons/tray.${consts.IS_PC ? 'ico' : 'png'}`;
-    let tray = common.tray = new Tray(common.formatPath(trayIcon));
-    tray.setContextMenu(Menu.buildFromTemplate(common.trayMenu));
-    tray.setToolTip('V2Ray - Personal');
-    tray.on('double-click', () => {
-        wnd.show();
-    });
+    await wnd.loadFile(common.formatPath('../renderer/index.html'));
 }
 

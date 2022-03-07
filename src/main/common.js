@@ -8,6 +8,7 @@ const path = require('path');
 const consts = require('./consts');
 
 
+// console.log(process.arch);
 const common = {
     tray: null,
     mainWnd: null,
@@ -33,28 +34,20 @@ common.appMenu = [
 
 common.trayMenu = [
     {
-        label: 'Application', click: () => {
-            common.mainWnd.show();
-        }
+        label: 'Application', click: () => common.mainWnd.show()
     },
 
     {type: 'separator'},
     {
-        label: 'Developer Tools', click: () => {
-            common.mainWnd.openDevTools({mode: 'detach'});
-        }
+        label: 'Developer Tools', click: () => common.mainWnd.openDevTools({mode: 'detach'})
     },
     {
-        label: 'About V2RayP', click: () => {
-            showAbout();
-        }
+        label: 'About XrayClient', click: () => showAbout()
     },
 
     {type: 'separator'},
     {
-        label: 'Quit', click: () => {
-            app.quit();
-        }
+        label: 'Quit', click: () => app.quit()
     },
 ];
 
@@ -65,7 +58,7 @@ common.trayMenu = [
 /**
  * 显示 About 界面
  */
-const showAbout = () => {
+function showAbout() {
     dialog.showMessageBox({
         title: 'About',
         message: 'message',
@@ -86,6 +79,11 @@ ipcMain.on(consts.R_M.HIDE_APP, () => {
 // common functions
 
 
+common.send = (channel, ...args) => {
+    common.mainWnd.webContents.send(channel, ...args);
+};
+
+
 /**
  * 格式化文件路径
  * @param filePath
@@ -93,7 +91,7 @@ ipcMain.on(consts.R_M.HIDE_APP, () => {
  */
 common.formatPath = (filePath) => {
     return path.join(__dirname, filePath);
-}
+};
 
 
 module.exports = common;

@@ -15,11 +15,11 @@
 }
 
 
-.v2ray-core-title {
+.xray-core-title {
     margin-top: 10px;
 }
 
-.v2ray-core-version {
+.xray-core-version {
     display: block;
     margin: 0 3px;
     font-size: 12px;
@@ -28,23 +28,23 @@
 }
 
 
-.v2ray-core-update-layout {
+.xray-core-update-layout {
     margin: 0 15px;
 }
 
-.v2ray-core-update-title {
+.xray-core-update-title {
     display: inline-block;
     margin: 15px 0;
     font-size: 16px;
 }
 
-.v2ray-core-last-updated {
+.xray-core-last-updated {
     font-size: 12px;
     font-weight: 300;
     color: #606367;
 }
 
-#v2rayUpdateProgress {
+#xrayUpdateProgress {
     display: inline-block;
     margin-top: 17px;
     width: 270px;

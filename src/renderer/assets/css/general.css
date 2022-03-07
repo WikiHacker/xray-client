@@ -4,7 +4,8 @@
  */
 
 
-.general-intro-text {
+#generalIntroText {
+    margin-left: 3px;
     margin-bottom: 10px;
     font-size: 12px;
     font-weight: 300;
@@ -25,26 +26,20 @@
     margin-left: 10px;
 }
 
-.general-cts-security-title {
-    display: inline-block;
-    width: 215px;
-    line-height: normal;
-    vertical-align: middle;
+
+.general-cts-radios {
+    margin-bottom: 15px;
+    display: grid;
+    grid-template-columns: 1fr 80px 75px 70px;
+    grid-template-rows: 1fr;
+    grid-column-gap: 0;
+    grid-row-gap: 0;
+}
+
+.general-cts-radios-title {
     font-size: 18px;
     color: #757575;
     font-weight: 300;
-}
-
-.general-cts-security-auto {
-    width: 80px;
-}
-
-.general-cts-security-auto, .general-cts-security-none {
-    margin: 5px 0;
-}
-
-.general-cts-ws-path {
-    width: 100%;
 }
 
 
