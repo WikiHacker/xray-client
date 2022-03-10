@@ -3,12 +3,12 @@
  * Created by LOLO on 2022/02/28.
  */
 
-const {app} = require('electron');
 const path = require('path');
 const fs = require('fs-extra');
+const common = require('./common');
 
 
-const STORE_FILE_PATH = path.normalize(app.getPath('userData') + '/Data/data.json');
+const STORE_FILE_PATH = common.storePath('Data/data.json');
 
 
 let data;

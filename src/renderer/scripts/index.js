@@ -6,11 +6,11 @@
 
 // dayjs
 dayjs.extend(window.dayjs_plugin_relativeTime);
+dayjs.extend(window.dayjs_plugin_localizedFormat);
 
 
 const PAGES = {profiles: 'profiles', general: 'general', rules: 'rules', proxies: 'proxies', logs: 'logs'};
 let curPage;
-let optionsChanged;
 
 
 /**
@@ -35,15 +35,6 @@ function changePage(targetPage) {
     curPage = targetPage;
 }
 
-
-/**
- * 验证当前 xray 参数是否有改变
- */
-function checkOptions() {
-    console.log(document.querySelector('input[name="cts_net"]:checked').value);
-}
-
-
 /**
  * 设置 element 的 innerHTML，并更新其中的 MDL 元素
  * @param element {string|Element}
@@ -57,11 +48,33 @@ function mdlSetInnerHTML(element, innerHTML) {
 }
 
 
-function mdlTextfieldCheckDirty() {
+/**
+ * 更新 MDL 输入框
+ */
+function mdlTextFieldCheckDirty() {
     let mdlInputs = document.querySelectorAll('.mdl-js-textfield');
     for (let mdlInput of mdlInputs) {
         mdlInput.MaterialTextfield.checkDirty();
     }
+}
+
+
+function replaceInputSpace(input) {
+    input.value = input.value.replace(/\s+/g, '');
+}
+
+function isEmpty(str) {
+    return (!str || str.trim().length === 0);
+}
+
+
+/**
+ * 在底部弹出一个提示文本
+ * @param msg
+ */
+function showHint(msg) {
+    let snackbar = document.querySelector('#hintSnackbar').MaterialSnackbar
+    snackbar.showSnackbar({message: msg, timeout: 1700,});
 }
 
 
@@ -72,22 +85,7 @@ function mdlTextfieldCheckDirty() {
             changePage(page);
         });
     }
-    changePage(PAGES.general);
-
-
-    // 添加 rule 弹窗界面
-    let addRuleDialog = document.querySelector('#addRuleDialog');
-    addRuleDialog.querySelector('.cancel').addEventListener('click', () => {
-        addRuleDialog.close();
-    });
-    addRuleDialog.querySelector('.ok').addEventListener('click', () => {
-        addRuleDialog.close();
-        console.log('YES!!');
-    });
-    let addRuleBtn = document.querySelector('#addRuleBtn');
-    addRuleBtn.addEventListener('click', () => {
-        addRuleDialog.showModal();
-    });
+    changePage(PAGES.proxies);
 
 
     // 点击关闭按钮，隐藏所有窗口
@@ -100,16 +98,10 @@ function mdlTextfieldCheckDirty() {
         window.electron.openExternal('https://xtls.github.io/config/routing.html');
     });
 
+    //
 
-    // 显示一段文字提示
     window.electron.receive(window.electron.R.SHOW_TIPS, (msg) => {
-        let snackbar = document.querySelector('#tipsSnackbar');
-        snackbar.MaterialSnackbar.showSnackbar({
-            actionHandler: () => {
-                snackbar.MaterialSnackbar.cleanup_();
-            },
-            actionText: 'ok', message: msg, timeout: 2000
-        });
+        showHint(msg);
     });
 })();
 

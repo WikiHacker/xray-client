@@ -3,12 +3,12 @@
  * Created by LOLO on 2022/02/26.
  */
 
-const {app, dialog, ipcMain} = require('electron');
+const {app, dialog, ipcMain, shell} = require('electron');
 const path = require('path');
+const fs = require('fs-extra');
 const consts = require('./consts');
 
 
-// console.log(process.arch);
 const common = {
     tray: null,
     mainWnd: null,
@@ -52,7 +52,7 @@ common.trayMenu = [
 ];
 
 
-// functions
+//
 
 
 /**
@@ -63,20 +63,12 @@ function showAbout() {
         title: 'About',
         message: 'message',
         detail: 'The is a detail.',
-        icon: common.formatPath('../icons/icon.png'),
+        icon: common.appPath('../icons/icon.png'),
     });
 }
 
 
-// ipc
-
-
-ipcMain.on(consts.R_M.HIDE_APP, () => {
-    common.mainWnd.hide();
-});
-
-
-// common functions
+//
 
 
 common.send = (channel, ...args) => {
@@ -84,13 +76,51 @@ common.send = (channel, ...args) => {
 };
 
 
+ipcMain.on(consts.R_M.HIDE_APP, () => {
+    common.mainWnd.hide();
+});
+
+
+ipcMain.on(consts.R_M.SAVE_FILE, async (event, name, data) => {
+    let file = path.normalize(app.getPath('downloads') + '/' + name);
+    let result = await dialog.showSaveDialog({title: 'Save As...', defaultPath: file});
+    if (!result.canceled) {
+        await fs.writeFile(result.filePath, data);
+        shell.showItemInFolder(result.filePath);
+    }
+});
+
+
+//
+
+
 /**
- * 格式化文件路径
+ * 返回包体内的文件（或目录）路径
  * @param filePath
  * @returns {string}
  */
-common.formatPath = (filePath) => {
+common.appPath = (filePath) => {
     return path.join(__dirname, filePath);
+};
+
+/**
+ * 返回格式化后的存储目录下的文件（或目录）路径
+ * @param subPath
+ * @returns {string}
+ */
+common.storePath = (subPath) => {
+    if (!subPath.startsWith('/')) subPath = '/' + subPath;
+    return path.normalize(app.getPath('userData') + subPath);
+};
+
+
+/**
+ * 传入的字符串是否为空
+ * @param str
+ * @returns {boolean}
+ */
+common.isEmpty = (str) => {
+    return (!str || str.trim().length === 0);
 };
 
 

@@ -18,6 +18,7 @@
     <script src="./assets/js/pc-scrollbar.js"></script>
     <script src="./assets/js/dayjs/dayjs.min.js"></script>
     <script src="./assets/js/dayjs/plugin/relativeTime.min.js"></script>
+    <script src="./assets/js/dayjs/plugin/localizedFormat.min.js"></script>
 </head>
 <body>
 
@@ -83,7 +84,8 @@
 
         <div class="general-cts-layout">
             <div class="input-7-3-left mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="cts_address">
+                <input id="cts_address" onkeyup="replaceInputSpace(this)"
+                       class="mdl-textfield__input" type="text">
                 <label class="mdl-textfield__label" for="cts_address">address</label>
             </div>
             <div class="input-7-3-right mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -93,10 +95,12 @@
             </div>
 
             <div class="general-cts-id mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="cts_id">
+                <input id="cts_id" onkeyup="replaceInputSpace(this)"
+                       class="mdl-textfield__input" type="text">
                 <label class="mdl-textfield__label" for="cts_id">id</label>
             </div>
-            <button class="general-cts-rndId mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
+            <button class="general-cts-rndId mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"
+                    onclick="uuidBtnOnClick()">
                 <img src="assets/icons/random.svg"/>
             </button>
 
@@ -106,7 +110,8 @@
                 <span class="mdl-textfield__error">Input is not a number!</span>
             </div>
             <div class="input-5-5-right mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="cts_ws_path">
+                <input id="cts_ws_path" onkeyup="replaceInputSpace(this)"
+                       class="mdl-textfield__input" type="text">
                 <label class="mdl-textfield__label" for="cts_ws_path">ws /path</label>
             </div>
 
@@ -164,10 +169,12 @@
             </label>
 
             <div class="general-submit-buttons">
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+                        onclick="applyXrayConfig()">
                     Apply
                 </button>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                <button id="disconnectBtn" disabled
+                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
                     Disconnect
                 </button>
             </div>
@@ -176,42 +183,7 @@
 
     <div id="rulesPage" class="element-hidden">
         <p class="mdl-card__title-text">Rules</p>
-        <div class="rules-list">
-            <div class="rule-item">
-                <span class="rule-item-out r-i-t-direct">direct</span>
-                <span class="rule-item-prefix">domain:</span>
-                <span class="rule-item-value">apple-cloudkit.com</span>
-                <span class="rule-item-type">domain</span>
-                <img class="rule-item-remove" src="assets/icons/rule-remove.svg"/>
-            </div>
-            <div class="rule-item">
-                <span class="rule-item-out r-i-t-direct">direct</span>
-                <span class="rule-item-prefix">domain:</span>
-                <span class="rule-item-value">apple-cloudkit.com</span>
-                <span class="rule-item-type">domain</span>
-                <img class="rule-item-remove" src="assets/icons/rule-remove.svg"/>
-            </div>
-            <div class="rule-item">
-                <span class="rule-item-out r-i-t-direct">direct</span>
-                <span class="rule-item-prefix">domain:</span>
-                <span class="rule-item-value">apple-cloudkit.com</span>
-                <span class="rule-item-type">domain</span>
-                <img class="rule-item-remove" src="assets/icons/rule-remove.svg"/>
-            </div>
-            <div class="rule-item">
-                <span class="rule-item-out r-i-t-direct">direct</span>
-                <span class="rule-item-prefix">domain:</span>
-                <span class="rule-item-value">apple-cloudkit.com</span>
-                <span class="rule-item-type">domain</span>
-                <img class="rule-item-remove" src="assets/icons/rule-remove.svg"/>
-            </div>
-            <div class="rule-item">
-                <span class="rule-item-out r-i-t-direct">direct</span>
-                <span class="rule-item-prefix">domain:</span>
-                <span class="rule-item-value">apple-cloudkit.com</span>
-                <span class="rule-item-type">domain</span>
-                <img class="rule-item-remove" src="assets/icons/rule-remove.svg"/>
-            </div>
+        <div id="ruleList">
         </div>
 
         <button id="addRuleBtn" class="mdl-button mdl-js-button mdl-js-ripple-effect">
@@ -224,45 +196,42 @@
         <p class="mdl-card__title-text">Global Proxy</p>
         <div class="global-proxy-layout">
             <div class="input-7-3-left mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="gp_http_server">
+                <input id="gp_http_server" onkeyup="replaceInputSpace(this)"
+                       class="mdl-textfield__input" type="text">
                 <label class="mdl-textfield__label" for="gp_http_server">http server</label>
             </div>
             <div class="input-7-3-right mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="gp_http_port">
+                <input id="gp_http_port" pattern="-?[0-9]*(\.[0-9]+)?"
+                       class="mdl-textfield__input" type="text">
                 <label class="mdl-textfield__label" for="gp_http_port">port</label>
                 <span class="mdl-textfield__error">not a number!</span>
             </div>
 
             <div class="input-7-3-left mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="gp_socks_server">
+                <input id="gp_socks_server" onkeyup="replaceInputSpace(this)"
+                       class="mdl-textfield__input" type="text">
                 <label class="mdl-textfield__label" for="gp_socks_server">socks5 server</label>
             </div>
             <div class="input-7-3-right mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="gp_socks_port">
+                <input id="gp_socks_port" pattern="-?[0-9]*(\.[0-9]+)?"
+                       class="mdl-textfield__input" type="text">
                 <label class="mdl-textfield__label" for="gp_socks_port">port</label>
                 <span class="mdl-textfield__error">not a number!</span>
             </div>
-            <label class="global-proxy-switch mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
+            <label class="global-proxy-switch mdl-switch mdl-js-switch mdl-js-ripple-effect" for="gp_enabled">
                 <span class="mdl-switch__label">On</span>
-                <input type="checkbox" id="switch-1" class="mdl-switch__input" checked>
+                <input id="gp_enabled" type="checkbox" class="mdl-switch__input">
             </label>
         </div>
 
         <p class="xray-core-title mdl-card__title-text">Xray-core</p>
-        <span class="xray-core-version">Xray 1.5.3 (Xray, Penetrates Everything.) Custom (go1.17.6 darwin/arm64)
-A unified platform for anti-censorship.</span>
+        <span class="xray-core-version"></span>
         <div class="xray-core-update-layout">
             <span class="xray-core-update-title">geoip.dat & geosite.dat</span>
-            <span class="xray-core-last-updated">Last Updated on July 9, 2019</span>
+            <span class="xray-core-last-update">Last Updated on July 9, 2019</span>
 
-            <div id="xrayUpdateProgress" class="mdl-progress mdl-js-progress"></div>
-            <script>
-                document.querySelector('#xrayUpdateProgress').addEventListener('mdl-componentupgraded', function () {
-                    this.MaterialProgress.setProgress(15);
-                });
-            </script>
-
-            <button style="float: right" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+            <div id="xrayDatUpdateProgress" class="mdl-progress mdl-js-progress element-hidden"></div>
+            <button id="xrayDatUpdateBtn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
                 Update
             </button>
         </div>
@@ -274,112 +243,35 @@ A unified platform for anti-censorship.</span>
         <div>
             <p class="log-page-title mdl-card__title-text">Logs</p>
             <div class="log-level-layout">
-                <img id="logLevel_none" src="assets/icons/log-none.svg"/>
-                <div class="mdl-tooltip" data-mdl-for="logLevel_none">log level: none</div>
-                <img id="logLevel_error" src="assets/icons/log-error.svg"/>
-                <div class="mdl-tooltip" data-mdl-for="logLevel_error">log level: error</div>
-                <img id="logLevel_warning" class="log-level-selected" src="assets/icons/log-warning.svg"/>
-                <div class="mdl-tooltip" data-mdl-for="logLevel_warning">log level: warning</div>
-                <img id="logLevel_info" src="assets/icons/log-info.svg"/>
-                <div class="mdl-tooltip" data-mdl-for="logLevel_info">log level: info</div>
-                <img id="logLevel_debug" src="assets/icons/log-debug.svg"/>
-                <div class="mdl-tooltip" data-mdl-for="logLevel_debug">log level: debug</div>
+                <img id="log_level_none" src="assets/icons/log-none.svg">
+                <div class="mdl-tooltip" data-mdl-for="log_level_none">log level: none</div>
+                <img id="log_level_error" src="assets/icons/log-error.svg"/>
+                <div class="mdl-tooltip" data-mdl-for="log_level_error">log level: error</div>
+                <img id="log_level_warning" src="assets/icons/log-warning.svg"/>
+                <div class="mdl-tooltip" data-mdl-for="log_level_warning">log level: warning</div>
+                <img id="log_level_info" src="assets/icons/log-info.svg"/>
+                <div class="mdl-tooltip" data-mdl-for="log_level_info">log level: info</div>
+                <img id="log_level_debug" src="assets/icons/log-debug.svg"/>
+                <div class="mdl-tooltip" data-mdl-for="log_level_debug">log level: debug</div>
             </div>
         </div>
 
         <div class="log-content-layout">
             <div class="log-title">
                 access.log
-                <img src="assets/icons/refresh.svg"/>
-                <img src="assets/icons/copy.svg"/>
-                <img src="assets/icons/file.svg"/>
+                <img src="assets/icons/file.svg" onclick="saveAsLogFile('access')"/>
+                <img src="assets/icons/copy.svg" onclick="copyLogToClipboard('access')"/>
             </div>
-            <div class="log-content">2022/02/24 14:50:23 tcp:127.0.0.1:58597 accepted tcp:alive.github.com:443 [tc-sv]
-                2022/02/24 14:50:24 127.0.0.1:58599 accepted //www.google.com:443 [tc-sv]
-                2022/02/24 14:50:24 127.0.0.1:58601 accepted //github.com:443 [tc-sv]
-                2022/02/24 14:50:26 tcp:127.0.0.1:58603 accepted tcp:alive.github.com:443 [tc-sv]
-                2022/02/24 14:50:46 127.0.0.1:58605 accepted //mtalk.google.com:443 [tc-sv]
-                2022/02/24 14:50:52 127.0.0.1:58607 accepted //gs-loc-cn.apple.com:443 [direct]
-                2022/02/24 14:51:01 127.0.0.1:58609 accepted //fonts.google.com:443 [tc-sv]
-                2022/02/24 14:51:01 127.0.0.1:58611 accepted //fonts.gstatic.com:443 [direct]
-                2022/02/24 14:51:01 127.0.0.1:58610 accepted //www.gstatic.com:443 [direct]
-                2022/02/24 14:51:03 127.0.0.1:58615 accepted //fonts.gstatic.com:443 [direct]
-                2022/02/24 14:51:03 127.0.0.1:58617 accepted //ssl.gstatic.com:443 [direct]
-                2022/02/24 14:51:03 127.0.0.1:58619 accepted //www.google-analytics.com:443 [tc-sv]
-                2022/02/24 14:51:03 127.0.0.1:58621 accepted //fonts.googleapis.com:443 [direct]
-                2022/02/24 14:51:10 127.0.0.1:58623 accepted //clients4.google.com:443 [tc-sv]
-                2022/02/24 14:51:33 127.0.0.1:58625 accepted //apis.google.com:443 [tc-sv]
-                2022/02/24 14:51:34 127.0.0.1:58627 accepted //scone-pa.clients6.google.com:443 [tc-sv]
-                2022/02/24 14:51:34 127.0.0.1:58629 accepted //www.google.com:443 [tc-sv]
-                2022/02/24 14:52:03 127.0.0.1:58631 accepted //github.githubassets.com:443 [tc-sv]
-                2022/02/24 14:52:04 127.0.0.1:58633 accepted //api.github.com:443 [tc-sv]
-                2022/02/24 14:52:04 127.0.0.1:58635 accepted //github.githubassets.com:443 [tc-sv]
-                2022/02/24 14:52:04 127.0.0.1:58636 accepted //avatars.githubusercontent.com:443 [tc-sv]
-                2022/02/24 14:52:04 127.0.0.1:58639 accepted //github.githubassets.com:443 [tc-sv]
-                2022/02/24 14:52:04 127.0.0.1:58641 accepted //github.githubassets.com:443 [tc-sv]
-                2022/02/24 14:52:04 127.0.0.1:58642 accepted //github.githubassets.com:443 [tc-sv]
-                2022/02/24 14:52:05 tcp:127.0.0.1:58645 accepted tcp:alive.github.com:443 [tc-sv]
-                2022/02/24 14:52:05 127.0.0.1:58647 accepted //collector.github.com:443 [tc-sv]
-                2022/02/24 14:52:34 127.0.0.1:58649 accepted //www.google.com:443 [tc-sv]
-                2022/02/24 14:53:34 127.0.0.1:58651 accepted //www.google.com:443 [tc-sv]
-                2022/02/24 14:54:34 127.0.0.1:58653 accepted //www.google.com:443 [tc-sv]
-                2022/02/24 14:55:34 127.0.0.1:58655 accepted //www.google.com:443 [tc-sv]
-                2022/02/24 14:56:26 127.0.0.1:58657 accepted //fonts.google.com:443 [tc-sv]
-            </div>
+            <div id="accessLogContent" class="log-content"></div>
         </div>
 
         <div class="log-content-layout">
             <div class="log-title">
                 error.log
-                <img src="assets/icons/refresh.svg"/>
-                <img src="assets/icons/copy.svg"/>
-                <img src="assets/icons/file.svg"/>
+                <img src="assets/icons/file.svg" onclick="saveAsLogFile('error')"/>
+                <img src="assets/icons/copy.svg" onclick="copyLogToClipboard('error')"/>
             </div>
-            <div class="log-content">2022/02/24 16:36:28 [Debug] app/log: Logger started
-                2022/02/24 16:36:28 [Info] app/dns: DNS: created localhost client
-                2022/02/24 16:36:28 [Debug] app/proxyman/inbound: creating stream worker on 127.0.0.1:1081
-                2022/02/24 16:36:28 [Debug] app/proxyman/inbound: creating stream worker on 127.0.0.1:8001
-                2022/02/24 16:36:28 [Info] transport/internet/tcp: listening TCP on 127.0.0.1:1081
-                2022/02/24 16:36:28 [Info] transport/internet/tcp: listening TCP on 127.0.0.1:8001
-                2022/02/24 16:36:28 [Warning] Xray 4.44.0 started
-                2022/02/24 16:36:31 [Info] [1879947855] proxy/socks: TCP Connect request to tcp:alive.github.com:443
-                2022/02/24 16:36:31 [Info] [1879947855] app/dispatcher: taking detour [tc-sv] for
-                [tcp:alive.github.com:443]
-                2022/02/24 16:36:32 [Info] [840958155] proxy/http: request to Method [CONNECT] Host
-                [calendars.icloud.com:443] with URL [//calendars.icloud.com:443]
-                2022/02/24 16:36:32 [Info] [840958155] app/dispatcher: taking detour [direct] for
-                [tcp:calendars.icloud.com:443]
-                2022/02/24 16:36:32 [Info] [840958155] proxy/freedom: opening connection to tcp:calendars.icloud.com:443
-                2022/02/24 16:36:32 [Info] [840958155] transport/internet/tcp: dialing TCP to
-                tcp:calendars.icloud.com:443
-                2022/02/24 16:36:32 [Info] [1230138889] proxy/http: request to Method [CONNECT] Host
-                [p24-caldav.icloud.com.cn:443] with URL [//p24-caldav.icloud.com.cn:443]
-                2022/02/24 16:36:32 [Info] [1230138889] app/dispatcher: taking detour [direct] for
-                [tcp:p24-caldav.icloud.com.cn:443]
-                2022/02/24 16:36:32 [Info] [1230138889] proxy/freedom: opening connection to
-                tcp:p24-caldav.icloud.com.cn:443
-                2022/02/24 16:36:32 [Info] [1230138889] transport/internet/tcp: dialing TCP to
-                tcp:p24-caldav.icloud.com.cn:443
-                2022/02/24 16:36:34 [Info] [2103785664] proxy/http: request to Method [CONNECT] Host
-                [www.google.com:443] with URL [//www.google.com:443]
-                2022/02/24 16:36:34 [Info] [2312711927] proxy/http: request to Method [CONNECT] Host
-                [www.google.com:443] with URL [//www.google.com:443]
-                2022/02/24 16:36:34 [Info] [2103785664] app/dispatcher: taking detour [tc-sv] for
-                [tcp:www.google.com:443]
-                2022/02/24 16:36:34 [Info] [2312711927] app/dispatcher: taking detour [tc-sv] for
-                [tcp:www.google.com:443]
-                2022/02/24 16:36:44 [Info] [3422321788] proxy/http: request to Method [CONNECT] Host
-                [gs-loc-cn.apple.com:443] with URL [//gs-loc-cn.apple.com:443]
-                2022/02/24 16:36:44 [Info] [3422321788] app/dispatcher: taking detour [direct] for
-                [tcp:gs-loc-cn.apple.com:443]
-                2022/02/24 16:36:44 [Info] [3422321788] proxy/freedom: opening connection to tcp:gs-loc-cn.apple.com:443
-                2022/02/24 16:36:44 [Info] [3422321788] transport/internet/tcp: dialing TCP to
-                tcp:gs-loc-cn.apple.com:443
-                2022/02/24 16:36:46 [Info] [2103785664] app/proxyman/inbound: connection ends > proxy/http: connection
-                ends > context canceled
-                2022/02/24 16:36:46 [Info] [2103785664] app/proxyman/outbound: failed to process outbound traffic >
-                proxy/vmess/outbound: connection ends > context canceled
-            </div>
+            <div id="errorLogContent" class="log-content"></div>
         </div>
 
     </div>
@@ -420,59 +312,58 @@ A unified platform for anti-censorship.</span>
         <button type="button" class="cancel mdl-button">Cancel</button>
     </div>
 </dialog>
-
-
 <dialog id="addRuleDialog" class="mdl-dialog">
     <h4 class="mdl-dialog__title">Adding Rule</h4>
     <div class="mdl-dialog__content">
         <div class="add-rule-radio-group">
             <span class="a-r-opts-title">outbound:</span>
-            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a-r-outbound-direct">
-                <input type="radio" id="a-r-outbound-direct" class="mdl-radio__button" name="options" value="direct"
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a_r_out_direct">
+                <input type="radio" id="a_r_out_direct" class="mdl-radio__button" name="a_r_out" value="direct"
                        checked>
                 <span class="rule-item-out r-i-t-direct mdl-radio__label">Direct</span>
             </label>
-            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a-r-outbound-proxy">
-                <input type="radio" id="a-r-outbound-proxy" class="mdl-radio__button" name="options" value="proxy">
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a_r_out_proxy">
+                <input type="radio" id="a_r_out_proxy" class="mdl-radio__button" name="a_r_out" value="proxy">
                 <span class="rule-item-out r-i-t-proxy mdl-radio__label">Proxy</span>
             </label>
-            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a-r-outbound-reject">
-                <input type="radio" id="a-r-outbound-reject" class="mdl-radio__button" name="options" value="reject">
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a_r_out_reject">
+                <input type="radio" id="a_r_out_reject" class="mdl-radio__button" name="a_r_out" value="reject">
                 <span class="rule-item-out r-i-t-reject mdl-radio__label">Reject</span>
             </label>
         </div>
 
         <div class="add-rule-radio-group">
             <span class="a-r-opts-title">type:</span>
-            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a-r-type-domain">
-                <input type="radio" id="a-r-type-domain" class="mdl-radio__button" name="options" value="domain"
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a_r_type_domain">
+                <input type="radio" id="a_r_type_domain" class="mdl-radio__button" name="a_r_type" value="domain"
                        checked>
                 <span class="mdl-radio__label">Domain</span>
             </label>
-            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a-r-type-ip">
-                <input type="radio" id="a-r-type-ip" class="mdl-radio__button" name="options" value="ip">
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a_r_type_ip">
+                <input type="radio" id="a_r_type_ip" class="mdl-radio__button" name="a_r_type" value="ip">
                 <span class="mdl-radio__label">IP</span>
             </label>
-            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a-r-type-port">
-                <input type="radio" id="a-r-type-port" class="mdl-radio__button" name="options" value="port">
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a_r_type_port">
+                <input type="radio" id="a_r_type_port" class="mdl-radio__button" name="a_r_type" value="port">
                 <span class="mdl-radio__label">Port</span>
             </label>
         </div>
 
         <div>
             <span class="a-r-opts-title">prefix:</span>
-            <span class="a-r-prefix">none</span>
-            <span class="a-r-prefix">regexp</span>
-            <span class="a-r-prefix a-r-prefix-selected">domain</span>
-            <span class="a-r-prefix">full</span>
-            <span class="a-r-prefix a-r-prefix-disabled">geosite</span>
-            <span class="a-r-prefix">geoip</span>
+            <span id="a_r_p_none" class="a-r-prefix">none</span>
+            <span id="a_r_p_regexp" class="a-r-prefix">regexp</span>
+            <span id="a_r_p_domain" class="a-r-prefix">domain</span>
+            <span id="a_r_p_full" class="a-r-prefix">full</span>
+            <span id="a_r_p_geosite" class="a-r-prefix">geosite</span>
+            <span id="a_r_p_geoip" class="a-r-prefix">geoip</span>
         </div>
 
         <div>
             <div class="a-r-content-layout mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="addRuleContent">
-                <label class="mdl-textfield__label" for="addRuleContent">content</label>
+                <input class="mdl-textfield__input" type="text" id="a_r_content"
+                       onkeyup="replaceInputSpace(this)">
+                <label class="mdl-textfield__label" for="a_r_content">content</label>
             </div>
             <button id="ruleHelpBtn" class="mdl-button mdl-js-button mdl-button--icon">
                 <img src="assets/icons/help.svg"/>
@@ -489,15 +380,22 @@ A unified platform for anti-censorship.</span>
     </div>
 </dialog>
 
-
-<div id="tipsSnackbar" class="mdl-js-snackbar mdl-snackbar">
+<div id="applySnackbar" class="mdl-js-snackbar mdl-snackbar">
+    <div class="mdl-snackbar__text"></div>
+    <button class="mdl-snackbar__action" type="button"></button>
+</div>
+<div id="hintSnackbar" class="mdl-js-snackbar mdl-snackbar">
     <div class="mdl-snackbar__text"></div>
     <button class="mdl-snackbar__action" type="button"></button>
 </div>
 
 
 <script src="./scripts/index.js"></script>
+<script src="./scripts/xray.js"></script>
 <script src="./scripts/profiles.js"></script>
 <script src="./scripts/general.js"></script>
+<script src="./scripts/rules.js"></script>
+<script src="./scripts/proxies.js"></script>
+<script src="./scripts/logs.js"></script>
 </body>
 </html>

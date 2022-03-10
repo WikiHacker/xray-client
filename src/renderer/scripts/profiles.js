@@ -4,7 +4,7 @@
  */
 
 
-let curProfileData, profileList;
+let curProfileData;
 
 
 function updateProfileList(list) {
@@ -43,7 +43,6 @@ function updateProfileList(list) {
         `;
         mdlSetInnerHTML('#profileList', data);
     }
-    profileList = list;
     updateCurSelectedProfile();
 }
 
@@ -97,10 +96,8 @@ function importProfile() {
 
 
 (() => {
-    // profile 列表有更新
     window.electron.receive(window.electron.R.UPDATE_PROFILE_LIST, (data) => updateProfileList(data));
 
-    // 切换了 profile
     window.electron.receive(window.electron.R.UPDATE_PROFILE_DATA, (data) => {
         curProfileData = data;
         updateCurSelectedProfile();

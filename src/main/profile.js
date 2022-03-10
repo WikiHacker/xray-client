@@ -11,7 +11,7 @@ const common = require('./common');
 const consts = require('./consts');
 
 
-const PROFILE_DIR = path.normalize(app.getPath('userData') + '/Data/Profiles/');
+const PROFILE_DIR = common.storePath('Data/Profiles/');
 let curProfileName, curProfileData;
 
 
@@ -61,16 +61,16 @@ async function createNewProfile() {
         name: nowTime.toString(),
         lastUsed: nowTime,
         general: {
-            address: '', port: '',
+            address: '', port: 1234,
             id: '',
             level: 0, wsPath: '',
             network: 'tcp',
             security: 'xtls',
-            localProxy: {socks: 7801, http: 1087, enabled: true},
+            localProxy: {http: 1087, socks: 7801, enabled: true},
         },
         proxies: {
-            http: {server: '', port: ''},
-            socks: {server: '', port: ''},
+            http: {server: '127.0.0.1', port: 1087},
+            socks: {server: '127.0.0.1', port: 7801},
             enabled: false,
         },
         log: {

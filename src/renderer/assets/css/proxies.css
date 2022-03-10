@@ -38,16 +38,21 @@
     font-size: 16px;
 }
 
-.xray-core-last-updated {
+.xray-core-last-update {
+    display: inline-block;
     font-size: 12px;
     font-weight: 300;
     color: #606367;
 }
 
-#xrayUpdateProgress {
+#xrayDatUpdateProgress {
     display: inline-block;
     margin-top: 17px;
     width: 270px;
+}
+
+#xrayDatUpdateBtn {
+    float: right;
 }
 
 

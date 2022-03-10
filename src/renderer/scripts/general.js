@@ -36,6 +36,11 @@ function getSecurityValue() {
 }
 
 
+function uuidBtnOnClick() {
+    window.electron.send(window.electron.S.CREATE_UUID, cts_id.value);
+}
+
+
 (() => {
     // 控件值有改变时，检查是否需要重新应用 xray config
     let options = [
@@ -48,6 +53,13 @@ function getSecurityValue() {
         option.onchange = checkOptions;
     }
 
+
+    // 更新 uuid
+    window.electron.receive(window.electron.R.UPDATE_UUID, (uuid) => {
+        cts_id.value = uuid;
+        mdlTextFieldCheckDirty();
+        checkOptions();
+    });
 
     // 切换了 profile
     window.electron.receive(window.electron.R.UPDATE_PROFILE_DATA, (data) => {
@@ -62,7 +74,7 @@ function getSecurityValue() {
         lp_http_port.value = data.general.localProxy.http;
         let lpSwitch = lp_enabled.parentNode.MaterialSwitch;
         data.general.localProxy.enabled ? lpSwitch.on() : lpSwitch.off();
-        mdlTextfieldCheckDirty();
+        mdlTextFieldCheckDirty();
         networkChange();
     });
 

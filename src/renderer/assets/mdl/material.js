@@ -2152,6 +2152,7 @@ MaterialSnackbar.prototype.cssClasses_ = {
    * @private
    */
 MaterialSnackbar.prototype.displaySnackbar_ = function () {
+    clearTimeout(this.cleanupTimeoutId__);
     this.element_.setAttribute('aria-hidden', 'true');
     if (this.actionHandler_) {
         this.actionElement_.textContent = this.actionText_;
@@ -2161,7 +2162,7 @@ MaterialSnackbar.prototype.displaySnackbar_ = function () {
     this.textElement_.textContent = this.message_;
     this.element_.classList.add(this.cssClasses_.ACTIVE);
     this.element_.setAttribute('aria-hidden', 'false');
-    setTimeout(this.cleanup_.bind(this), this.timeout_);
+    this.cleanupTimeoutId__ = setTimeout(this.cleanup_.bind(this), this.timeout_);
 };
 /**
    * Show the snackbar.
@@ -2216,6 +2217,7 @@ MaterialSnackbar.prototype.checkQueue_ = function () {
    * @private
    */
 MaterialSnackbar.prototype.cleanup_ = function () {
+    clearTimeout(this.cleanupTimeoutId__);
     this.element_.classList.remove(this.cssClasses_.ACTIVE);
     setTimeout(function () {
         this.element_.setAttribute('aria-hidden', 'true');

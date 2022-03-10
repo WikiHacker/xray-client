@@ -6,7 +6,9 @@
 const {app, BrowserWindow, Tray, Menu} = require('electron');
 const common = require('./common');
 const consts = require('./consts');
+const xray = require('./xray');
 const profile = require('./profile');
+require('./proxies');
 
 
 // 单例
@@ -40,6 +42,7 @@ async function main() {
 
     await app.whenReady();
     await createWindow();
+    await xray.init();
     await profile.init();
 }
 
@@ -47,7 +50,7 @@ async function main() {
 async function createWindow() {
     // tray
     let trayIcon = `../icons/tray.${consts.IS_PC ? 'ico' : 'png'}`;
-    let tray = common.tray = new Tray(common.formatPath(trayIcon));
+    let tray = common.tray = new Tray(common.appPath(trayIcon));
     tray.setContextMenu(Menu.buildFromTemplate(common.trayMenu));
     tray.setToolTip('XrayClient\nversion: ' + app.getVersion());
     tray.on('double-click', () => wnd.show());
@@ -60,7 +63,7 @@ async function createWindow() {
         frame: false,
         skipTaskbar: true,
         webPreferences: {
-            preload: common.formatPath('preload.js')
+            preload: common.appPath('preload.js')
         }
     });
     // MacOS 启动时，先隐藏窗口，随后再显示。否则有可能窗口无法响应鼠标事件
@@ -68,6 +71,6 @@ async function createWindow() {
         wnd.hide();
         wnd.on('ready-to-show', () => wnd.show());
     }
-    await wnd.loadFile(common.formatPath('../renderer/index.html'));
+    await wnd.loadFile(common.appPath('../renderer/index.html'));
 }
 
