@@ -35,7 +35,8 @@
 }
 
 .log-content-layout:last-child {
-    height: 135px;
+    height: 140px;
+    margin-bottom: 0;
 }
 
 .log-title {
@@ -62,12 +63,21 @@
     height: calc(100% - 25px);
     margin-top: 5px;
     font-size: 12px;
-    white-space: pre-line;
     overflow: hidden;
 }
 
 .log-content:hover {
-    overflow: overlay;
+    overflow-y: overlay;
+}
+
+.log-content > span {
+    display: block;
+    padding: 3px 0;
+    word-break: break-word;
+}
+
+.log-content > span:nth-child(even) {
+    background-color: #eaeaea;
 }
 
 

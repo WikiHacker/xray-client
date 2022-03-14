@@ -5,30 +5,27 @@
 
 let tmpProfileData = {
     general: {localProxy: {}},
-    log: {},
-    rules: {direct: {}, proxy: {}, reject: {}}
+    log: {}
 };
 
 
 /**
  * 底部的 apply 提示
- * @type {{hide: applyHint.hide, visible: boolean, show: applyHint.show, readonly snackbar: MaterialSnackbar}}
  */
 let applyHint = {
     visible: false,
     get snackbar() {
         return document.querySelector('#applySnackbar').MaterialSnackbar;
     },
-    show: () => {
+    show: (msg = 'profile (xray-core config) has changed.') => {
         if (!applyHint.visible) {
             applyHint.visible = true;
             applyHint.snackbar.showSnackbar({
-                actionHandler: () => {
-                    applyXrayConfig();
-                },
-                actionText: 'apply', message: 'profile (xray-core config) has changed.', timeout: 999999
+                actionHandler: () => applyXrayConfig(),
+                actionText: 'apply', message: msg, timeout: 999999
             });
-        }
+        } else
+            applyHint.snackbar.textElement_.textContent = msg;
     },
     hide: () => {
         if (applyHint.visible) {
@@ -72,13 +69,34 @@ function checkOptions() {
  * 应用配置更改
  */
 function applyXrayConfig() {
+    checkOptions();
+    curProfileData.log.level = tmpProfileData.log.level;
+    tmpProfileData.rules = curProfileData.rules;
+    window.electron.send(window.electron.S.APPLY_XRAY, tmpProfileData);
     rulesChanged = false;
     applyHint.hide();
+    cleanLogContent();
 }
 
 
 (() => {
-    document.querySelector('#disconnectBtn').addEventListener('click', () => {
-        console.log('disconnect');
+    const applyBtn = document.querySelector('#applyBtn');
+    const disconnectBtn = document.querySelector('#disconnectBtn');
+
+    applyBtn.addEventListener('click', () => applyXrayConfig());
+
+    disconnectBtn.addEventListener('click', () => {
+        window.electron.send(window.electron.S.STOP_XRAY);
     });
+
+    window.electron.receive(window.electron.R.UPDATE_RUNNING_STATUS, (running) => {
+        if (running) {
+            applyBtn.textContent = 'apply';
+            disconnectBtn.disabled = false;
+        } else {
+            applyBtn.textContent = 'start';
+            disconnectBtn.disabled = true;
+        }
+    });
+
 })();

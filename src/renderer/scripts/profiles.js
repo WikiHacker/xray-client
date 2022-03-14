@@ -37,7 +37,7 @@ function updateProfileList(list) {
             <p></p>
             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="use${name}">
                 <input type="radio" class="mdl-radio__button" name="profiles" 
-                id="use${name}" value="${name}" onchange="profileOnChange(this)">
+                id="use${name}" value="${name}" onchange="profileOnChange(${name})">
             </label>
         </div>
         `;
@@ -82,20 +82,23 @@ function removeProfile(name) {
     removeProfileDialog.showModal();
 }
 
-function profileOnChange(radio) {
-    window.electron.send(window.electron.S.CHANGE_PROFILE, radio.value);
-}
-
-function createNewProfile() {
-    window.electron.send(window.electron.S.CREATE_PROFILE);
-}
-
-function importProfile() {
-    window.electron.send(window.electron.S.IMPORT_PROFILE);
+function profileOnChange(name) {
+    window.electron.send(window.electron.S.CHANGE_PROFILE, name);
 }
 
 
 (() => {
+    document.querySelector('#importProfileBtn').addEventListener('click', () => {
+        window.electron.send(window.electron.S.IMPORT_PROFILE);
+    });
+
+    document.querySelector('#createNewProfileBtn').addEventListener('click', () => {
+        window.electron.send(window.electron.S.CREATE_PROFILE);
+    });
+
+
+    //
+
     window.electron.receive(window.electron.R.UPDATE_PROFILE_LIST, (data) => updateProfileList(data));
 
     window.electron.receive(window.electron.R.UPDATE_PROFILE_DATA, (data) => {

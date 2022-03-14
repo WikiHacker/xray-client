@@ -8,7 +8,7 @@ const common = require('./common');
 const consts = require('./consts');
 const xray = require('./xray');
 const profile = require('./profile');
-require('./proxies');
+const proxies = require('./proxies');
 
 
 // 单例
@@ -36,8 +36,8 @@ async function main() {
         app.dock.hide();
     }
 
-    app.on('before-quit', () => {
-        console.log('before-quit');
+    app.on('before-quit', async () => {
+        await proxies.disable();
     });
 
     await app.whenReady();
@@ -66,11 +66,13 @@ async function createWindow() {
             preload: common.appPath('preload.js')
         }
     });
+
     // MacOS 启动时，先隐藏窗口，随后再显示。否则有可能窗口无法响应鼠标事件
     if (consts.IS_MAC) {
         wnd.hide();
         wnd.on('ready-to-show', () => wnd.show());
     }
+
     await wnd.loadFile(common.appPath('../renderer/index.html'));
 }
 

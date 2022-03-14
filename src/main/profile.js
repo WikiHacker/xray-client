@@ -13,6 +13,8 @@ const consts = require('./consts');
 
 const PROFILE_DIR = common.storePath('Data/Profiles/');
 let curProfileName, curProfileData;
+let stopXrayFunc;
+let isFirstUse = true;
 
 
 /**
@@ -61,9 +63,9 @@ async function createNewProfile() {
         name: nowTime.toString(),
         lastUsed: nowTime,
         general: {
-            address: '', port: 1234,
+            address: '', port: 12301,
             id: '',
-            level: 0, wsPath: '',
+            level: 1, wsPath: '',
             network: 'tcp',
             security: 'xtls',
             localProxy: {http: 1087, socks: 7801, enabled: true},
@@ -77,6 +79,12 @@ async function createNewProfile() {
             level: 'warning',
         },
         rules: {
+            reject: {
+                domain: ['geosite:category-ads'],
+            },
+            proxy: {
+                domain: ['full:cdn.jsdelivr.net'],
+            },
             direct: {
                 domain: [
                     'domain:lolo.link',
@@ -91,12 +99,6 @@ async function createNewProfile() {
                     'geoip:cn',
                 ],
             },
-            proxy: {
-                port: ['0-65535'],
-            },
-            reject: {
-                domain: ['geosite:category-ads'],
-            },
         },
     };
     curProfileName = curProfileData.name;
@@ -104,7 +106,7 @@ async function createNewProfile() {
 
     datastore.data.lastUsedProfile = curProfileName;
     await datastore.save();
-    common.send(consts.M_R.UPDATE_PROFILE_DATA, curProfileData);
+    currentProfileChanged(true);
 }
 
 
@@ -120,7 +122,17 @@ async function readProfile(profileName) {
     curProfileData = await fs.readJson(getProfilePath(curProfileName));
     curProfileData.lastUsed = Date.now();
     await saveCurrentProfile();
+    currentProfileChanged(false);
+}
+
+
+function currentProfileChanged(isNew) {
+    stopXrayFunc();
     common.send(consts.M_R.UPDATE_PROFILE_DATA, curProfileData);
+    if (isFirstUse)
+        isFirstUse = false;
+    else
+        common.send(consts.M_R.SHOW_TIPS, isNew ? 'Using new profile.' : 'Profile changed.');
 }
 
 
@@ -157,10 +169,10 @@ function getProfilePath(profileName) {
 
 
 /**
- * 保存 name 对应的 profile 到 documents 目录，并打开文件夹视图
+ * 保存 name 对应的 profile 到本地目录，并打开文件夹视图
  */
 ipcMain.on(consts.R_M.SAVE_PROFILE, async (event, name) => {
-    let file = path.normalize(app.getPath('documents') + '/XrayClient-Profile.json');
+    let file = path.normalize(app.getPath('downloads') + '/XrayClient-Profile.json');
     let result = await dialog.showSaveDialog({title: 'Save Profile', defaultPath: file});
     if (!result.canceled) {
         await fs.copy(getProfilePath(name), result.filePath);
@@ -230,6 +242,16 @@ ipcMain.on(consts.R_M.IMPORT_PROFILE, async () => {
 
 
 module.exports = {
-    init
+    init,
+    saveCurrentProfile,
+    updateProfileList,
+
+    getCurrentProfileData: () => {
+        return curProfileData;
+    },
+
+    setStopXrayFunc: (value) => {
+        stopXrayFunc = value;
+    },
 };
 

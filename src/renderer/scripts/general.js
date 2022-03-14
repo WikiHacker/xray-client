@@ -4,19 +4,19 @@
  */
 
 
-let cts_address = document.querySelector('#cts_address');
-let cts_port = document.querySelector('#cts_port');
-let cts_id = document.querySelector('#cts_id');
-let cts_level = document.querySelector('#cts_level');
-let cts_ws_path = document.querySelector('#cts_ws_path');
-let cts_net_tcp = document.querySelector('#cts_net_tcp');
-let cts_net_ws = document.querySelector('#cts_net_ws');
-let cts_security_none = document.querySelector('#cts_security_none');
-let cts_security_tls = document.querySelector('#cts_security_tls');
-let cts_security_xtls = document.querySelector('#cts_security_xtls');
-let lp_socks_port = document.querySelector('#lp_socks_port');
-let lp_http_port = document.querySelector('#lp_http_port');
-let lp_enabled = document.querySelector('#lp_enabled');
+const cts_address = document.querySelector('#cts_address');
+const cts_port = document.querySelector('#cts_port');
+const cts_id = document.querySelector('#cts_id');
+const cts_level = document.querySelector('#cts_level');
+const cts_ws_path = document.querySelector('#cts_ws_path');
+const cts_net_tcp = document.querySelector('#cts_net_tcp');
+const cts_net_ws = document.querySelector('#cts_net_ws');
+const cts_security_none = document.querySelector('#cts_security_none');
+const cts_security_tls = document.querySelector('#cts_security_tls');
+const cts_security_xtls = document.querySelector('#cts_security_xtls');
+const lp_socks_port = document.querySelector('#lp_socks_port');
+const lp_http_port = document.querySelector('#lp_http_port');
+const lp_enabled = document.querySelector('#lp_enabled');
 
 
 /**
@@ -36,11 +36,6 @@ function getSecurityValue() {
 }
 
 
-function uuidBtnOnClick() {
-    window.electron.send(window.electron.S.CREATE_UUID, cts_id.value);
-}
-
-
 (() => {
     // 控件值有改变时，检查是否需要重新应用 xray config
     let options = [
@@ -54,6 +49,11 @@ function uuidBtnOnClick() {
     }
 
 
+    // 点击随机或转换 uuid 按钮
+    document.querySelector('#cts_idBtn').addEventListener('click', () => {
+        window.electron.send(window.electron.S.CREATE_UUID, cts_id.value);
+    });
+
     // 更新 uuid
     window.electron.receive(window.electron.R.UPDATE_UUID, (uuid) => {
         cts_id.value = uuid;
@@ -61,7 +61,7 @@ function uuidBtnOnClick() {
         checkOptions();
     });
 
-    // 切换了 profile
+    // 更新 profile
     window.electron.receive(window.electron.R.UPDATE_PROFILE_DATA, (data) => {
         cts_address.value = data.general.address;
         cts_port.value = data.general.port;
@@ -96,4 +96,5 @@ function uuidBtnOnClick() {
         changeIntroText();
     }
     cts_net_tcp.onchange = cts_net_ws.onchange = networkChange;
+
 })();

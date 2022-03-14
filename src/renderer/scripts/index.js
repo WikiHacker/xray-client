@@ -8,32 +8,8 @@
 dayjs.extend(window.dayjs_plugin_relativeTime);
 dayjs.extend(window.dayjs_plugin_localizedFormat);
 
+const CSS_CLASS_HIDDEN = 'element-hidden';
 
-const PAGES = {profiles: 'profiles', general: 'general', rules: 'rules', proxies: 'proxies', logs: 'logs'};
-let curPage;
-
-
-/**
- * 切换当前页面至 targetPage
- * @param targetPage {string}
- */
-function changePage(targetPage) {
-    if (targetPage === curPage) return;
-    const change = (p, v) => {
-        let btn = document.querySelector(`#${p}Btn`);
-        let page = document.querySelector(`#${p}Page`);
-        if (v) {
-            btn.classList.add('nav-btn-selected');
-            page.classList.remove('element-hidden');
-        } else {
-            btn.classList.remove('nav-btn-selected');
-            page.classList.add('element-hidden');
-        }
-    }
-    if (curPage) change(curPage, false);
-    change(targetPage, true);
-    curPage = targetPage;
-}
 
 /**
  * 设置 element 的 innerHTML，并更新其中的 MDL 元素
@@ -70,22 +46,45 @@ function isEmpty(str) {
 
 /**
  * 在底部弹出一个提示文本
- * @param msg
+ * @param msg {string}
+ * @param timeout {number}
  */
-function showHint(msg) {
+function showHint(msg, timeout = 2000) {
     let snackbar = document.querySelector('#hintSnackbar').MaterialSnackbar
-    snackbar.showSnackbar({message: msg, timeout: 1700,});
+    snackbar.showSnackbar({message: msg, timeout});
 }
 
 
 (() => {
-    // 分页按钮
-    for (let page in PAGES) {
+    // pages & buttons
+    const pages = {profiles: 'profiles', general: 'general', rules: 'rules', proxies: 'proxies', logs: 'logs'};
+    let curPage;
+
+    const CLS_NAV_BTN_SEL = 'nav-btn-selected';
+    const invokeChangePage = (p, v) => {
+        let btn = document.querySelector(`#${p}Btn`);
+        let page = document.querySelector(`#${p}Page`);
+        if (v) {
+            btn.classList.add(CLS_NAV_BTN_SEL);
+            page.classList.remove(CSS_CLASS_HIDDEN);
+        } else {
+            btn.classList.remove(CLS_NAV_BTN_SEL);
+            page.classList.add(CSS_CLASS_HIDDEN);
+        }
+    }
+    const changePage = (targetPage) => {
+        if (targetPage === curPage) return;
+        if (curPage) invokeChangePage(curPage, false);
+        invokeChangePage(targetPage, true);
+        curPage = targetPage;
+    }
+
+    for (let page in pages) {
         document.querySelector(`#${page}Btn`).addEventListener('click', () => {
             changePage(page);
         });
     }
-    changePage(PAGES.proxies);
+    changePage(pages.general);
 
 
     // 点击关闭按钮，隐藏所有窗口
@@ -98,10 +97,43 @@ function showHint(msg) {
         window.electron.openExternal('https://xtls.github.io/config/routing.html');
     });
 
-    //
 
-    window.electron.receive(window.electron.R.SHOW_TIPS, (msg) => {
-        showHint(msg);
+    //
+    window.electron.receive(window.electron.R.SHOW_TIPS, msg => showHint(msg));
+
+
+    // footer - speed stats
+    const speedStats = document.querySelector('#speedStats');
+    const formatByte = (byte) => {
+        if (byte === 0)
+            return '0';
+        if (byte > 1000000)
+            return (byte / 1048576).toFixed(2) + ' MB';
+        if (byte > 1000)
+            return (byte / 1024).toFixed(2) + ' KB';
+        return byte.toFixed(0) + ' B';
+    };
+
+    window.electron.receive(window.electron.R.UPDATE_SPEED_STATS, (speed) => {
+        speedStats.textContent = `${formatByte(speed.up)} / ${formatByte(speed.down)}`;
     });
+
+
+    // footer - conn status
+    const connectedStatus = document.querySelector('#connectedStatus');
+    const disconnectStatus = document.querySelector('#disconnectStatus');
+    connectedStatus.classList.add(CSS_CLASS_HIDDEN)
+
+    window.electron.receive(window.electron.R.UPDATE_RUNNING_STATUS, (running) => {
+        if (running) {
+            connectedStatus.classList.remove(CSS_CLASS_HIDDEN);
+            disconnectStatus.classList.add(CSS_CLASS_HIDDEN);
+        } else {
+            connectedStatus.classList.add(CSS_CLASS_HIDDEN);
+            disconnectStatus.classList.remove(CSS_CLASS_HIDDEN);
+            speedStats.textContent = '0 / 0';
+        }
+    });
+
 })();
 

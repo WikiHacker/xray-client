@@ -32,7 +32,7 @@ function updateRules() {
         `;
     };
 
-    let outList = ['reject', 'direct', 'proxy'];
+    let outList = ['reject', 'proxy', 'direct'];
     let typeList = ['domain', 'ip', 'port'];
     for (let i = 0; i < outList.length; i++) {
         let out = outList[i];

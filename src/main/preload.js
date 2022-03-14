@@ -37,16 +37,21 @@ contextBridge.exposeInMainWorld(
             CREATE_UUID: consts.R_M.CREATE_UUID,
             UPDATE_XRAY_DAT: consts.R_M.UPDATE_XRAY_DAT,
             SET_LOCAL_PROXY: consts.R_M.SET_LOCAL_PROXY,
+            APPLY_XRAY: consts.R_M.APPLY_XRAY,
+            STOP_XRAY: consts.R_M.STOP_XRAY,
         },
 
         // receive - channels
         R: {
             SHOW_TIPS: consts.M_R.SHOW_TIPS,
+            UPDATE_RUNNING_STATUS: consts.M_R.UPDATE_RUNNING_STATUS,
+            UPDATE_SPEED_STATS: consts.M_R.UPDATE_SPEED_STATS,
             UPDATE_PROFILE_LIST: consts.M_R.UPDATE_PROFILE_LIST,
             UPDATE_PROFILE_DATA: consts.M_R.UPDATE_PROFILE_DATA,
             UPDATE_XRAY_INFO: consts.M_R.UPDATE_XRAY_INFO,
             UPDATE_UUID: consts.M_R.UPDATE_UUID,
             UPDATE_PROGRESS: consts.M_R.UPDATE_PROGRESS,
+            SWITCH_GLOBAL_PROXY: consts.M_R.SWITCH_GLOBAL_PROXY,
             UPDATE_ERROR_LOG: consts.M_R.UPDATE_ERROR_LOG,
             UPDATE_ACCESS_LOG: consts.M_R.UPDATE_ACCESS_LOG,
         }

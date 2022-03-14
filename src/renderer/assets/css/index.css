@@ -8,6 +8,8 @@ body {
     height: 100%;
     cursor: default;
     background-color: #fff;
+    border: #dadce0 1px solid;
+    box-sizing: border-box;
 }
 
 
@@ -141,7 +143,7 @@ body {
     text-align: right;
 }
 
-.footer-speed-text {
+#speedStats {
     font-size: 12px;
 }
 
@@ -197,3 +199,6 @@ body {
     margin-right: 0;
 }
 
+.mdl-snackbar__action {
+    -webkit-app-region: no-drag;
+}

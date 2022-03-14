@@ -6,25 +6,69 @@
 const {exec} = require('child_process');
 const {ipcMain} = require('electron');
 const consts = require('./consts');
+const common = require('./common');
+const profile = require('./profile');
 
 
 //
 
 
-const cmdList = [];
+const cmdQueue = [];
 let executing = false;
+let proxies;
 
 
+/**
+ * 按序执行开启或关闭本地代理的命令
+ * @param args
+ * @returns {Promise<void>}
+ */
 async function execCmd(...args) {
-    cmdList.push(...args);
+    cmdQueue.push(...args);
     if (executing) return;
 
     executing = true;
-    while (cmdList.length > 0) {
-        let cmd = cmdList.shift();
+    while (cmdQueue.length > 0) {
+        let cmd = cmdQueue.shift();
         await exec(cmd);
     }
     executing = false;
+}
+
+
+async function enable() {
+    const {http, socks} = proxies = profile.getCurrentProfileData().proxies;
+    if (consts.IS_MAC)
+        await execCmd(
+            `networksetup -setwebproxy Wi-Fi ${http.server} ${http.port}`,
+            `networksetup -setsecurewebproxy Wi-Fi ${http.server} ${http.port}`,
+            `networksetup -setsocksfirewallproxy Wi-Fi ${socks.server} ${socks.port}`
+        );
+    else
+        await execCmd(
+            `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f`,
+            `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyServer /d "${http.server}:${http.port}" /f`
+        );
+
+    common.send(consts.M_R.SWITCH_GLOBAL_PROXY, true);
+}
+
+
+async function disable() {
+    proxies = null;
+    if (consts.IS_MAC)
+        await execCmd(
+            'networksetup -setwebproxystate Wi-Fi off',
+            'networksetup -setsecurewebproxystate Wi-Fi off',
+            'networksetup -setsocksfirewallproxystate Wi-Fi off'
+        );
+    else
+        await execCmd(
+            'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyEnable /t REG_DWORD /d 0 /f',
+            'reg delete "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyServer /f'
+        );
+
+    common.send(consts.M_R.SWITCH_GLOBAL_PROXY, false);
 }
 
 
@@ -33,29 +77,25 @@ async function execCmd(...args) {
  */
 ipcMain.on(consts.R_M.SET_LOCAL_PROXY, async (event, data) => {
     if (data) {
-        if (consts.IS_MAC)
-            await execCmd(
-                `networksetup -setwebproxy Wi-Fi ${data.http.server} ${data.http.port}`,
-                `networksetup -setsecurewebproxy Wi-Fi ${data.http.server} ${data.http.port}`,
-                `networksetup -setsocksfirewallproxy Wi-Fi ${data.socks.server} ${data.socks.port}`
-            );
-        else
-            await execCmd(
-                `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f`,
-                `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyServer /d "${data.http.server}:${data.http.port}" /f`
-            );
+        // save to current profile data
+        profile.getCurrentProfileData().proxies = data;
+        await profile.saveCurrentProfile();
+        await enable();
     } else {
-        if (consts.IS_MAC)
-            await execCmd(
-                'networksetup -setwebproxystate Wi-Fi off',
-                'networksetup -setsecurewebproxystate Wi-Fi off',
-                'networksetup -setsocksfirewallproxystate Wi-Fi off'
-            );
-        else
-            await execCmd(
-                'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyEnable /t REG_DWORD /d 0 /f',
-                'reg delete "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyServer /f'
-            );
+        await disable();
     }
 });
+
+
+//
+
+
+module.exports = {
+    enable,
+    disable,
+    getSettings: () => {
+        return proxies;
+    }
+};
+
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>V2rRay - Personal</title>
+    <title>XrayClient</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';"/>
 
     <link rel="stylesheet" href="./assets/mdl/material.css">
@@ -66,12 +66,12 @@
         </div>
 
         <div class="profiles-new-buttons">
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect" onclick="importProfile()">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="importProfileBtn">
                 <img src="assets/icons/add-for-file.svg"/>
                 <span>form file</span>
             </button>
 
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect" onclick="createNewProfile()">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="createNewProfileBtn">
                 <img src="assets/icons/add-new.svg"/>
                 <span>create new</span>
             </button>
@@ -100,6 +100,7 @@
                 <label class="mdl-textfield__label" for="cts_id">id</label>
             </div>
             <button class="general-cts-rndId mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"
+                    id="cts_idBtn"
                     onclick="uuidBtnOnClick()">
                 <img src="assets/icons/random.svg"/>
             </button>
@@ -170,12 +171,12 @@
 
             <div class="general-submit-buttons">
                 <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
-                        onclick="applyXrayConfig()">
-                    Apply
+                        id="applyBtn">
+                    start
                 </button>
-                <button id="disconnectBtn" disabled
-                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                    Disconnect
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                        id="disconnectBtn" disabled>
+                    stop
                 </button>
             </div>
         </div>
@@ -230,7 +231,7 @@
             <span class="xray-core-update-title">geoip.dat & geosite.dat</span>
             <span class="xray-core-last-update">Last Updated on July 9, 2019</span>
 
-            <div id="xrayDatUpdateProgress" class="mdl-progress mdl-js-progress element-hidden"></div>
+            <div id="xrayDatUpdateProgress" class="element-hidden mdl-progress mdl-js-progress"></div>
             <button id="xrayDatUpdateBtn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
                 Update
             </button>
@@ -262,7 +263,8 @@
                 <img src="assets/icons/file.svg" onclick="saveAsLogFile('access')"/>
                 <img src="assets/icons/copy.svg" onclick="copyLogToClipboard('access')"/>
             </div>
-            <div id="accessLogContent" class="log-content"></div>
+            <div id="accessLogContent" class="log-content">
+            </div>
         </div>
 
         <div class="log-content-layout">
@@ -283,16 +285,16 @@
     <div class="footer-speed">
         <img id="footer-speed-icon" src="assets/icons/speed.svg">
         <span class="mdl-tooltip mdl-tooltip--right" for="footer-speed-icon">
-            per second: UL speed / DL speed.
+            Proxy per sec: UL speed / DL speed
         </span>
-        <p class="footer-speed-text">0 KB / 0 KB</p>
+        <p id="speedStats" class="footer-speed-text">0 / 0</p>
     </div>
     <div class="footer-status">
-        <div>
+        <div id="connectedStatus">
             <p>connected</p>
             <img src="assets/icons/connected.svg">
         </div>
-        <div class="element-hidden">
+        <div id="disconnectStatus">
             <p>disconnect</p>
             <img src="assets/icons/disconnect.svg">
         </div>
