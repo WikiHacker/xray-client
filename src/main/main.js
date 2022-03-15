@@ -3,7 +3,7 @@
  * Created by LOLO on 2022/02/12.
  */
 
-const {app, BrowserWindow, Tray, Menu} = require('electron');
+const {app, powerMonitor, BrowserWindow, Tray, Menu} = require('electron');
 const common = require('./common');
 const consts = require('./consts');
 const xray = require('./xray');
@@ -38,6 +38,11 @@ async function main() {
 
     app.on('before-quit', async () => {
         await proxies.disable();
+    });
+    powerMonitor.on('shutdown', async (event) => {
+        event.preventDefault();
+        await proxies.disable();
+        app.quit();
     });
 
     await app.whenReady();

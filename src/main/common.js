@@ -6,6 +6,7 @@
 const {app, dialog, ipcMain, shell} = require('electron');
 const path = require('path');
 const fs = require('fs-extra');
+const ping = require('ping');
 const consts = require('./consts');
 
 
@@ -82,6 +83,9 @@ ipcMain.on(consts.R_M.HIDE_APP, () => {
 });
 
 
+/**
+ * 将 data 保存成文件
+ */
 ipcMain.on(consts.R_M.SAVE_FILE, async (event, name, data) => {
     let file = path.normalize(app.getPath('downloads') + '/' + name);
     let result = await dialog.showSaveDialog({title: 'Save As...', defaultPath: file});
@@ -89,6 +93,14 @@ ipcMain.on(consts.R_M.SAVE_FILE, async (event, name, data) => {
         await fs.writeFile(result.filePath, data);
         shell.showItemInFolder(result.filePath);
     }
+});
+
+
+/**
+ * 获取 ping 值
+ */
+ipcMain.handle(consts.R_M.PING, async (event, host) => {
+    return await ping.promise.probe(host, {timeout: 3});
 });
 
 

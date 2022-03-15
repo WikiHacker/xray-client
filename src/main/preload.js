@@ -10,7 +10,12 @@ const consts = require('./consts');
 contextBridge.exposeInMainWorld(
     'electron',
     {
-        send: (channel, ...data) => ipcRenderer.send(channel, ...data),
+        send: (channel, ...data) => {
+            ipcRenderer.send(channel, ...data);
+        },
+        invoke: (channel, ...data) => {
+            return ipcRenderer.invoke(channel, ...data);
+        },
         receive: (channel, func) => ipcRenderer.on(channel, (event, ...args) => {
             try {
                 func(...args);
@@ -29,6 +34,7 @@ contextBridge.exposeInMainWorld(
         S: {
             HIDE_APP: consts.R_M.HIDE_APP,
             SAVE_FILE: consts.R_M.SAVE_FILE,
+            PING: consts.R_M.PING,
             SAVE_PROFILE: consts.R_M.SAVE_PROFILE,
             CHANGE_PROFILE: consts.R_M.CHANGE_PROFILE,
             REMOVE_PROFILE: consts.R_M.REMOVE_PROFILE,

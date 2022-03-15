@@ -108,9 +108,9 @@ async function xrayCommand(cmd, ...args) {
         child.on('close', resolve);
     });
 
-    if (exitCode) {
-        throw new Error(`xray-core error exit: ${exitCode}, ${error}`);
-    }
+    if (exitCode)
+        common.send(consts.M_R.UPDATE_ERROR_LOG, `xray-core error exit: ${exitCode}, ${error}`);
+
     return data;
 }
 
@@ -349,7 +349,12 @@ function updateSpeedStats() {
         lastGetStatsTime = nowTime;
 
         let up, down;
-        JSON.parse(data).stat.forEach(item => {
+        try {
+            data = JSON.parse(data);
+        } catch {
+            return;
+        }
+        data.stat.forEach(item => {
             switch (item.name) {
                 case 'outbound>>>proxy>>>traffic>>>uplink':
                     up = item.value ? item.value / interval : 0;

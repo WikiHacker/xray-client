@@ -4,13 +4,14 @@
  */
 
 
+const UNKNOWN_HOST = 'unknown host'
 let curProfileData;
 
 
 function updateProfileList(list) {
     let data = '';
     for (let item of list) {
-        let server = item.address === '' ? 'unknown server' : item.address;
+        let server = isEmpty(item.address) ? UNKNOWN_HOST : item.address;
         server += item.port === '' ? '' : ':' + item.port;
         let lastUsed = dayjs(item.lastUsed).fromNow();
         let name = item.name;
@@ -21,12 +22,10 @@ function updateProfileList(list) {
                 <span>${server}</span>
                 <span>Last used: ${lastUsed}</span>
             </div>
-            <button id="ping${name}Btn" class="mdl-button mdl-js-button mdl-button--icon" onclick="pingByProfile(${name})">
-                <img src="assets/icons/ping-dead.svg"/>
+            <button id="ping${name}btn" class="mdl-button mdl-js-button mdl-button--icon" onclick="pingProfileAddress(${name}, '${item.address}')">
+                <img id="ping${name}img" src="assets/icons/ping-dead.svg"/>
             </button>
-            <div id="ping${name}Value" class="mdl-tooltip" for="ping${name}Btn">
-                ping 123ms
-            </div>
+            <div id="ping${name}time" class="mdl-tooltip" for="ping${name}btn"></div>
 
             <button class="mdl-button mdl-js-button mdl-button--icon" onclick="saveProfile(${name})">
                 <img src="assets/icons/profile-save.svg"/>
@@ -41,9 +40,14 @@ function updateProfileList(list) {
             </label>
         </div>
         `;
-        mdlSetInnerHTML('#profileList', data);
     }
+    mdlSetInnerHTML('#profileList', data);
     updateCurSelectedProfile();
+
+    // ping all
+    for (let item of list) {
+        pingProfileAddress(item.name, item.address);
+    }
 }
 
 
@@ -54,9 +58,21 @@ function updateCurSelectedProfile() {
 }
 
 
-function pingByProfile(name) {
-    let element = document.querySelector(`#ping${name}Value`);
-    element.innerHTML = 'ping 233ms';
+function pingProfileAddress(name, address) {
+    let element = document.querySelector(`#ping${name}time`);
+    if (isEmpty(address))
+        element.textContent = UNKNOWN_HOST;
+    else
+        window.electron.invoke(window.electron.S.PING, address).then(value => {
+            let img = document.querySelector(`#ping${name}img`);
+            if (value.alive) {
+                img.src = 'assets/icons/ping-alive.svg';
+                element.textContent = `ping ${value.time}ms`;
+            } else {
+                img.src = 'assets/icons/ping-dead.svg';
+                element.textContent = UNKNOWN_HOST;
+            }
+        });
 }
 
 function saveProfile(name) {

@@ -26,6 +26,7 @@ const consts = {
     R_M: {
         HIDE_APP: 'hide-app',
         SAVE_FILE: 'save-file',
+        PING: 'ping',
         SAVE_PROFILE: 'save-profile',
         CHANGE_PROFILE: 'change-profile',
         REMOVE_PROFILE: 'remove-profile',
