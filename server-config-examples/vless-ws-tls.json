@@ -1,0 +1,38 @@
+{
+  "log": {
+    "loglevel": "none"
+  },
+  "inbounds": [
+    {
+      "port": 12309,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "feb54431-301b-52bb-a6dd-e1e93e81bb9e",
+            "level": 1
+          }
+        ],
+        "decryption": "none",
+        "fallbacks": [
+          {
+            "dest": 80,
+            "xver": 1
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "path": "/tun"
+        }
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom"
+    }
+  ]
+}

@@ -25,7 +25,7 @@ const GEOSITE_PATH = XRAY_DIR + 'geosite.dat';
 const XRAY_CONFIG_PATH = common.storePath('Data/config.json');
 const TEMP_FILE_PATH = path.normalize(app.getPath('temp') + '/XrayClient/geo.dat.tmp');
 
-// dat 更新地址
+// geo 更新地址
 const GEOIP_URL = [
     'https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat',
     'https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat'
@@ -43,6 +43,7 @@ const RULE = {
 let updateInfo = {};
 let xray_process;
 let getStatsTimeoutId;
+let lastGetStatsTime;
 profile.setStopXrayFunc(stopXray);
 
 
@@ -152,6 +153,8 @@ async function runXray() {
     common.send(consts.M_R.UPDATE_RUNNING_STATUS, true);
     common.send(consts.M_R.SHOW_TIPS,
         isFirstStart ? 'Xray startup complete.' : 'Changes have been applied.');
+
+    lastGetStatsTime = Date.now();
     updateSpeedStats();
 }
 
@@ -276,7 +279,7 @@ function stopXray() {
 
 
 /**
- * 下载一个 dat 文件
+ * 下载一个 geo 文件
  * @param datUrl
  * @param filePath
  * @returns {Promise<Error | null>}
@@ -301,7 +304,7 @@ async function downloadDat(datUrl, filePath) {
 
             const size = parseInt(response.headers['content-length']);
             const str = progress({length: size, time: 500});
-            str.on('progress', updateDatProgress);
+            str.on('progress', updateGeoProgress);
             response
                 .pipe(str)
                 .pipe(file);
@@ -322,8 +325,8 @@ async function downloadDat(datUrl, filePath) {
     });
 }
 
-// 通知 dat 更新进度
-function updateDatProgress(progress) {
+// 通知 geo 更新进度
+function updateGeoProgress(progress) {
     updateInfo.progress = updateInfo.geoip ? 80 : 0;
     updateInfo.progress += progress.percentage * (updateInfo.geoip ? 0.2 : 0.8);
     common.send(consts.M_R.UPDATE_PROGRESS, updateInfo);
@@ -334,28 +337,31 @@ function updateDatProgress(progress) {
 
 
 /**
- *
+ * 更新下载与上传的流量统计
  */
 function updateSpeedStats() {
     clearTimeout(getStatsTimeoutId);
     if (!xray_process) return;
 
     xrayCommand('api', 'statsquery', '--server=127.0.0.1:' + consts.STATS_PORT, '--reset').then((data) => {
-        data = JSON.parse(data);
+        const nowTime = Date.now();
+        const interval = (nowTime - lastGetStatsTime) / 1000;
+        lastGetStatsTime = nowTime;
+
         let up, down;
-        data.stat.forEach(item => {
+        JSON.parse(data).stat.forEach(item => {
             switch (item.name) {
                 case 'outbound>>>proxy>>>traffic>>>uplink':
-                    up = item.value ? item.value / 3 : 0;
+                    up = item.value ? item.value / interval : 0;
                     break;
                 case 'outbound>>>proxy>>>traffic>>>downlink':
-                    down = item.value ? item.value / 3 : 0;
+                    down = item.value ? item.value / interval : 0;
                     break;
             }
         });
         common.send(consts.M_R.UPDATE_SPEED_STATS, {up, down});
     });
-    getStatsTimeoutId = setTimeout(updateSpeedStats, 3000);
+    getStatsTimeoutId = setTimeout(updateSpeedStats, common.showed ? 2500 : 300000);
 }
 
 
@@ -443,4 +449,5 @@ ipcMain.on(consts.R_M.STOP_XRAY, () => stopXray());
 
 module.exports = {
     init,
+    updateSpeedStats,
 };

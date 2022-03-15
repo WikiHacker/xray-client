@@ -1,0 +1,79 @@
+{
+  "log": {
+    "loglevel": "none"
+  },
+  "inbounds": [
+    {
+      "port": 12301,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "feb54431-301b-52bb-a6dd-e1e93e81bb9e",
+            "flow": "xtls-rprx-direct",
+            "level": 1
+          }
+        ],
+        "decryption": "none",
+        "fallbacks": [
+          {
+            "path": "/tun",
+            "dest": 12309,
+            "xver": 1
+          },
+          {
+            "dest": 80,
+            "xver": 1
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "xtls",
+        "xtlsSettings": {
+          "alpn": [
+            "http/1.1"
+          ],
+          "certificates": [
+            {
+              "certificateFile": "xxx.crt",
+              "keyFile": "xxx.key"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "port": 12309,
+      "listen": "127.0.0.1",
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "feb54431-301b-52bb-a6dd-e1e93e81bb9e",
+            "level": 1
+          }
+        ],
+        "decryption": "none",
+        "fallbacks": [
+          {
+            "dest": 80,
+            "xver": 1
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "path": "/tun"
+        }
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom"
+    }
+  ]
+}

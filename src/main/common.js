@@ -12,6 +12,7 @@ const consts = require('./consts');
 const common = {
     tray: null,
     mainWnd: null,
+    showed: true,
 }
 
 

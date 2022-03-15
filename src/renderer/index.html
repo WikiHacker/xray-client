@@ -67,12 +67,12 @@
 
         <div class="profiles-new-buttons">
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="importProfileBtn">
-                <img src="assets/icons/add-for-file.svg"/>
+                <img src="assets/icons/profile-add-for-file.svg"/>
                 <span>form file</span>
             </button>
 
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="createNewProfileBtn">
-                <img src="assets/icons/add-new.svg"/>
+                <img src="assets/icons/profile-add-new.svg"/>
                 <span>create new</span>
             </button>
         </div>
@@ -102,7 +102,7 @@
             <button class="general-cts-rndId mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"
                     id="cts_idBtn"
                     onclick="uuidBtnOnClick()">
-                <img src="assets/icons/random.svg"/>
+                <img src="assets/icons/random-id.svg"/>
             </button>
 
             <div class="input-5-5-left mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -260,8 +260,9 @@
         <div class="log-content-layout">
             <div class="log-title">
                 access.log
-                <img src="assets/icons/file.svg" onclick="saveAsLogFile('access')"/>
-                <img src="assets/icons/copy.svg" onclick="copyLogToClipboard('access')"/>
+                <img src="assets/icons/log-file.svg" onclick="saveAsLogFile('access')"/>
+                <img src="assets/icons/log-copy.svg" onclick="copyLogToClipboard('access')"/>
+                <img src="assets/icons/log-clean.svg" onclick="cleanLogContent('access')"/>
             </div>
             <div id="accessLogContent" class="log-content">
             </div>
@@ -270,8 +271,9 @@
         <div class="log-content-layout">
             <div class="log-title">
                 error.log
-                <img src="assets/icons/file.svg" onclick="saveAsLogFile('error')"/>
-                <img src="assets/icons/copy.svg" onclick="copyLogToClipboard('error')"/>
+                <img src="assets/icons/log-file.svg" onclick="saveAsLogFile('error')"/>
+                <img src="assets/icons/log-copy.svg" onclick="copyLogToClipboard('error')"/>
+                <img src="assets/icons/log-clean.svg" onclick="cleanLogContent('error')"/>
             </div>
             <div id="errorLogContent" class="log-content"></div>
         </div>
@@ -292,11 +294,11 @@
     <div class="footer-status">
         <div id="connectedStatus">
             <p>connected</p>
-            <img src="assets/icons/connected.svg">
+            <img src="assets/icons/status-connected.svg">
         </div>
         <div id="disconnectStatus">
             <p>disconnect</p>
-            <img src="assets/icons/disconnect.svg">
+            <img src="assets/icons/status-disconnect.svg">
         </div>
     </div>
 </div>

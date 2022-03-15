@@ -73,6 +73,13 @@ async function createWindow() {
         wnd.on('ready-to-show', () => wnd.show());
     }
 
+    wnd.on('show', () => {
+        common.showed = true;
+        xray.updateSpeedStats();
+    });
+
+    wnd.on('hide', () => common.showed = false);
+
     await wnd.loadFile(common.appPath('../renderer/index.html'));
 }
 

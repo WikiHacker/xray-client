@@ -29,10 +29,10 @@ function updateProfileList(list) {
             </div>
 
             <button class="mdl-button mdl-js-button mdl-button--icon" onclick="saveProfile(${name})">
-                <img src="assets/icons/save.svg"/>
+                <img src="assets/icons/profile-save.svg"/>
             </button>
             <button class="mdl-button mdl-js-button mdl-button--icon" onclick="removeProfile(${name})">
-                <img src="assets/icons/remove.svg"/>
+                <img src="assets/icons/profile-remove.svg"/>
             </button>
             <p></p>
             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="use${name}">

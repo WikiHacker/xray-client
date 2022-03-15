@@ -39,11 +39,16 @@ function saveAsLogFile(type) {
 }
 
 /**
- * 清空所有日志内容
+ * 清空日志内容
  */
-function cleanLogContent() {
-    errorLogContent.textContent = accessLogContent.textContent = "";
+function cleanLogContent(type) {
+    if (type) {
+        let element = type === 'error' ? errorLogContent : accessLogContent;
+        element.textContent = '';
+    } else
+        errorLogContent.textContent = accessLogContent.textContent = '';
 }
+
 
 (() => {
     // receive / append logs
@@ -54,6 +59,9 @@ function cleanLogContent() {
             if (!item.endsWith(' [api]'))
                 element.innerHTML += `<span>${item}</span>`;
         }
+        // limit 200 logs
+        while (element.childElementCount > 200)
+            element.removeChild(element.firstChild);
     };
 
     window.electron.receive(window.electron.R.UPDATE_ACCESS_LOG, (data) => {

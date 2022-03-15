@@ -14,10 +14,12 @@
   "homepage": "https://github.com/lolo1208/XrayClient",
   "main": "src/main/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "packwin": "electron-packager ./ --out ./out-packages --platform=win32 --arch=x64"
   },
   "devDependencies": {
-    "electron": "^17.0.0"
+    "electron": "^17.0.0",
+    "electron-packager": "^15.4.0"
   },
   "dependencies": {
     "fs-extra": "^10.0.1",
