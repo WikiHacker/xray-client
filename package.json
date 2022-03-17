@@ -12,14 +12,24 @@
     "url": "https://github.com/lolo1208/XrayClient/issues"
   },
   "homepage": "https://github.com/lolo1208/XrayClient",
+  "keywords": [
+    "XrayClient",
+    "xray",
+    "xray-core",
+    "v2ray",
+    "v2ray-core",
+    "xray gui",
+    "v2ray gui"
+  ],
   "main": "src/main/main.js",
   "scripts": {
     "start": "electron .",
-    "packwin": "electron-packager ./ --out ./out-packages --platform=win32 --arch=x64"
+    "dist-win": "electron-builder --config dist-win.json",
+    "pack-win": ""
   },
   "devDependencies": {
     "electron": "^17.0.0",
-    "electron-packager": "^15.4.0"
+    "electron-builder": "^22.14.13"
   },
   "dependencies": {
     "fs-extra": "^10.0.1",

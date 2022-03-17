@@ -1,0 +1,52 @@
+{
+  "appId": "link.lolo.xray-client",
+  "copyright": "Copyright 2022 LOLO",
+  "asar": false,
+  "artifactName": "${productName}-v${version}-${platform}-${arch}-unpacked.${ext}",
+  "directories": {
+    "output": "./dist/"
+  },
+  "files": [
+    "**/*",
+    "!node_modules/*",
+    "!server-config-examples/*",
+    "!dist-win.json",
+    "!dist-mac.json",
+    "!package.json",
+    "!src/xray-core/xray-macos-64",
+    "!src/xray-core/xray-macos-arm64-v8a"
+  ],
+  "win": {
+    "target": [
+      {
+        "target": "portable",
+        "arch": [
+          "x64"
+        ]
+      },
+      {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      },
+      {
+        "target": "zip",
+        "arch": [
+          "x64"
+        ]
+      }
+    ]
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": true,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "artifactName": "${productName}-v${version}-${platform}-${arch}-setup.${ext}"
+  },
+  "portable": {
+    "artifactName": "${productName}-v${version}-${platform}-${arch}-portable.${ext}"
+  }
+}
