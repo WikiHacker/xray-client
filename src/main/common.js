@@ -62,10 +62,11 @@ common.trayMenu = [
  */
 function showAbout() {
     dialog.showMessageBox({
+        // type: 'info',
         title: 'About',
         message: 'message',
         detail: 'The is a detail.',
-        icon: common.appPath('../icons/icon.png'),
+        // icon: common.appPath('../icons/dist/icon.ico'),
     });
 }
 

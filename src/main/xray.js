@@ -96,11 +96,11 @@ async function xrayCommand(cmd, ...args) {
     args.unshift(cmd);
     const child = spawn(XRAY_PATH, args);
 
-    let data = "";
+    let data = '';
     for await (const chunk of child.stdout)
         data += chunk;
 
-    let error = "";
+    let error = '';
     for await (const chunk of child.stderr)
         error += chunk;
 
@@ -184,7 +184,7 @@ async function generateConfig() {
         inbounds: [
             {
                 protocol: 'http',
-                listen: "127.0.0.1",
+                listen: '127.0.0.1',
                 port: data.general.localProxy.http,
                 settings: {timeout: 0}
             },
@@ -220,7 +220,7 @@ async function generateConfig() {
     // proxy outbound
     let outbound = {tag: 'proxy', protocol: 'vless'};
     let vnext = {address: data.general.address, port: data.general.port};
-    let user = {id: data.general.id, level: data.general.level, encryption: "none"};
+    let user = {id: data.general.id, level: data.general.level, encryption: 'none'};
     let streamSettings = {network: data.general.network, security: data.general.security};
 
     if (data.general.network === 'ws')

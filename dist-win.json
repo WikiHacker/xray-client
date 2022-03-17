@@ -13,10 +13,13 @@
     "!dist-win.json",
     "!dist-mac.json",
     "!package.json",
+    "!src/icons/*",
+    "src/icons/*.ico",
     "!src/xray-core/xray-macos-64",
     "!src/xray-core/xray-macos-arm64-v8a"
   ],
   "win": {
+    "icon": "./src/icons/dist/icon.ico",
     "target": [
       {
         "target": "portable",
