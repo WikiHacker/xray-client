@@ -1,7 +1,7 @@
 {
   "appId": "link.lolo.xray-client",
   "copyright": "Copyright 2022 LOLO",
-  "asar": false,
+  "asar": true,
   "artifactName": "${productName}-${version}-${platform}-${arch}.${ext}",
   "directories": {
     "output": "./dist/"

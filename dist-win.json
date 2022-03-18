@@ -1,8 +1,8 @@
 {
   "appId": "link.lolo.xray-client",
   "copyright": "Copyright 2022 LOLO",
-  "asar": false,
-  "artifactName": "${productName}-v${version}-${platform}-${arch}-unpacked.${ext}",
+  "asar": true,
+  "artifactName": "${productName}-${version}-${platform}-${arch}-unpacked.${ext}",
   "directories": {
     "output": "./dist/"
   },
@@ -47,9 +47,9 @@
     "allowToChangeInstallationDirectory": true,
     "createDesktopShortcut": true,
     "createStartMenuShortcut": true,
-    "artifactName": "${productName}-v${version}-${platform}-${arch}-setup.${ext}"
+    "artifactName": "${productName}-${version}-${platform}-${arch}-setup.${ext}"
   },
   "portable": {
-    "artifactName": "${productName}-v${version}-${platform}-${arch}-portable.${ext}"
+    "artifactName": "${productName}-${version}-${platform}-${arch}-portable.${ext}"
   }
 }
