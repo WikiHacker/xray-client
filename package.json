@@ -25,6 +25,8 @@
   "scripts": {
     "start": "electron .",
     "dist-win": "electron-builder --config dist-win.json",
+    "dist-mac": "electron-builder --config dist-mac.json",
+    "dist-arm": "electron-builder --config dist-mac-arm64.json",
     "pack-win": ""
   },
   "devDependencies": {

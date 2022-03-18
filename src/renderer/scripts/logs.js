@@ -53,26 +53,28 @@ function cleanLogContent(type) {
 (() => {
     // receive / append logs
     const appendLog = (element, data) => {
-        let list = data.split('\n');
-        for (let item of list) {
-            item = item.trim();
-            if (!item.endsWith(' [api]'))
-                element.innerHTML += `<span>${item}</span>`;
-        }
+        element.innerHTML += `<span>${data}</span>`;
         // limit 200 logs
         while (element.childElementCount > 200)
             element.removeChild(element.firstChild);
     };
 
     window.electron.receive(window.electron.R.UPDATE_ACCESS_LOG, (data) => {
-        if (data.substr(19, 2) === ' [')
-            appendLog(errorLogContent, data);
-        else
-            appendLog(accessLogContent, data);
+        let list = data.split('\n');
+        for (let item of list) {
+            item = item.trim();
+            if (isEmpty(item) || item.endsWith('[api]')) continue;
+            if (item.endsWith(']')) {
+                let idx = item.indexOf('//') + 2;
+                if (idx === 1) idx = item.indexOf('accepted') + 9;
+                appendLog(accessLogContent, item.substr(idx));
+            } else
+                appendLog(errorLogContent, item);
+        }
     });
 
     window.electron.receive(window.electron.R.UPDATE_ERROR_LOG, (data) => {
-        appendLog(errorLogContent, data);
+        appendLog(errorLogContent, data.trim());
     });
 
 

@@ -16,7 +16,7 @@
     "!src/icons/*",
     "src/icons/*.png",
     "!src/xray-core/xray-windows-64.exe",
-    "!src/xray-core/xray-macos-arm64-v8a"
+    "!src/xray-core/xray-macos-64"
   ],
   "mac": {
     "icon": "./src/icons/dist/icon.icns",
@@ -24,13 +24,13 @@
       {
         "target": "dmg",
         "arch": [
-          "x64"
+          "arm64"
         ]
       },
       {
         "target": "zip",
         "arch": [
-          "x64"
+          "arm64"
         ]
       }
     ]
@@ -43,7 +43,7 @@
         "y": 220
       },
       {
-        "x": 400,
+        "x": 380,
         "y": 220,
         "type": "link",
         "path": "/Applications"
