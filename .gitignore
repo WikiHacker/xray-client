@@ -1,9 +1,10 @@
 .idea
 node_modules
+
 /dist/
+/src/icons/dist/*.png
 
 package-lock.json
 *.xcf
-/src/icons/dist/*.png
 
 .DS_Store
