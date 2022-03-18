@@ -15,7 +15,7 @@ let accessLogContent = document.querySelector('#accessLogContent');
  */
 function getLogContent(type) {
     let element = type === 'error' ? errorLogContent : accessLogContent;
-    return element.innerHTML
+    return formatLogRuleOut(element.innerHTML)
         .replaceAll('<span>', '\n')
         .replaceAll('</span>', '')
         .trim();
@@ -50,8 +50,19 @@ function cleanLogContent(type) {
 }
 
 
+function formatLogRuleOut(input, toHtml) {
+    for (let i = 0; i < RULE_OUT.length; i++) {
+        let out = RULE_OUT[i];
+        let a = `<span class="log-rule rule-${out}">[${out}]</span>`;
+        let b = `[${out}]`;
+        input = toHtml ? input.replaceAll(b, a) : input.replaceAll(a, b);
+    }
+    return input;
+}
+
+
 (() => {
-    // receive / append logs
+    // receive logs
     const appendLog = (element, data) => {
         element.innerHTML += `<span>${data}</span>`;
         // limit 200 logs
@@ -67,7 +78,8 @@ function cleanLogContent(type) {
             if (item.endsWith(']')) {
                 let idx = item.indexOf('//') + 2;
                 if (idx === 1) idx = item.indexOf('accepted') + 9;
-                appendLog(accessLogContent, item.substr(idx));
+                item = formatLogRuleOut(item.substr(idx), true);
+                appendLog(accessLogContent, item);
             } else
                 appendLog(errorLogContent, item);
         }

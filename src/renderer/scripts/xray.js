@@ -56,7 +56,7 @@ function checkOptions() {
     t.general.security = check(c.general.security, getSecurityValue());
     t.general.localProxy.socks = check(c.general.localProxy.socks, parseInt(lp_socks_port.value));
     t.general.localProxy.http = check(c.general.localProxy.http, parseInt(lp_http_port.value));
-    t.general.localProxy.enabled = check(c.general.localProxy.enabled, lp_enabled.checked);
+    t.general.localProxy.lanEnabled = check(c.general.localProxy.lanEnabled, lp_lanEnabled.checked);
 
     if (!hasChange)
         hasChange = tmpProfileData.log.level !== curProfileData.log.level;
@@ -84,10 +84,9 @@ function applyXrayConfig() {
     const disconnectBtn = document.querySelector('#disconnectBtn');
 
     applyBtn.addEventListener('click', () => applyXrayConfig());
+    window.electron.receive(window.electron.R.APPLY_CHANGES, () => applyXrayConfig());
 
-    disconnectBtn.addEventListener('click', () => {
-        window.electron.send(window.electron.S.STOP_XRAY);
-    });
+    disconnectBtn.addEventListener('click', () => window.electron.send(window.electron.S.STOP_XRAY));
 
     window.electron.receive(window.electron.R.UPDATE_RUNNING_STATUS, (running) => {
         if (running) {

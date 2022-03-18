@@ -23,7 +23,11 @@ let isFirstUse = true;
  */
 async function init() {
     if (datastore.data.lastUsedProfile) {
-        await readProfile(datastore.data.lastUsedProfile);
+        try {
+            await readProfile(datastore.data.lastUsedProfile);
+        } catch {
+            await createNewProfile();
+        }
     } else {
         await createNewProfile();
     }
@@ -68,12 +72,11 @@ async function createNewProfile() {
             level: 1, wsPath: '',
             network: 'tcp',
             security: 'xtls',
-            localProxy: {http: 1087, socks: 7801, enabled: true},
+            localProxy: {http: 1087, socks: 7801, lanEnabled: false},
         },
         proxies: {
-            http: {server: '127.0.0.1', port: 1087},
-            socks: {server: '127.0.0.1', port: 7801},
-            enabled: false,
+            http: {server: consts.LOCAL_IP, port: 1087},
+            socks: {server: consts.LOCAL_IP, port: 7801},
         },
         log: {
             level: 'warning',

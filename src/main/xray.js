@@ -5,6 +5,7 @@
 
 const {spawn} = require('child_process');
 const https = require('https');
+const os = require('os');
 const url = require('url');
 const path = require('path');
 const fs = require('fs-extra');
@@ -40,11 +41,15 @@ const RULE = {
     TYPE: {DOMAIN: 'domain', IP: 'ip', PORT: 'port'}
 };
 
-let updateInfo = {};
-let xray_process;
-let getStatsTimeoutId;
-let lastGetStatsTime;
+
+common.xrayPath = XRAY_PATH;
 profile.setStopXrayFunc(stopXray);
+
+
+let lanIp = consts.LOCAL_IP;
+let xray_process;
+let updateInfo = {};
+let getStatsTimeoutId, lastGetStatsTime;
 
 
 //
@@ -78,8 +83,25 @@ async function init() {
         await fs.copy(xrayDir + 'geosite.dat', GEOSITE_PATH);
 
     let version = await xrayCommand('version');
-    let stats = await fs.stat(GEOIP_PATH);
-    common.send(consts.M_R.UPDATE_XRAY_INFO, {version, lastUpdate: stats.mtime});
+    let stats = await fs.stat(GEOSITE_PATH);
+    common.send(consts.M_R.UPDATE_VERSION_INFO, {
+        appVersion: app.getVersion(),
+        xrayVersion: version,
+        geoLastUpdate: stats.mtime
+    });
+
+    // 获取局域网 ip
+    let interfaces = os.networkInterfaces();
+    for (let name in interfaces) {
+        if (interfaces.hasOwnProperty(name)) {
+            let face = interfaces[name];
+            for (let i = 0; i < face.length; i++) {
+                let {family, address, internal} = face[i];
+                if (family === 'IPv4' && address !== consts.LOCAL_IP && !internal)
+                    lanIp = address;
+            }
+        }
+    }
 }
 
 
@@ -130,9 +152,7 @@ async function runXray() {
     }
 
     await generateConfig();
-
-    if (profile.getCurrentProfileData().general.localProxy.enabled)
-        await proxies.enable();
+    await proxies.enable();
 
     let subprocess = xray_process = spawn(XRAY_PATH, ['run', '-c=' + XRAY_CONFIG_PATH]);
     subprocess.on('exit', () => {
@@ -160,7 +180,15 @@ async function runXray() {
 
 // 生成 xray 配置文件
 async function generateConfig() {
-    let data = profile.getCurrentProfileData();
+    let profileData = profile.getCurrentProfileData();
+    let {general, log, rules} = profileData;
+    let localProxy = general.localProxy;
+    let proxiesData = profileData.proxies;
+    let listenIp = localProxy.lanEnabled ? lanIp : consts.LOCAL_IP;
+
+    proxiesData.http = {server: listenIp, port: localProxy.http};
+    proxiesData.socks = {server: listenIp, port: localProxy.socks};
+    await profile.saveCurrentProfile();
 
     // base
     let config = {
@@ -168,7 +196,7 @@ async function generateConfig() {
         api: {tag: 'api', services: ['StatsService']},
         policy: {system: {statsOutboundUplink: true, statsOutboundDownlink: true}},
 
-        log: {loglevel: data.log.level},
+        log: {loglevel: log.level},
 
         routing: {
             domainStrategy: 'IPIfNonMatch',
@@ -184,33 +212,33 @@ async function generateConfig() {
         inbounds: [
             {
                 protocol: 'http',
-                listen: '127.0.0.1',
-                port: data.general.localProxy.http,
+                listen: listenIp,
+                port: localProxy.http,
                 settings: {timeout: 0}
             },
             {
                 protocol: 'socks',
-                listen: '127.0.0.1',
-                port: data.general.localProxy.socks,
+                listen: listenIp,
+                port: localProxy.socks,
                 settings: {udp: true}
             },
             {
                 tag: 'api',
                 protocol: 'dokodemo-door',
-                listen: '127.0.0.1',
+                listen: consts.LOCAL_IP,
                 port: consts.STATS_PORT,
-                settings: {address: '127.0.0.1'}
+                settings: {address: consts.LOCAL_IP}
             }
         ],
 
         outbounds: [
             {
-                tag: 'direct',
+                tag: RULE.OUT.DIRECT,
                 protocol: 'freedom',
                 settings: {}
             },
             {
-                tag: 'reject',
+                tag: RULE.OUT.REJECT,
                 protocol: 'blackhole',
                 settings: {}
             }
@@ -218,19 +246,19 @@ async function generateConfig() {
     };
 
     // proxy outbound
-    let outbound = {tag: 'proxy', protocol: 'vless'};
-    let vnext = {address: data.general.address, port: data.general.port};
-    let user = {id: data.general.id, level: data.general.level, encryption: 'none'};
-    let streamSettings = {network: data.general.network, security: data.general.security};
+    let outbound = {tag: RULE.OUT.PROXY, protocol: 'vless'};
+    let vnext = {address: general.address, port: general.port};
+    let user = {id: general.id, level: general.level, encryption: 'none'};
+    let streamSettings = {network: general.network, security: general.security};
 
-    if (data.general.network === 'ws')
-        streamSettings.wsSettings = {path: data.general.wsPath};
+    if (general.network === 'ws')
+        streamSettings.wsSettings = {path: general.wsPath};
 
-    if (data.general.security === 'xtls') {
-        streamSettings.xtlsSettings = {serverName: data.general.address};
+    if (general.security === 'xtls') {
+        streamSettings.xtlsSettings = {serverName: general.address};
         user.flow = 'xtls-rprx-direct';
-    } else if (data.general.security === 'tls')
-        streamSettings.tlsSettings = {serverName: data.general.address};
+    } else if (general.security === 'tls')
+        streamSettings.tlsSettings = {serverName: general.address};
 
     vnext.users = [user];
     outbound.settings = {vnext: [vnext]};
@@ -238,11 +266,11 @@ async function generateConfig() {
     config.outbounds.push(outbound);
 
     // rules
-    let rules = config.routing.rules;
+    let ruleList = config.routing.rules;
     let rule = (outbound, type) => {
-        let list = data.rules[outbound][type];
+        let list = rules[outbound][type];
         if (list && list.length > 0)
-            rules.push({
+            ruleList.push({
                 type: 'field',
                 outboundTag: outbound,
                 [type]: type === RULE.TYPE.PORT ? list.join(',') : list
@@ -257,7 +285,7 @@ async function generateConfig() {
     rule(RULE.OUT.DIRECT, RULE.TYPE.DOMAIN);
     rule(RULE.OUT.DIRECT, RULE.TYPE.IP);
     rule(RULE.OUT.DIRECT, RULE.TYPE.PORT);
-    rules.push({type: 'field', outboundTag: RULE.OUT.PROXY, port: '0-65535'});// 没匹配到规则的，全部走代理
+    ruleList.push({type: 'field', outboundTag: RULE.OUT.PROXY, port: '0-65535'});// 没匹配到规则的，全部走代理
 
     await fs.writeJson(XRAY_CONFIG_PATH, config);
 }
@@ -343,7 +371,7 @@ function updateSpeedStats() {
     clearTimeout(getStatsTimeoutId);
     if (!xray_process) return;
 
-    xrayCommand('api', 'statsquery', '--server=127.0.0.1:' + consts.STATS_PORT, '--reset').then((data) => {
+    xrayCommand('api', 'statsquery', `--server=${consts.LOCAL_IP}:${consts.STATS_PORT}`, '--reset').then((data) => {
         const nowTime = Date.now();
         const interval = (nowTime - lastGetStatsTime) / 1000;
         lastGetStatsTime = nowTime;

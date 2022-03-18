@@ -16,7 +16,7 @@ const cts_security_tls = document.querySelector('#cts_security_tls');
 const cts_security_xtls = document.querySelector('#cts_security_xtls');
 const lp_socks_port = document.querySelector('#lp_socks_port');
 const lp_http_port = document.querySelector('#lp_http_port');
-const lp_enabled = document.querySelector('#lp_enabled');
+const lp_lanEnabled = document.querySelector('#lp_lanEnabled');
 
 
 /**
@@ -42,7 +42,7 @@ function getSecurityValue() {
         cts_address, cts_port, cts_id, cts_level, cts_ws_path,
         cts_net_tcp, cts_net_ws,
         cts_security_none, cts_security_tls, cts_security_xtls,
-        lp_socks_port, lp_http_port, lp_enabled
+        lp_socks_port, lp_http_port, lp_lanEnabled
     ];
     for (let option of options) {
         option.onchange = checkOptions;
@@ -72,8 +72,8 @@ function getSecurityValue() {
         document.querySelector('#cts_security_' + data.general.security).parentNode.MaterialRadio.check();
         lp_socks_port.value = data.general.localProxy.socks;
         lp_http_port.value = data.general.localProxy.http;
-        let lpSwitch = lp_enabled.parentNode.MaterialSwitch;
-        data.general.localProxy.enabled ? lpSwitch.on() : lpSwitch.off();
+        let lpSwitch = lp_lanEnabled.parentNode.MaterialSwitch;
+        data.general.localProxy.lanEnabled ? lpSwitch.on() : lpSwitch.off();
         mdlTextFieldCheckDirty();
         networkChange();
     });

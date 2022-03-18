@@ -51,10 +51,11 @@ contextBridge.exposeInMainWorld(
         R: {
             SHOW_TIPS: consts.M_R.SHOW_TIPS,
             UPDATE_RUNNING_STATUS: consts.M_R.UPDATE_RUNNING_STATUS,
+            APPLY_CHANGES: consts.M_R.APPLY_CHANGES,
             UPDATE_SPEED_STATS: consts.M_R.UPDATE_SPEED_STATS,
             UPDATE_PROFILE_LIST: consts.M_R.UPDATE_PROFILE_LIST,
             UPDATE_PROFILE_DATA: consts.M_R.UPDATE_PROFILE_DATA,
-            UPDATE_XRAY_INFO: consts.M_R.UPDATE_XRAY_INFO,
+            UPDATE_VERSION_INFO: consts.M_R.UPDATE_VERSION_INFO,
             UPDATE_UUID: consts.M_R.UPDATE_UUID,
             UPDATE_PROGRESS: consts.M_R.UPDATE_PROGRESS,
             SWITCH_GLOBAL_PROXY: consts.M_R.SWITCH_GLOBAL_PROXY,

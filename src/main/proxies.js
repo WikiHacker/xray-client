@@ -15,7 +15,7 @@ const profile = require('./profile');
 
 const cmdQueue = [];
 let executing = false;
-let proxies;
+let settings;
 
 
 /**
@@ -37,7 +37,7 @@ async function execCmd(...args) {
 
 
 async function enable() {
-    const {http, socks} = proxies = profile.getCurrentProfileData().proxies;
+    const {http, socks} = settings = profile.getCurrentProfileData().proxies;
     if (consts.IS_MAC)
         await execCmd(
             `networksetup -setwebproxy Wi-Fi ${http.server} ${http.port}`,
@@ -50,12 +50,12 @@ async function enable() {
             `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings" /v ProxyServer /d "${http.server}:${http.port}" /f`
         );
 
-    common.send(consts.M_R.SWITCH_GLOBAL_PROXY, true);
+    common.send(consts.M_R.SWITCH_GLOBAL_PROXY, true, settings);
 }
 
 
 async function disable() {
-    proxies = null;
+    settings = null;
     if (consts.IS_MAC)
         await execCmd(
             'networksetup -setwebproxystate Wi-Fi off',
@@ -94,7 +94,7 @@ module.exports = {
     enable,
     disable,
     getSettings: () => {
-        return proxies;
+        return settings;
     }
 };
 

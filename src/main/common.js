@@ -14,6 +14,7 @@ const common = {
     tray: null,
     mainWnd: null,
     showed: true,
+    xrayPath: '',
 }
 
 
@@ -38,13 +39,16 @@ common.trayMenu = [
     {
         label: 'Application', click: () => common.mainWnd.show()
     },
+    {
+        label: 'About XrayClient', click: () => showAbout()
+    },
 
     {type: 'separator'},
     {
-        label: 'Developer Tools', click: () => common.mainWnd.openDevTools({mode: 'detach'})
+        label: 'Xray-Core', click: () => shell.showItemInFolder(common.xrayPath)
     },
     {
-        label: 'About XrayClient', click: () => showAbout()
+        label: 'Apply Changes', click: () => common.send(consts.M_R.APPLY_CHANGES)
     },
 
     {type: 'separator'},
@@ -52,6 +56,12 @@ common.trayMenu = [
         label: 'Quit', click: () => app.quit()
     },
 ];
+
+if (consts.IS_DEVELOPMENT) {
+    common.trayMenu.splice(3, 0, {
+        label: 'Developer Tools', click: () => common.mainWnd.openDevTools({mode: 'detach'})
+    });
+}
 
 
 //

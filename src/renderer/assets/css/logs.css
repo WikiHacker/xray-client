@@ -72,7 +72,7 @@
 
 .log-content > span {
     display: block;
-    padding: 3px 0;
+    padding: 3px 5px;
     word-break: break-word;
 }
 
@@ -80,4 +80,9 @@
     background-color: #eaeaea;
 }
 
+.log-rule {
+    padding: 3px;
+    border-radius: 5px;
+    color: #fff;
+}
 

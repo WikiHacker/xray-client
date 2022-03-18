@@ -25,7 +25,7 @@
 
 <div class="drag-area">
     <img id="appFavicon" src="assets/icons/favicon.svg"/>
-    <span class="mdl-tooltip" for="appFavicon">
+    <span id="appVersionTips" class="mdl-tooltip" for="appFavicon">
         XrayClient<br>version: 1.2.3.4
     </span>
     <span></span>
@@ -164,9 +164,9 @@
 
         <div class="general-submit-layout">
             <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect"
-                   for="lp_enabled">
-                <input type="checkbox" id="lp_enabled" class="mdl-switch__input" checked>
-                <span class="mdl-switch__label">Enable global proxy</span>
+                   for="lp_lanEnabled">
+                <input type="checkbox" id="lp_lanEnabled" class="mdl-switch__input" checked>
+                <span class="mdl-switch__label">Enable LAN Proxy</span>
             </label>
 
             <div class="general-submit-buttons">
@@ -324,15 +324,15 @@
             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a_r_out_direct">
                 <input type="radio" id="a_r_out_direct" class="mdl-radio__button" name="a_r_out" value="direct"
                        checked>
-                <span class="rule-item-out r-i-t-direct mdl-radio__label">Direct</span>
+                <span class="rule-item-out rule-direct mdl-radio__label">Direct</span>
             </label>
             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a_r_out_proxy">
                 <input type="radio" id="a_r_out_proxy" class="mdl-radio__button" name="a_r_out" value="proxy">
-                <span class="rule-item-out r-i-t-proxy mdl-radio__label">Proxy</span>
+                <span class="rule-item-out rule-proxy mdl-radio__label">Proxy</span>
             </label>
             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="a_r_out_reject">
                 <input type="radio" id="a_r_out_reject" class="mdl-radio__button" name="a_r_out" value="reject">
-                <span class="rule-item-out r-i-t-reject mdl-radio__label">Reject</span>
+                <span class="rule-item-out rule-reject mdl-radio__label">Reject</span>
             </label>
         </div>
 

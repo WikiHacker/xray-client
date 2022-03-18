@@ -39,21 +39,25 @@
         }
     }
 
-    // 更新 enabled switch 状态
-    window.electron.receive(window.electron.R.SWITCH_GLOBAL_PROXY, (enabled) => {
-        let ms = gp_enabled.parentNode.MaterialSwitch;
-        enabled ? ms.on() : ms.off();
-    });
-
+    // 更新输入控件的值
+    const updateInputs = (settings) => {
+        gp_http_server.value = settings.http.server;
+        gp_http_port.value = settings.http.port;
+        gp_socks_server.value = settings.socks.server;
+        gp_socks_port.value = settings.socks.port;
+        mdlTextFieldCheckDirty();
+    };
 
     // profile 有更新
-    window.electron.receive(window.electron.R.UPDATE_PROFILE_DATA, (data) => {
-        gp_http_server.value = data.proxies.http.server;
-        gp_http_port.value = data.proxies.http.port;
-        gp_socks_server.value = data.proxies.socks.server;
-        gp_socks_port.value = data.proxies.socks.port;
-        mdlTextFieldCheckDirty();
+    window.electron.receive(window.electron.R.UPDATE_PROFILE_DATA, (data) => updateInputs(data.proxies));
+
+    // 更新 enabled switch 状态
+    window.electron.receive(window.electron.R.SWITCH_GLOBAL_PROXY, (enabled, settings) => {
+        let ms = gp_enabled.parentNode.MaterialSwitch;
+        enabled ? ms.on() : ms.off();
+        updateInputs(settings);
     });
+
 
     // 显示上次更新 geoip.dat & geosite.dat 的时间
     const lastUpdateTime = (time) => {
@@ -62,9 +66,10 @@
     };
 
     // 显示 xray 的版本信息
-    window.electron.receive(window.electron.R.UPDATE_XRAY_INFO, (data) => {
-        document.querySelector('.xray-core-version').textContent = data.version;
-        lastUpdateTime(data.lastUpdate);
+    window.electron.receive(window.electron.R.UPDATE_VERSION_INFO, (data) => {
+        document.querySelector('#appVersionTips').innerHTML = `XrayClient<br>version: ${data.appVersion}`;
+        document.querySelector('.xray-core-version').textContent = data.xrayVersion;
+        lastUpdateTime(data.geoLastUpdate);
     });
 
 

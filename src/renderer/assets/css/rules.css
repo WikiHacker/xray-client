@@ -37,15 +37,15 @@
     border-radius: 5px;
 }
 
-.r-i-t-direct {
+.rule-direct {
     background-color: #67ad5b;
 }
 
-.r-i-t-proxy {
+.rule-proxy {
     background-color: #4a94ec;
 }
 
-.r-i-t-reject {
+.rule-reject {
     background-color: #e15241;
 }
 

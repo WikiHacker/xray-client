@@ -3,6 +3,10 @@
  * Created by LOLO on 2022/03/08.
  */
 
+
+
+const RULE_OUT = ['reject', 'proxy', 'direct'];
+const RULE_TYPE = ['domain', 'ip', 'port'];
 let rulesChanged = false;
 
 
@@ -22,7 +26,7 @@ function updateRules() {
         }
         data += `
         <div class="rule-item">
-            <span class="rule-item-out r-i-t-${out}">${out}</span>
+            <span class="rule-item-out rule-${out}">${out}</span>
             <span class="rule-item-prefix">${prefix}</span>
             <span class="rule-item-value">${val}</span>
             <img class="rule-item-type" src="assets/icons/rule-type-${type}.svg"/>
@@ -32,13 +36,12 @@ function updateRules() {
         `;
     };
 
-    let outList = ['reject', 'proxy', 'direct'];
-    let typeList = ['domain', 'ip', 'port'];
-    for (let i = 0; i < outList.length; i++) {
-        let out = outList[i];
+
+    for (let i = 0; i < RULE_OUT.length; i++) {
+        let out = RULE_OUT[i];
         if (rules[out]) {
-            for (let j = 0; j < typeList.length; j++) {
-                let type = typeList[j];
+            for (let j = 0; j < RULE_TYPE.length; j++) {
+                let type = RULE_TYPE[j];
                 let list = rules[out][type];
                 if (list) {
                     for (let k = 0; k < list.length; k++) {
@@ -164,15 +167,15 @@ function removeRule(key) {
 
     const typeChanged = () => {
         switch (getRuleType()) {
-            case 'domain':
+            case RULE_TYPE[0]:
                 enableAllPrefix(true, true, true, true, true, false);
                 changePrefix(a_r_p_domain);
                 break;
-            case 'ip':
+            case RULE_TYPE[1]:
                 enableAllPrefix(true, false, false, false, false, true);
                 changePrefix(a_r_p_none);
                 break;
-            case 'port':
+            case RULE_TYPE[2]:
                 enableAllPrefix(true, false, false, false, false, false);
                 changePrefix(a_r_p_none);
         }
