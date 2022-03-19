@@ -23,7 +23,7 @@ if (!app.requestSingleInstanceLock()) {
         }
     });
 
-    main().then(() => console.log('Startup Completed.'));
+    main().then(() => console.log('Startup completed!'));
 }
 
 
@@ -36,14 +36,15 @@ async function main() {
         app.dock.hide();
     }
 
-    app.on('before-quit', async () => {
-        await proxies.disable();
-    });
-    powerMonitor.on('shutdown', async (event) => {
+    const quit = async (event) => {
         event.preventDefault();
         await proxies.disable();
+        console.log('Safe exit!');
         app.quit();
-    });
+    }
+
+    app.on('quit', quit);
+    powerMonitor.on('shutdown', quit);
 
     await app.whenReady();
     await createWindow();

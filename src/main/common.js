@@ -86,7 +86,10 @@ if (consts.IS_DEVELOPMENT) {
 
 
 common.send = (channel, ...args) => {
-    common.mainWnd.webContents.send(channel, ...args);
+    try {
+        common.mainWnd.webContents.send(channel, ...args);
+    } catch {
+    }
 };
 
 

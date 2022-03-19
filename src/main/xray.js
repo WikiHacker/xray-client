@@ -313,8 +313,6 @@ function stopXray() {
  * @returns {Promise<Error | null>}
  */
 async function downloadDat(datUrl, filePath) {
-    console.log('download...\n  ' + datUrl);
-
     return new Promise((resolve, reject) => {
         const file = fs.createWriteStream(TEMP_FILE_PATH);
 
