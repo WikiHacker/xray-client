@@ -132,6 +132,7 @@ function showHint(msg, timeout = 2000) {
             connectedStatus.classList.add(CSS_CLASS_HIDDEN);
             disconnectStatus.classList.remove(CSS_CLASS_HIDDEN);
             speedStats.textContent = '0 / 0';
+            showHint('Xray has stopped.');
         }
     });
 

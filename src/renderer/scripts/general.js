@@ -40,8 +40,6 @@ function getSecurityValue() {
     // 控件值有改变时，检查是否需要重新应用 xray config
     let options = [
         cts_address, cts_port, cts_id, cts_level, cts_ws_path,
-        cts_net_tcp, cts_net_ws,
-        cts_security_none, cts_security_tls, cts_security_xtls,
         lp_socks_port, lp_http_port, lp_lanEnabled
     ];
     for (let option of options) {
@@ -85,7 +83,7 @@ function getSecurityValue() {
         let security = getSecurityValue();
         if (security !== 'none') content += ' with ' + security;
         document.querySelector('#generalIntroText').innerText = content;
-
+        checkOptions();
     };
     cts_security_none.onchange = cts_security_tls.onchange = cts_security_xtls.onchange = changeIntroText;
 
