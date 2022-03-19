@@ -36,15 +36,15 @@ async function main() {
         app.dock.hide();
     }
 
-    const quit = async (event) => {
+    const safeQuit = async (event) => {
         event.preventDefault();
         await proxies.disable();
         console.log('Safe exit!');
         app.quit();
     }
 
-    app.on('quit', quit);
-    powerMonitor.on('shutdown', quit);
+    app.on('quit', safeQuit);
+    powerMonitor.on('shutdown', safeQuit);
 
     await app.whenReady();
     await createWindow();
