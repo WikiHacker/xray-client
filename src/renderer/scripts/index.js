@@ -135,5 +135,26 @@ function showHint(msg, timeout = 2000) {
         }
     });
 
+
+    // about dialog
+    const aboutDialog = document.querySelector('#aboutDialog');
+    aboutDialog.querySelector('.github').addEventListener('click', () => {
+        window.electron.openExternal('https://github.com/lolo1208/XrayClient');
+    });
+    aboutDialog.querySelector('.close').addEventListener('click', () => {
+        aboutDialog.classList.add(CSS_CLASS_HIDDEN);
+    });
+
+    window.electron.receive(window.electron.R.SHOW_ABOUT, () => {
+        aboutDialog.classList.remove(CSS_CLASS_HIDDEN);
+    });
+
+    window.electron.receive(window.electron.R.UPDATE_VERSION_INFO, (data) => {
+        aboutDialog.querySelector('.mdl-card__supporting-text').innerHTML = `
+            XrayClient version: ${data.appVersion}<br>
+            Xray-Core version: ${data.xrayVersion.split(' ')[1]}<br>
+            GEOs last updated on ${dayjs(data.geoLastUpdate).format('LL')}
+        `;
+    });
 })();
 

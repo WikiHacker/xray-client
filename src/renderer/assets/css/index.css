@@ -103,6 +103,52 @@ body {
     overflow: overlay;
 }
 
+/*
+ * about
+ */
+#aboutDialog {
+    display: flex;
+    z-index: 999;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.about-card {
+    width: 300px;
+    height: 300px;
+    border-radius: 10px;
+}
+
+.about-card > .mdl-card__title {
+    background: url("../icons/about-icon.svg") center 40% no-repeat #4350af;
+    background-size: 50% 50%;
+    color: #fff;
+}
+
+.about-card .mdl-card__title-text {
+    margin: 0 auto;
+}
+
+.about-card .mdl-card__supporting-text {
+    line-height: 20px;
+}
+
+.about-card .mdl-card__actions {
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+}
+
+.about-card .mdl-button--icon {
+    margin-right: 10px;
+}
+
 
 /*
  * footer

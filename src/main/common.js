@@ -40,7 +40,10 @@ common.trayMenu = [
         label: 'Application', click: () => common.mainWnd.show()
     },
     {
-        label: 'About XrayClient', click: () => showAbout()
+        label: 'About XrayClient', click: () => {
+            common.mainWnd.show();
+            common.send(consts.M_R.SHOW_ABOUT);
+        }
     },
 
     {type: 'separator'},
@@ -60,23 +63,6 @@ common.trayMenu = [
 if (consts.IS_DEVELOPMENT) {
     common.trayMenu.splice(3, 0, {
         label: 'Developer Tools', click: () => common.mainWnd.openDevTools({mode: 'detach'})
-    });
-}
-
-
-//
-
-
-/**
- * 显示 About 界面
- */
-function showAbout() {
-    dialog.showMessageBox({
-        // type: 'info',
-        title: 'About',
-        message: 'message',
-        detail: 'The is a detail.',
-        // icon: common.appPath('../icons/dist/icon.ico'),
     });
 }
 

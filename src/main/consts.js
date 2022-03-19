@@ -14,6 +14,7 @@ const consts = {
 
     M_R: {
         SHOW_TIPS: 'show-tips',
+        SHOW_ABOUT: 'show-about',
         UPDATE_RUNNING_STATUS: 'update-running-status',
         APPLY_CHANGES: 'apply-changes',
         UPDATE_SPEED_STATS: 'update-speed-stats',
