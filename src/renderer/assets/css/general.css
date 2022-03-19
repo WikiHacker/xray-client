@@ -56,6 +56,10 @@
     margin: 0 15px 10px;
 }
 
+.general-submit-layout > label {
+    width: auto;
+}
+
 .general-submit-buttons {
     margin-top: 20px;
 }

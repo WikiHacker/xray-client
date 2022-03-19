@@ -15,7 +15,7 @@ const profile = require('./profile');
 
 const cmdQueue = [];
 let executing = false;
-let settings;
+let settings = null;
 
 
 /**
@@ -72,6 +72,14 @@ async function disable() {
 }
 
 
+async function switchStatus() {
+    if (settings)
+        await disable();
+    else
+        await enable();
+}
+
+
 /**
  * 设置本地代理
  */
@@ -93,8 +101,13 @@ ipcMain.on(consts.R_M.SET_LOCAL_PROXY, async (event, data) => {
 module.exports = {
     enable,
     disable,
-    getSettings: () => {
+    switchStatus,
+
+    get settings() {
         return settings;
+    },
+    get running() {
+        return settings !== null;
     }
 };
 

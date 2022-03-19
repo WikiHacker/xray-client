@@ -47,7 +47,7 @@ profile.setStopXrayFunc(stopXray);
 
 
 let lanIp = consts.LOCAL_IP;
-let xray_process;
+let xray_process = null;
 let updateInfo = {};
 let getStatsTimeoutId, lastGetStatsTime;
 
@@ -172,7 +172,7 @@ async function runXray() {
 
     common.send(consts.M_R.UPDATE_RUNNING_STATUS, true);
     common.send(consts.M_R.SHOW_TIPS,
-        isFirstStart ? 'Xray startup complete.' : 'Changes have been applied.');
+        isFirstStart ? 'Startup complete.' : 'Changes have been applied.');
 
     lastGetStatsTime = Date.now();
     updateSpeedStats();
@@ -320,7 +320,7 @@ async function downloadDat(datUrl, filePath) {
 
         // let options = new url.URL(datUrl);
         let options = url.parse(datUrl);
-        let proxy = proxies.getSettings();
+        let proxy = proxies.settings;
         if (proxy)
             options.agent = new HttpsProxyAgent(`http://${proxy.http.server}:${proxy.http.port}`);
 
@@ -483,4 +483,8 @@ ipcMain.on(consts.R_M.STOP_XRAY, () => stopXray());
 module.exports = {
     init,
     updateSpeedStats,
+
+    get running() {
+        return xray_process !== null;
+    }
 };

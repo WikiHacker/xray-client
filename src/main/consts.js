@@ -7,7 +7,7 @@
 const consts = {
     IS_MAC: process.platform === 'darwin',
     IS_PC: process.platform !== 'darwin',
-    IS_DEVELOPMENT: process.env.npm_command === 'start',
+    IS_DEVELOPMENT: process.env.npm_command !== undefined,
 
     STATS_PORT: 1078,
     LOCAL_IP: '127.0.0.1',
@@ -15,6 +15,7 @@ const consts = {
     M_R: {
         SHOW_TIPS: 'show-tips',
         SHOW_ABOUT: 'show-about',
+        SHOW_TAB_PAGE: 'show-tab-page',
         UPDATE_RUNNING_STATUS: 'update-running-status',
         APPLY_CHANGES: 'apply-changes',
         UPDATE_SPEED_STATS: 'update-speed-stats',

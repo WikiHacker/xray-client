@@ -56,7 +56,7 @@ function showHint(msg, timeout = 2000) {
 
 
 (() => {
-    // pages & buttons
+    // pages & tab buttons
     const pages = {profiles: 'profiles', general: 'general', rules: 'rules', proxies: 'proxies', logs: 'logs'};
     let curPage;
 
@@ -85,6 +85,8 @@ function showHint(msg, timeout = 2000) {
         });
     }
     changePage(pages.general);
+
+    window.electron.receive(window.electron.R.SHOW_TAB_PAGE, (page) => changePage(page));
 
 
     // 点击关闭按钮，隐藏所有窗口

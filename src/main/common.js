@@ -35,6 +35,7 @@ common.appMenu = [
     }
 ];
 
+
 common.trayMenu = [
     {
         label: 'Application', click: () => common.mainWnd.show()
@@ -47,21 +48,35 @@ common.trayMenu = [
     },
 
     {type: 'separator'},
-    {
-        label: 'Xray-Core', click: () => shell.showItemInFolder(common.xrayPath)
-    },
+
     {
         label: 'Apply Changes', click: () => common.send(consts.M_R.APPLY_CHANGES)
     },
+    {
+        label: 'Enable Global Proxy'
+    },
 
     {type: 'separator'},
+
+    {
+        label: 'View logs', click: () => {
+            common.mainWnd.show();
+            common.send(consts.M_R.SHOW_TAB_PAGE, 'logs');
+        }
+    },
+    {
+        label: 'View xray-core', click: () => shell.showItemInFolder(common.xrayPath)
+    },
+
+    {type: 'separator'},
+
     {
         label: 'Quit', click: () => app.quit()
     },
 ];
 
 if (consts.IS_DEVELOPMENT) {
-    common.trayMenu.splice(3, 0, {
+    common.trayMenu.push({
         label: 'Developer Tools', click: () => common.mainWnd.openDevTools({mode: 'detach'})
     });
 }
@@ -97,7 +112,8 @@ ipcMain.on(consts.R_M.SAVE_FILE, async (event, name, data) => {
  * 获取 ping 值
  */
 ipcMain.handle(consts.R_M.PING, async (event, host) => {
-    return await ping.promise.probe(host, {timeout: 3});
+    let result = await ping.promise.probe(host, {timeout: 3});
+    return {alive: result.alive, time: result.time};
 });
 
 

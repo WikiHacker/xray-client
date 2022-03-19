@@ -23,7 +23,7 @@ if (!app.requestSingleInstanceLock()) {
         }
     });
 
-    main().then(() => console.log('Startup Completed!'));
+    main().then(() => console.log('Startup Completed.'));
 }
 
 
@@ -59,6 +59,13 @@ async function createWindow() {
     tray.setContextMenu(Menu.buildFromTemplate(common.trayMenu));
     tray.setToolTip('XrayClient\nversion: ' + app.getVersion());
     tray.on('double-click', () => wnd.show());
+    tray.on('mouse-move', () => {
+        common.trayMenu[3].label = xray.running ? 'Apply Changes' : 'Startup XrayClient';
+        common.trayMenu[4].label = `${proxies.running ? 'Disable' : 'Enable'} Global Proxy`;
+        tray.setContextMenu(Menu.buildFromTemplate(common.trayMenu));
+    });
+    common.trayMenu[4].click = () => proxies.switchStatus();
+
 
     // main window
     let wnd = common.mainWnd = new BrowserWindow({

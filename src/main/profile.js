@@ -90,9 +90,6 @@ async function createNewProfile() {
             },
             direct: {
                 domain: [
-                    'domain:lolo.link',
-                    'domain:ruizhan.com',
-                    'domain:aoshitang.com',
                     'geosite:apple',
                     'geosite:private',
                     'geosite:cn',

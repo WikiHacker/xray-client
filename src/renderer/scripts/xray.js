@@ -81,20 +81,20 @@ function applyXrayConfig() {
 
 (() => {
     const applyBtn = document.querySelector('#applyBtn');
-    const disconnectBtn = document.querySelector('#disconnectBtn');
+    const shutdownBtn = document.querySelector('#shutdownBtn');
 
     applyBtn.addEventListener('click', () => applyXrayConfig());
     window.electron.receive(window.electron.R.APPLY_CHANGES, () => applyXrayConfig());
 
-    disconnectBtn.addEventListener('click', () => window.electron.send(window.electron.S.STOP_XRAY));
+    shutdownBtn.addEventListener('click', () => window.electron.send(window.electron.S.STOP_XRAY));
 
     window.electron.receive(window.electron.R.UPDATE_RUNNING_STATUS, (running) => {
         if (running) {
             applyBtn.textContent = 'apply';
-            disconnectBtn.disabled = false;
+            shutdownBtn.disabled = false;
         } else {
-            applyBtn.textContent = 'start';
-            disconnectBtn.disabled = true;
+            applyBtn.textContent = 'startup';
+            shutdownBtn.disabled = true;
         }
     });
 

@@ -51,6 +51,7 @@ contextBridge.exposeInMainWorld(
         R: {
             SHOW_TIPS: consts.M_R.SHOW_TIPS,
             SHOW_ABOUT: consts.M_R.SHOW_ABOUT,
+            SHOW_TAB_PAGE: consts.M_R.SHOW_TAB_PAGE,
             UPDATE_RUNNING_STATUS: consts.M_R.UPDATE_RUNNING_STATUS,
             APPLY_CHANGES: consts.M_R.APPLY_CHANGES,
             UPDATE_SPEED_STATS: consts.M_R.UPDATE_SPEED_STATS,
