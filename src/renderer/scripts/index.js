@@ -152,12 +152,26 @@ function showHint(msg, timeout = 2000) {
         aboutDialog.classList.remove(CSS_CLASS_HIDDEN);
     });
 
-    window.electron.receive(window.electron.R.UPDATE_VERSION_INFO, (data) => {
+    let aboutData;
+    const updateAboutIntro = () => {
         aboutDialog.querySelector('.mdl-card__supporting-text').innerHTML = `
-            XrayClient version: ${data.appVersion}<br>
-            Xray-Core version: ${data.xrayVersion.split(' ')[1]}<br>
-            GEOs last updated on ${dayjs(data.geoLastUpdate).format('LL')}
+            XrayClient version: ${aboutData.appVersion}<br>
+            Xray-Core version: ${aboutData.xrayVersion.split(' ')[1]}<br>
+            GEOs last updated on ${dayjs(aboutData.geoLastUpdate).format('LL')}
         `;
+    };
+
+    window.electron.receive(window.electron.R.UPDATE_VERSION_INFO, (data) => {
+        aboutData = data;
+        updateAboutIntro();
     });
+
+    window.electron.receive(window.electron.R.UPDATE_PROGRESS, (data) => {
+        if (data.end && !data.err) {
+            aboutData.geoLastUpdate = Date.now();
+            updateAboutIntro();
+        }
+    });
+
 })();
 
