@@ -60,7 +60,8 @@ async function disable() {
         await execCmd(
             'networksetup -setwebproxystate Wi-Fi off',
             'networksetup -setsecurewebproxystate Wi-Fi off',
-            'networksetup -setsocksfirewallproxystate Wi-Fi off'
+            'networksetup -setsocksfirewallproxystate Wi-Fi off',
+            'pwd' // 多执行一条命令，不然上面那条会不生效
         );
     else
         await execCmd(
