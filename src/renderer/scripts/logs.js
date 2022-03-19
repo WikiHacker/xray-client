@@ -53,7 +53,7 @@ function cleanLogContent(type) {
 function formatLogRuleOut(input, toHtml) {
     for (let i = 0; i < RULE_OUT.length; i++) {
         let out = RULE_OUT[i];
-        let a = `<span class="log-rule rule-${out}">[${out}]</span>`;
+        let a = `<span class="log-rule rule-${out}">${out}</span>`;
         let b = `[${out}]`;
         input = toHtml ? input.replaceAll(b, a) : input.replaceAll(a, b);
     }

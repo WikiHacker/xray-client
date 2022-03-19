@@ -82,7 +82,8 @@
 
 .log-rule {
     padding: 3px;
-    border-radius: 5px;
+    border-radius: 6px;
     color: #fff;
+    font-weight: 300;
 }
 
