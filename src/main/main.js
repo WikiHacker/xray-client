@@ -39,7 +39,7 @@ async function main() {
     const safeQuit = async (event) => {
         event.preventDefault();
         await proxies.disable();
-        console.log('Safe exit!');
+        console.log('Safe quit!');
         app.quit();
     }
 
