@@ -78,10 +78,7 @@ body {
 }
 
 .nav-btn:hover {
-    color: #202020;
-}
-
-.nav-btn > p {
+    color: #000;
 }
 
 .nav-btn-selected {
