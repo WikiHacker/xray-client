@@ -48,8 +48,8 @@ async function main() {
 
     await app.whenReady();
     await createWindow();
-    await xray.init();
     await profile.init();
+    await xray.init();
 }
 
 

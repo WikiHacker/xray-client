@@ -66,6 +66,8 @@ async function createNewProfile() {
     curProfileData = {
         name: nowTime.toString(),
         lastUsed: nowTime,
+        startedSuccessfully: false,
+
         general: {
             address: '', port: 12301,
             id: '',

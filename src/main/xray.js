@@ -102,6 +102,10 @@ async function init() {
             }
         }
     }
+
+    // 上次成功启动过 xray，自动连接当前配置
+    if (profile.getCurrentProfileData().startedSuccessfully)
+        await runXray();
 }
 
 
@@ -155,10 +159,13 @@ async function runXray() {
     await proxies.enable();
 
     let subprocess = xray_process = spawn(XRAY_PATH, ['run', '-c=' + XRAY_CONFIG_PATH]);
-    subprocess.on('exit', () => {
+    subprocess.on('exit', async (code, signal) => {
         if (xray_process === subprocess) {
             xray_process = null;
             common.send(consts.M_R.UPDATE_RUNNING_STATUS, false);
+
+            profile.getCurrentProfileData().startedSuccessfully = code === 0 || signal === 'SIGTERM';
+            await profile.saveCurrentProfile();
         }
     });
     subprocess.stdout.on('data', (data) => {
@@ -464,6 +471,7 @@ ipcMain.on(consts.R_M.APPLY_XRAY, async (event, data) => {
     curData.general = data.general;
     curData.log.level = data.log.level;
     curData.rules = data.rules;
+    curData.startedSuccessfully = true;
     await profile.saveCurrentProfile();
     await profile.updateProfileList();
 
