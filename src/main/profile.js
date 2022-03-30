@@ -88,7 +88,10 @@ async function createNewProfile() {
                 domain: ['geosite:category-ads'],
             },
             proxy: {
-                domain: ['full:cdn.jsdelivr.net'],
+                domain: [
+                    'full:cdn.jsdelivr.net',
+                    'full:developer.apple.com'
+                ],
             },
             direct: {
                 domain: [
