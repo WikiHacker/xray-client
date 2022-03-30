@@ -92,9 +92,13 @@
         }
         if (data.end) {
             if (!data.err) {
-                showHint('update geoip.dat & geosite.dat complete!', 3000);
-                lastUpdateTime(Date.now());
-                applyHint.show('geoip.dat & geosite.dat has changed.');
+                if (data.xray) {
+                    showHint('update xray & geos complete!', 3000);
+                } else {
+                    lastUpdateTime(Date.now());
+                    showHint('update geoip.dat & geosite.dat complete!', 3000);
+                    applyHint.show('geoip.dat & geosite.dat has changed.');
+                }
             }
 
             clearTimeout(hideProgressId);

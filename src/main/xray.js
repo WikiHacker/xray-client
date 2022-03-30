@@ -62,26 +62,11 @@ let getStatsTimeoutId, lastGetStatsTime;
 async function init() {
     // 将包体内的 xray-core 相关文件拷贝到存储目录下，便于更新
     await fs.ensureDir(XRAY_DIR);
-
-    // app 目录下 xray-core 相关文件的路径
-    const xrayDir = common.appPath('../xray-core/');
-    const xrayPath = `${xrayDir}xray-${consts.IS_MAC ? (process.arch === 'arm64' ? 'macos-arm64-v8a' : 'macos-64') : 'windows-64.exe'}`;
-    const geoipPath = xrayDir + 'geoip.dat';
-    const geositePath = xrayDir + 'geosite.dat';
+    const {xrayPath, geoipPath, geositePath} = getAppXrayPath();
 
     // xray-core
     let exists = await fs.pathExists(XRAY_PATH);
-    let xrayVersion;
-    if (exists) {
-        // 检查 app 目录下的 xray-core 版本是否大于存储目录下的 xray-core
-        xrayVersion = await xrayCommand('version');
-        const appXrayVersion = await execSync(`"${xrayPath}" version`).toString();
-        if (xrayVersion !== appXrayVersion) {
-            await fs.copy(xrayPath, XRAY_PATH);
-            xrayVersion = appXrayVersion;
-        }
-    } else
-        await fs.copy(xrayPath, XRAY_PATH);
+    if (!exists) await fs.copy(xrayPath, XRAY_PATH);
 
     // geoip.dat
     exists = await fs.pathExists(GEOIP_PATH);
@@ -90,6 +75,8 @@ async function init() {
     // geosite.dat
     exists = await fs.pathExists(GEOSITE_PATH);
     if (!exists) await fs.copy(geositePath, GEOSITE_PATH);
+
+    await updateVersionInfo();
 
     // 获取局域网 ip
     let interfaces = os.networkInterfaces();
@@ -104,18 +91,35 @@ async function init() {
         }
     }
 
-    // 推送版本信息内容
-    if (!xrayVersion) xrayVersion = await xrayCommand('version');
-    let stats = await fs.stat(GEOSITE_PATH);
-    common.send(consts.M_R.UPDATE_VERSION_INFO, {
-        xrayVersion,
-        appVersion: app.getVersion(),
-        geoLastUpdate: stats.mtime
-    });
-
     // 上次成功启动过 xray，自动使用当前配置进行连接
     if (profile.getCurrentProfileData().startedSuccessfully)
         await runXray();
+}
+
+
+/**
+ * app 目录下 xray-core 相关文件的路径
+ * @returns {{geositePath: string, geoipPath: string, xrayPath: string}}
+ */
+function getAppXrayPath() {
+    const xrayDir = common.appPath('../xray-core/');
+    const xrayPath = `${xrayDir}xray-${consts.IS_MAC ? (process.arch === 'arm64' ? 'macos-arm64-v8a' : 'macos-64') : 'windows-64.exe'}`;
+    const geoipPath = xrayDir + 'geoip.dat';
+    const geositePath = xrayDir + 'geosite.dat';
+    return {xrayPath, geoipPath, geositePath};
+}
+
+
+/**
+ * 推送版本信息内容
+ */
+async function updateVersionInfo() {
+    const appVersion = app.getVersion();
+    const xrayVersion = await xrayCommand('version');
+    const geoLastUpdate = (await fs.stat(GEOSITE_PATH)).mtime;
+    common.send(consts.M_R.UPDATE_VERSION_INFO,
+        {appVersion, xrayVersion, geoLastUpdate}
+    );
 }
 
 
@@ -436,7 +440,7 @@ ipcMain.on(consts.R_M.CREATE_UUID, async (event, id) => {
  */
 ipcMain.on(consts.R_M.UPDATE_XRAY_DAT, async () => {
     if (updateInfo.running) return;
-    updateInfo = {running: true, end: false, err: null, progress: 0, geoip: false};
+    updateInfo = {running: true, end: false, err: null, progress: 0, geoip: false, xray: false};
 
     await fs.ensureDir(path.dirname(TEMP_FILE_PATH));
     let updateEnd = (errFileName) => {
@@ -472,8 +476,30 @@ ipcMain.on(consts.R_M.UPDATE_XRAY_DAT, async () => {
         }
     }
 
-    updateEnd();
-});
+    // 检查 app 目录下的 xray-core 版本是否大于存储目录下的 xray-core
+    const {xrayPath} = getAppXrayPath();
+    const storeXrayVersion = await xrayCommand('version');
+    const tmpXrayPath = XRAY_PATH + '.tmp';// app 目录下的 xray 不能直接运行，拷贝一份临时运行
+    await fs.copy(xrayPath, tmpXrayPath);
+    const appXrayVersion = await execSync(`"${tmpXrayPath}" version`).toString();
+    if (storeXrayVersion !== appXrayVersion) {
+        console.log('!!!!');
+        if (xray_process !== null) {
+            xray_process.on('exit', async () => {
+                await fs.move(tmpXrayPath, XRAY_PATH, {overwrite: true});
+                await updateVersionInfo();
+                await runXray();
+                updateInfo.xray = true;
+                updateEnd();
+            });
+            stopXray();
+        }
+    } else {
+        await fs.remove(tmpXrayPath);
+        updateEnd();
+    }
+})
+;
 
 
 /**
