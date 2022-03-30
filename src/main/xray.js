@@ -3,7 +3,7 @@
  * Created by LOLO on 2022/03/07.
  */
 
-const {spawn} = require('child_process');
+const {spawn, execSync} = require('child_process');
 const https = require('https');
 const os = require('os');
 const url = require('url');
@@ -62,33 +62,34 @@ let getStatsTimeoutId, lastGetStatsTime;
 async function init() {
     // 将包体内的 xray-core 相关文件拷贝到存储目录下，便于更新
     await fs.ensureDir(XRAY_DIR);
-    let xrayDir = common.appPath('../xray-core/');
 
+    // app 目录下 xray-core 相关文件的路径
+    const xrayDir = common.appPath('../xray-core/');
+    const xrayPath = `${xrayDir}xray-${consts.IS_MAC ? (process.arch === 'arm64' ? 'macos-arm64-v8a' : 'macos-64') : 'windows-64.exe'}`;
+    const geoipPath = xrayDir + 'geoip.dat';
+    const geositePath = xrayDir + 'geosite.dat';
+
+    // xray-core
     let exists = await fs.pathExists(XRAY_PATH);
-    if (!exists) {
-        let xrayPath = xrayDir + 'xray-';
-        if (consts.IS_MAC)
-            xrayPath += process.arch === 'arm64' ? 'macos-arm64-v8a' : 'macos-64';
-        else
-            xrayPath += 'windows-64.exe';
+    let xrayVersion;
+    if (exists) {
+        // 检查 app 目录下的 xray-core 版本是否大于存储目录下的 xray-core
+        xrayVersion = await xrayCommand('version');
+        const appXrayVersion = await execSync(`"${xrayPath}" version`).toString();
+        if (xrayVersion !== appXrayVersion) {
+            await fs.copy(xrayPath, XRAY_PATH);
+            xrayVersion = appXrayVersion;
+        }
+    } else
         await fs.copy(xrayPath, XRAY_PATH);
-    }
 
+    // geoip.dat
     exists = await fs.pathExists(GEOIP_PATH);
-    if (!exists)
-        await fs.copy(xrayDir + 'geoip.dat', GEOIP_PATH);
+    if (!exists) await fs.copy(geoipPath, GEOIP_PATH);
 
+    // geosite.dat
     exists = await fs.pathExists(GEOSITE_PATH);
-    if (!exists)
-        await fs.copy(xrayDir + 'geosite.dat', GEOSITE_PATH);
-
-    let version = await xrayCommand('version');
-    let stats = await fs.stat(GEOSITE_PATH);
-    common.send(consts.M_R.UPDATE_VERSION_INFO, {
-        appVersion: app.getVersion(),
-        xrayVersion: version,
-        geoLastUpdate: stats.mtime
-    });
+    if (!exists) await fs.copy(geositePath, GEOSITE_PATH);
 
     // 获取局域网 ip
     let interfaces = os.networkInterfaces();
@@ -102,6 +103,15 @@ async function init() {
             }
         }
     }
+
+    // 推送版本信息内容
+    if (!xrayVersion) xrayVersion = await xrayCommand('version');
+    let stats = await fs.stat(GEOSITE_PATH);
+    common.send(consts.M_R.UPDATE_VERSION_INFO, {
+        xrayVersion,
+        appVersion: app.getVersion(),
+        geoLastUpdate: stats.mtime
+    });
 
     // 上次成功启动过 xray，自动使用当前配置进行连接
     if (profile.getCurrentProfileData().startedSuccessfully)
