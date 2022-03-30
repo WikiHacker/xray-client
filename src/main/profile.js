@@ -92,7 +92,7 @@ async function createNewProfile() {
             },
             direct: {
                 domain: [
-                    'cloudflare.com',
+                    'domain:cloudflare.com',
                     'geosite:apple',
                     'geosite:private',
                     'geosite:cn',

@@ -103,7 +103,7 @@ async function init() {
         }
     }
 
-    // 上次成功启动过 xray，自动连接当前配置
+    // 上次成功启动过 xray，自动使用当前配置进行连接
     if (profile.getCurrentProfileData().startedSuccessfully)
         await runXray();
 }
@@ -164,8 +164,11 @@ async function runXray() {
             xray_process = null;
             common.send(consts.M_R.UPDATE_RUNNING_STATUS, false);
 
-            profile.getCurrentProfileData().startedSuccessfully = code === 0 || signal === 'SIGTERM';
+            let suc = code === 0 || signal === 'SIGTERM';
+            profile.getCurrentProfileData().startedSuccessfully = suc;
             await profile.saveCurrentProfile();
+
+            if (!suc) await proxies.disable();
         }
     });
     subprocess.stdout.on('data', (data) => {
