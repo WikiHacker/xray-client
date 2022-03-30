@@ -4,7 +4,7 @@
   "asar": true,
   "artifactName": "${productName}-${version}-${platform}-${arch}.${ext}",
   "directories": {
-    "output": "./dist/"
+    "output": "./dist/mac/"
   },
   "files": [
     "**/*",
