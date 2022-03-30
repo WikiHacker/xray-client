@@ -27,7 +27,7 @@
     "start": "electron .",
     "dist-win": "electron-builder --config dist-win.json",
     "dist-mac": "electron-builder --config dist-mac.json",
-    "dist-arm": "electron-builder --config dist-mac-arm64.json"
+    "dist-arm": "electron-builder --config dist-mac-arm.json"
   },
   "devDependencies": {
     "electron": "^17.0.0",
