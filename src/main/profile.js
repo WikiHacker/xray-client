@@ -90,7 +90,8 @@ async function createNewProfile() {
             proxy: {
                 domain: [
                     'full:cdn.jsdelivr.net',
-                    'full:developer.apple.com'
+                    'full:developer.apple.com',
+                    'full:timestamp.apple.com',
                 ],
             },
             direct: {
