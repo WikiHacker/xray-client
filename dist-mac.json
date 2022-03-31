@@ -10,6 +10,7 @@
     "**/*",
     "!node_modules/*",
     "!server-config-examples/*",
+    "!dist/*",
     "!dist-win.json",
     "!dist-mac.json",
     "!dist-mac-arm.json",
