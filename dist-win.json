@@ -12,7 +12,7 @@
     "!server-config-examples/*",
     "!dist-win.json",
     "!dist-mac.json",
-    "!package.json",
+    "!dist-mac-arm.json",
     "!src/icons/*",
     "src/icons/*.ico",
     "!src/xray-core/xray-macos-64",

@@ -1,6 +1,6 @@
 {
   "name": "XrayClient",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Xray Client",
   "author": "LOLO",
   "license": "MIT",
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "electron": "^17.0.0",
-    "electron-builder": "^22.14.13"
+    "electron-builder": "^23.0.2"
   },
   "dependencies": {
     "fs-extra": "^10.0.1",

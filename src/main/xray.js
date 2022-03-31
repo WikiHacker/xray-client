@@ -483,7 +483,6 @@ ipcMain.on(consts.R_M.UPDATE_XRAY_DAT, async () => {
     await fs.copy(xrayPath, tmpXrayPath);
     const appXrayVersion = await execSync(`"${tmpXrayPath}" version`).toString();
     if (storeXrayVersion !== appXrayVersion) {
-        console.log('!!!!');
         if (xray_process !== null) {
             xray_process.on('exit', async () => {
                 await fs.move(tmpXrayPath, XRAY_PATH, {overwrite: true});

@@ -1,7 +1,7 @@
 {
   "appId": "link.lolo.xray-client",
   "copyright": "Copyright 2022 LOLO",
-  "asar": true,
+  "asar": false,
   "artifactName": "${productName}-${version}-${platform}-${arch}.${ext}",
   "directories": {
     "output": "./dist/mac/"
@@ -12,7 +12,7 @@
     "!server-config-examples/*",
     "!dist-win.json",
     "!dist-mac.json",
-    "!package.json",
+    "!dist-mac-arm.json",
     "!src/icons/*",
     "src/icons/*.png",
     "!src/xray-core/xray-windows-64.exe",
