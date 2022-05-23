@@ -1,6 +1,6 @@
 {
   "name": "XrayClient",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "description": "Xray Client",
   "author": "LOLO",
   "license": "MIT",
@@ -18,9 +18,10 @@
     "xray",
     "xray-core",
     "xray gui",
-    "v2ray",
-    "v2ray-core",
-    "v2ray gui"
+    "xray mac",
+    "xray mac m1",
+    "xray arm64",
+    "xray windows"
   ],
   "main": "src/main/main.js",
   "scripts": {
