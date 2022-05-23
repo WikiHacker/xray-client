@@ -142,7 +142,7 @@ function showHint(msg, timeout = 2000) {
     // about dialog
     const aboutDialog = document.querySelector('#aboutDialog');
     aboutDialog.querySelector('.github').addEventListener('click', () => {
-        window.electron.openExternal('https://github.com/lolo1208/XrayClient');
+        window.electron.openExternal('https://github.com/lolo1208/xray-client');
     });
     aboutDialog.querySelector('.close').addEventListener('click', () => {
         aboutDialog.classList.add(CSS_CLASS_HIDDEN);
