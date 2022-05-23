@@ -1,20 +1,20 @@
 {
   "name": "XrayClient",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "Xray Client",
   "author": "LOLO",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lolo1208/XrayClient.git"
+    "url": "https://github.com/lolo1208/xray-client.git"
   },
   "bugs": {
-    "url": "https://github.com/lolo1208/XrayClient/issues"
+    "url": "https://github.com/lolo1208/xray-client/issues"
   },
-  "homepage": "https://github.com/lolo1208/XrayClient",
+  "homepage": "https://github.com/lolo1208/xray-client",
   "keywords": [
     "XrayClient",
-    "xray client",
+    "xray-client",
     "xray",
     "xray-core",
     "xray gui",
