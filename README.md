@@ -8,6 +8,27 @@
 *因该程序目前仅个人使用，还未打算支持 VMess 等其他协议。*
 
 # Usage
+### 调试与发布
+```bash
+# Clone this repository
+git clone https://github.com/lolo1208/xray-client
+# Go into the repository
+cd xray-client
+# Install dependencies
+npm install
+
+# Run the app
+npm start
+
+# Release the app
+# windows x64
+npm run dist-win
+# mac x64
+npm run dist-mac
+# mac arm64
+npm run dist-arm
+```
+
 
 ### General
 ![](https://static.lolo.link/img/screenshots/xray-client/general-1.png)
