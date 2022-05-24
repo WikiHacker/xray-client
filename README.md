@@ -10,6 +10,10 @@
 *因该程序目前仅个人使用，还未打算支持 VMess 等其他协议。*
 
 # Usage
+
+### 下载与安装
+你可以在 [Release](https://github.com/lolo1208/xray-client/releases/latest) 页面获取到最新的安装包或独立运行程序，以及免安装压缩包。
+
 ### Run & Release
 ```bash
 # Clone this repository
