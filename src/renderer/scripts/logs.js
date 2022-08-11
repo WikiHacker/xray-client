@@ -74,7 +74,7 @@ function formatLogRuleOut(input, toHtml) {
         let list = data.split('\n');
         for (let item of list) {
             item = item.trim();
-            if (isEmpty(item) || item.endsWith('[api]')) continue;
+            if (isEmpty(item) || item.endsWith('api]')) continue;
             if (item.endsWith(']')) {
                 let idx = item.indexOf('//') + 2;
                 if (idx === 1) idx = item.indexOf('accepted') + 9;
