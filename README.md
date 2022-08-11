@@ -39,8 +39,7 @@ npm run dist-arm
 # Usage
 
 ### General
-![](https://static.lolo.link/img/screenshots/xray-client/general-1.png)
-![](https://static.lolo.link/img/screenshots/xray-client/general-2.png)
+<img src="https://static.lolo.link/img/screenshots/xray-client/general-1.png" width="50%" /><img src="https://static.lolo.link/img/screenshots/xray-client/general-2.png" width="50%" />
 
 在 General 页面，你可以输入自己服务器端 xray 的相关信息，以及设定本地代理端口。
 
@@ -60,7 +59,8 @@ npm run dist-arm
 在 Profiles 界面，你可以创建一个新的配置文件，或在多个配置文件间切换，也可以导入/导出以及删除配置文件。
 
 点击配置文件上的网络测速图标，可以获取到服务器的 ping 值。
-![](https://static.lolo.link/img/screenshots/xray-client/profiles.png)
+
+<img src="https://static.lolo.link/img/screenshots/xray-client/profiles.png" width="50%" />
 
 ---
 
@@ -77,7 +77,7 @@ npm run dist-arm
 
 点击 `UPDATE` 按钮也会更新 xray-core*（如果覆盖安装的 xray-client 目录内有更新）*。
 
-![](https://static.lolo.link/img/screenshots/xray-client/proxies.png)
+<img src="https://static.lolo.link/img/screenshots/xray-client/proxies.png" width="50%" />
 
 ---
 
@@ -90,10 +90,10 @@ npm run dist-arm
 
 前缀和内容的介绍可查看：[如何配置规则内容](https://xtls.github.io/config/routing.html)
 
-![](https://static.lolo.link/img/screenshots/xray-client/rules.png)
+<img src="https://static.lolo.link/img/screenshots/xray-client/rules.png" width="50%" />
 
 ---
 
 ### Logs
 在 Logs 页面，你可以修改日志级别，以及查看和 清除/复制/保存 访问日志 和 错误日志。
-![](https://static.lolo.link/img/screenshots/xray-client/logs.png)
+<img src="https://static.lolo.link/img/screenshots/xray-client/logs.png" width="50%" />
